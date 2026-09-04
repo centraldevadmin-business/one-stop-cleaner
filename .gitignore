@@ -22,3 +22,7 @@ data/
 dist/
 tmp-*.mjs
 tmp-*.js
+
+# Local test scripts
+test-*.mjs
+test-*.js

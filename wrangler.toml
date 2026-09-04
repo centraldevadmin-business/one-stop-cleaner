@@ -3,6 +3,12 @@ main = "worker.js"
 compatibility_date = "2024-09-23"
 compatibility_flags = ["nodejs_compat"]
 
+# esbuild alias: replace iconv-lite (pulled in transitively by express →
+# body-parser → raw-body) with an empty stub. iconv-lite's Node stream code
+# breaks on the Workers runtime, and our JSON-only API never uses it.
+[alias]
+"iconv-lite" = "./empty-iconv.js"
+
 # Static assets: the marketing site + admin dashboard.
 # not_found_handling = "single-page-application" makes unknown routes fall
 # back to index.html so the SPA router works.

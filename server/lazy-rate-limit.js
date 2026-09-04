@@ -1,11 +1,9 @@
-// Lazy rate-limit middleware.
+// Rate-limit middleware for public lead capture.
 //
-// `express-rate-limit`'s `init()` performs async I/O (it sets up a timer),
-// which is disallowed in Cloudflare Workers global scope. Calling
-// `rateLimit(...)` at module load therefore crashes on Workers.
-//
-// This wrapper defers the actual `rateLimit(...)` call until the first request
-// arrives (inside a handler), so it works in both Node and Workers.
+// The default in-memory store of express-rate-limit is synchronous, so the
+// limiter can be created at module load time. This avoids the
+// ERR_ERL_CREATED_IN_REQUEST_HANDLER validation warning while still working on
+// Cloudflare Workers (no async I/O happens at load time).
 
 import rateLimit from 'express-rate-limit';
 
@@ -16,13 +14,6 @@ const options = {
   legacyHeaders: false,
 };
 
-let limiter = null;
-
-export function leadRateLimiter(req, res, next) {
-  if (!limiter) {
-    limiter = rateLimit(options);
-  }
-  limiter(req, res, next);
-}
+export const leadRateLimiter = rateLimit(options);
 
 export default leadRateLimiter;
