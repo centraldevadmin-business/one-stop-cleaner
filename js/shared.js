@@ -113,23 +113,36 @@
       if (message.length < 5) { showMsg(msg, "Tell us a little more.", "err"); return; }
 
       showMsg(msg, "Sending…", "");
-      try {
-        await fetch("/api/leads", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ source: "contact", status: "new", stage: "discovery", priority: "normal", name: name, email: email, message: message }),
-        });
-        showMsg(msg, "Thanks — we'll be in touch shortly!", "ok");
-        form.reset();
-      } catch (err) {
-        showMsg(msg, "Thanks — we'll be in touch shortly!", "ok");
-        form.reset();
-      }
+      (async function () {
+        try {
+          await fetch("/api/leads", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ source: "contact", status: "new", stage: "discovery", priority: "normal", name: name, email: email, message: message }),
+          });
+          showMsg(msg, "Thanks — we'll be in touch shortly!", "ok");
+          form.reset();
+        } catch (err) {
+          showMsg(msg, "Thanks — we'll be in touch shortly!", "ok");
+          form.reset();
+        }
+      })();
     });
   });
 
   /* ---------- Scroll reveal ---------- */
   var revealEls = document.querySelectorAll(".reveal");
+  function revealNow() {
+    revealEls.forEach(function (el) { el.classList.add("in"); });
+  }
+  function revealInViewport() {
+    revealEls.forEach(function (el) {
+      var r = el.getBoundingClientRect();
+      if (r.top < window.innerHeight && r.bottom > 0) {
+        el.classList.add("in");
+      }
+    });
+  }
   if ("IntersectionObserver" in window) {
     var io = new IntersectionObserver(
       function (entries) {
@@ -142,9 +155,25 @@
       },
       { threshold: 0.12, rootMargin: "0px 0px -40px 0px" }
     );
-    revealEls.forEach(function (el) { io.observe(el); });
+    // Reveal elements already in view on load (above the fold), then observe
+    // the rest. Some engines never fire the observer, so this guarantees
+    // above-the-fold content is never stuck hidden.
+    revealEls.forEach(function (el) {
+      var r = el.getBoundingClientRect();
+      if (r.top < window.innerHeight && r.bottom > 0) {
+        el.classList.add("in");
+        io.unobserve(el);
+      } else {
+        io.observe(el);
+      }
+    });
+    // Fallback: if the observer never fires (some headless engines), reveal
+    // on scroll via a plain listener so nothing stays stuck hidden.
+    var onScrollReveal = function () { revealInViewport(); };
+    onScrollReveal();
+    window.addEventListener("scroll", onScrollReveal, { passive: true });
   } else {
-    revealEls.forEach(function (el) { el.classList.add("in"); });
+    revealNow();
   }
 
   /* ---------- Scroll progress bar ---------- */

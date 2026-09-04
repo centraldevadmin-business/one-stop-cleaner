@@ -36,6 +36,8 @@ router.get('/dashboard', async (req, res) => {
   // Top events
   const topEvents = await db.prepare('SELECT event_name, COUNT(*) c FROM analytics_events GROUP BY event_name ORDER BY c DESC LIMIT 5').all();
 
+  console.log('DEBUG dashboard data:', JSON.stringify({ leads, newLeads, campaigns, running, products, signups, partners, sent, opened, clicked }));
+
   res.json({
     leads, newLeads, campaigns, running, products, signups, partners,
     sent, opened, clicked,

@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>One Stop Cleaner — Trusted cleaning, one stop away</title>
   <meta name="description" content="One Stop Cleaner connects you with verified local cleaners and quality cleaning products. Book with confidence, pay securely. Coming soon to your city." />
-  <meta name="theme-color" content="#0a1a24" />
+  <meta name="theme-color" content="#1a1712" />
 
   <meta property="og:title" content="One Stop Cleaner" />
   <meta property="og:description" content="Verified local cleaners. Trusted bookings. Quality products. Coming soon to your city." />
@@ -15,7 +15,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -34,7 +34,7 @@
         <a href="about.html" class="nav-link">About</a>
         <a href="contact.html#partner" class="nav-link">Partner with us</a>
         <a href="contact.html" class="nav-link">Contact</a>
-      </div>
+      </nav>
       <div class="nav__cta">
         <a href="contact.html" class="btn btn--ghost btn--lg">Join the waitlist</a>
         <button class="navToggle" id="navToggle" aria-expanded="false" aria-controls="navLinks" aria-label="Toggle menu"><span></span></button>
@@ -44,27 +44,20 @@
 
   <main>
     <!-- HERO -->
-    <section class="hero hero--dark">
-      <div class="hero__bg hero__bg--gradient" aria-hidden="true"></div>
+    <section class="hero hero--warm">
+      <div class="hero__bg hero__bg--warm-accent" aria-hidden="true"></div>
       <div class="hero__glow" aria-hidden="true"></div>
-      <!-- Background video -->
-      <div class="hero__video" aria-hidden="true">
-        <video autoplay muted loop playsinline poster="https://images.unsplash.com/photo-1581578731544-cb074246da11?auto=format&fit=crop&w=1200&q=80">
-          <source src="https://cdn.coverr.co/videos/coverr/cleaning-the-floor-1574/index.mp4" type="video/mp4">
-        </video>
-        <div class="hero__video-overlay"></div>
-      </div>
       <div class="container hero__inner">
         <div class="hero__grid" style="display:grid; grid-template-columns:1.05fr 1fr; gap:60px; align-items:center;">
           <div class="hero__content">
-            <p class="eyebrow eyebrow--light reveal">Coming soon to your city</p>
+            <p class="eyebrow reveal">Coming soon to your city</p>
             <h1 class="hero__title reveal" data-delay="1">
-              Trusted cleaning, <br /><span class="grad-text">one stop away.</span>
+              Fresh, clean homes, <br /><span class="grad-text">one stop away.</span>
             </h1>
             <p class="hero__sub reveal" data-delay="2">
-              We're building a marketplace that connects you with <strong>verified local
-              cleaners</strong> — and the quality products they use. Book with confidence,
-              pay securely, and get your space spotless.
+              We're building a marketplace that connects you with <strong>verified cleaning
+              services</strong> — and the quality products they use. Book a cleaner,
+              pay securely, and get your home spotless and refreshed.
             </p>
             <form class="hero__actions reveal" data-delay="3" novalidate>
               <div class="field" style="flex:1; min-width:230px;">
@@ -79,7 +72,7 @@
             <ul class="hero__trust reveal" data-delay="3">
               <li>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
-                Verified cleaners
+              Verified cleaning services
               </li>
               <li>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
@@ -91,15 +84,20 @@
               </li>
             </ul>
           </div>
-          <div class="hero__visual" aria-hidden="true">
-            <div class="hero__photo">
-              <img src="https://images.unsplash.com/photo-1581578731544-cb074246da11?auto=format&fit=crop&w=900&q=80" alt="A professional cleaner organizing cleaning supplies" loading="eager" />
+          <div class="hero__visual reveal" data-delay="1" aria-hidden="true">
+            <div class="clean-visual">
+              <div class="clean-visual__sparkle clean-visual__sparkle--1"></div>
+              <div class="clean-visual__sparkle clean-visual__sparkle--2"></div>
+              <div class="clean-visual__sparkle clean-visual__sparkle--3"></div>
+              <div class="clean-visual__home">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/><path d="M9 22V12h6v10"/></svg>
+              </div>
             </div>
-            <div class="hero__badge hero__badge--1 reveal" data-delay="1">
+            <div class="hero__badge hero__badge--1" data-delay="1">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
-              <span>Verified cleaners</span>
+              <span>Fresh &amp; on time</span>
             </div>
-            <div class="hero__badge hero__badge--2 reveal" data-delay="2">
+            <div class="hero__badge hero__badge--2" data-delay="2">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z" /></svg>
               <span>Escrow-secured</span>
             </div>
@@ -138,11 +136,11 @@
       <div class="container">
         <div class="section__head section__head--center reveal">
           <p class="eyebrow">Our mission</p>
-          <h2 class="section__title">Making trusted cleaning effortless</h2>
+          <h2 class="section__title">Making cleaning effortless</h2>
           <p class="section__lead section__lead--center">
-            We believe everyone deserves a clean space without the worry. One Stop
-            Cleaner brings verified cleaners and quality products together in one place —
-            so finding help you can trust has never been easier.
+            We believe everyone deserves a fresh, clean home without the chore. One Stop
+            Cleaner brings verified cleaning services and quality products together in one place —
+            so getting your cleaning done has never been easier.
           </p>
         </div>
         <div class="cards" style="display:grid; grid-template-columns:repeat(3,1fr); gap:24px;">
@@ -151,23 +149,23 @@
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 7l9 5 9-5-9-5Z"/><path d="m3 17 9 5 9-5"/><path d="m3 12 9 5 9-5"/></svg>
             </div>
             <h3>Mission</h3>
-            <p>To connect people with reliable, verified cleaners and the products they
-              need — with transparent pricing, secure payments, and peace of mind on every booking.</p>
+            <p>To connect people with reliable, verified cleaning services and the products
+              they need — with transparent pricing, secure payments, and peace of mind on every drop-off.</p>
           </article>
           <article class="card reveal" data-delay="1">
             <div class="card__icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
             </div>
             <h3>Vision</h3>
-            <p>To become the most trusted home-services marketplace — where every home and
-              every cleaner is connected, protected, and fairly rewarded.</p>
+            <p>To become the most trusted cleaning marketplace — where every home and
+              every cleaning service is connected, protected, and fairly rewarded.</p>
           </article>
           <article class="card reveal" data-delay="2">
             <div class="card__icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/></svg>
             </div>
             <h3>Promise</h3>
-            <p>Verified professionals, secure escrow payments, and real support — so your home
+            <p>Verified services, secure escrow payments, and real support — so your home
               is in safe hands, every single time.</p>
           </article>
         </div>
@@ -179,23 +177,23 @@
       <div class="container">
         <div class="section__head section__head--center reveal">
           <p class="eyebrow">How it works</p>
-          <h2 class="section__title">Book trusted cleaning in three steps</h2>
+          <h2 class="section__title">Get your cleaning done in three steps</h2>
         </div>
         <ol class="steps" style="display:grid; grid-template-columns:repeat(3,1fr); gap:28px;">
           <li class="step reveal" data-delay="0">
             <span class="step__num">1</span>
-            <h3>Post what you need</h3>
-            <p>Tell us the service, location, date, and size of the job.</p>
+            <h3>Tell us what to clean</h3>
+            <p>Tell us the rooms, quantity, date, and service you need.</p>
           </li>
           <li class="step reveal" data-delay="1">
             <span class="step__num">2</span>
-            <h3>Compare verified cleaners</h3>
-            <p>Local cleaners bid with prices, timelines, and ratings you can trust.</p>
+            <h3>Choose a cleaning service</h3>
+            <p>Verified services bid with prices, timelines, and ratings you can trust.</p>
           </li>
           <li class="step reveal" data-delay="2">
             <span class="step__num">3</span>
             <h3>Book &amp; pay securely</h3>
-            <p>Book your pick, pay safely through escrow, and only release when you're happy.</p>
+            <p>Book your cleaner, pay safely through escrow, and only release when you're happy.</p>
           </li>
         </ol>
       </div>
@@ -207,13 +205,13 @@
         <div class="grid-2" style="display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:center; margin-bottom:80px;">
           <div class="grid-2__content reveal">
             <p class="eyebrow">For clients</p>
-            <h2 class="section__title">A clean home, guaranteed.</h2>
+            <h2 class="section__title">Fresh cleaning, guaranteed.</h2>
             <p class="section__lead">
-              Find verified cleaners near you, compare trusted bids, and book with
+              Find verified cleaning services near you, compare trusted bids, and book with
               confidence. Your payment is held securely until the job is done right.
             </p>
             <ul class="checklist" style="margin-top:26px; display:grid; gap:15px;">
-              <li>Verified, background-checked cleaners</li>
+              <li>Verified, reliable cleaning services</li>
               <li>Secure escrow — pay only when satisfied</li>
               <li>Transparent pricing &amp; ratings</li>
               <li>Real support if anything goes wrong</li>
@@ -221,12 +219,18 @@
             <div style="margin-top:32px;"><a href="services.html" class="btn btn--primary">Explore services <span class="btn__arrow" aria-hidden="true">→</span></a></div>
           </div>
           <div class="grid-2__visual reveal" data-delay="1" aria-hidden="true">
-            <img src="https://images.unsplash.com/photo-1527515681693-70002a93690e?auto=format&fit=crop&w=800&q=80" alt="Clean bright modern living room" style="position:absolute;inset:0;object-fit:cover;width:100%;height:100%;filter:brightness(1.05);" loading="lazy" />
-            <div class="visual-card" style="position:absolute;left:20px;right:20px;bottom:20px;">
-              <div class="visual-card__row"><span class="dot dot--teal"></span><span class="vc-text">New cleaning job near you</span></div>
-              <div class="visual-card__body">Home deep clean · 3 bed · Sat 9am</div>
-              <div class="visual-card__foot"><span class="vc-bids">6 bids coming</span><span class="vc-price">From $89</span></div>
+            <div class="float-card float-card--a">
+              <div class="float-card__row"><span class="dot dot--teal"></span><span class="vc-text">New cleaning request near you</span></div>
+              <div class="float-card__body">Home clean · 3 bed · Sat 9am</div>
+              <div class="float-card__foot"><span class="vc-bids">6 bids coming</span><span class="vc-price">From $89</span></div>
             </div>
+            <div class="float-card float-card--b">
+              <div class="float-card__row"><span class="dot dot--blue"></span><span class="vc-text">Payout released</span></div>
+              <div class="float-card__body">Job #2148 completed</div>
+              <div class="float-card__foot"><span class="vc-bids">$124.00</span><span class="vc-price">Received</span></div>
+            </div>
+            <div class="orb orb--1"></div>
+            <div class="orb orb--2"></div>
           </div>
         </div>
         <div class="grid-2 grid-2--reverse" style="display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:center;">
@@ -234,7 +238,7 @@
             <p class="eyebrow">For cleaners &amp; companies</p>
             <h2 class="section__title">Grow your cleaning business.</h2>
             <p class="section__lead">
-              Whether you clean on your own or run a team, get discovered by clients who
+              Whether you run a cleaning business on your own or manage a team, get discovered by clients who
               are ready to book — and get paid securely and on time.
             </p>
             <ul class="checklist" style="margin-top:26px; display:grid; gap:15px;">
@@ -246,12 +250,18 @@
             <div style="margin-top:32px;"><a href="services.html" class="btn btn--primary">Get started <span class="btn__arrow" aria-hidden="true">→</span></a></div>
           </div>
           <div class="grid-2__visual grid-2__visual--b reveal" data-delay="1" aria-hidden="true">
-            <img src="https://images.unsplash.com/photo-1584634731389-893f905f4059?auto=format&fit=crop&w=800&q=80" alt="Professional cleaner holding cleaning equipment" style="position:absolute;inset:0;object-fit:cover;width:100%;height:100%;filter:brightness(1.02);" loading="lazy" />
-            <div class="visual-card" style="position:absolute;left:20px;right:20px;bottom:20px;">
-              <div class="visual-card__row"><span class="dot dot--blue"></span><span class="vc-text">Your profile is verified ✓</span></div>
-              <div class="visual-card__body">CleanPro Co. · 4.9★ · 128 jobs</div>
-              <div class="visual-card__foot"><span class="vc-bids">12 new jobs matched</span><span class="vc-price">Available now</span></div>
+            <div class="float-card float-card--c">
+              <div class="float-card__row"><span class="dot dot--blue"></span><span class="vc-text">Your profile is verified ✓</span></div>
+              <div class="float-card__body">SparkleClean Co. · 4.9★ · 212 jobs</div>
+              <div class="float-card__foot"><span class="vc-bids">15 new orders matched</span><span class="vc-price">Available now</span></div>
             </div>
+            <div class="float-card float-card--d">
+              <div class="float-card__row"><span class="dot dot--teal"></span><span class="vc-text">New booking</span></div>
+              <div class="float-card__body">Deep clean · 4 bed</div>
+              <div class="float-card__foot"><span class="vc-bids">Confirmed</span><span class="vc-price">Today</span></div>
+            </div>
+            <div class="orb orb--2"></div>
+            <div class="orb orb--3"></div>
           </div>
         </div>
       </div>
@@ -264,7 +274,7 @@
           <p class="eyebrow eyebrow--light">For partners &amp; investors</p>
           <h2 class="section__title" style="color:#fff; margin:16px 0 18px;">A bigger vision, building now</h2>
           <p class="section__lead section__lead--center" style="color:#a9b7bf; margin-inline:auto; max-width:620px;">
-            We're creating more than a booking platform — a trusted ecosystem for home
+            We're creating more than a booking platform — a trusted ecosystem for cleaning
             services and the products that keep them running. Early support helps us launch
             clean, scale safely, and verify every connection.
           </p>
@@ -285,18 +295,18 @@
         <div class="cards">
           <article class="card reveal">
             <div class="stars" aria-hidden="true" style="color:#f5b301; letter-spacing:2px; margin-bottom:14px;">★★★★★</div>
-            <p style="font-size:1.05rem;color:var(--ink);">"Finally a platform I trust. The cleaner arrived on time, the home smelled fresh, and paying through escrow made me feel completely safe."</p>
+            <p style="font-size:1.05rem;color:var(--ink);">"Finally a service I trust. My home came back fresh and spotless, and paying through escrow made me feel completely safe."</p>
             <div style="display:flex; align-items:center; gap:14px; margin-top:22px;">
               <div style="width:48px;height:48px;border-radius:50%;background:var(--grad);display:grid;place-items:center;color:#fff;font-weight:700;">SP</div>
-              <div><div style="font-weight:700;">Sarah P.</div><div style="color:var(--muted);font-size:13px;">Homeowner, Sydney</div></div>
+              <div><div style="font-weight:700;">Sarah P.</div><div style="color:var(--muted);font-size:13px;">Customer, Sydney</div></div>
             </div>
           </article>
           <article class="card reveal" data-delay="1">
             <div class="stars" aria-hidden="true" style="color:#f5b301; letter-spacing:2px; margin-bottom:14px;">★★★★★</div>
-            <p style="font-size:1.05rem;color:var(--ink);">"As a cleaner, this platform changed my life. I get consistent bookings, get paid on time, and my verified profile builds trust with every client."</p>
+            <p style="font-size:1.05rem;color:var(--ink);">"As a cleaning service, this platform changed my life. I get consistent bookings, get paid on time, and my verified profile builds trust with every client."</p>
             <div style="display:flex; align-items:center; gap:14px; margin-top:22px;">
               <div style="width:48px;height:48px;border-radius:50%;background:var(--grad);display:grid;place-items:center;color:#fff;font-weight:700;">MR</div>
-              <div><div style="font-weight:700;">Marcus R.</div><div style="color:var(--muted);font-size:13px;">Verified cleaner, Melbourne</div></div>
+              <div><div style="font-weight:700;">Marcus R.</div><div style="color:var(--muted);font-size:13px;">Cleaning service, Melbourne</div></div>
             </div>
           </article>
           <article class="card reveal" data-delay="2">
@@ -320,8 +330,8 @@
         </div>
         <div class="faq">
           <div class="faq-item reveal">
-            <button class="faq-q" aria-expanded="false"><span>How are cleaners verified?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
-            <div class="faq-a"><p>Every cleaner goes through an identity check, reference verification, and a skills assessment before joining the platform. We continuously monitor ratings and reviews to keep the community trustworthy.</p></div>
+          <button class="faq-q" aria-expanded="false"><span>How are cleaning services verified?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+          <div class="faq-a"><p>Every cleaning service goes through an identity check, reference verification, and a quality assessment before joining the platform. We continuously monitor ratings and reviews to keep the community trustworthy.</p></div>
           </div>
           <div class="faq-item reveal" data-delay="1">
             <button class="faq-q" aria-expanded="false"><span>Is my payment safe?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
@@ -329,11 +339,11 @@
           </div>
           <div class="faq-item reveal" data-delay="2">
             <button class="faq-q" aria-expanded="false"><span>When will it launch in my city?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
-            <div class="faq-a"><p>We're launching across Australia. Join the waitlist and we'll reach out the moment we launch near you — you'll be first in line to book trusted cleaners and shop products.</p></div>
+          <div class="faq-a"><p>We're launching across Australia. Join the waitlist and we'll reach out the moment we launch near you — you'll be first in line to book trusted cleaning services and shop products.</p></div>
           </div>
           <div class="faq-item reveal" data-delay="3">
-            <button class="faq-q" aria-expanded="false"><span>How do I start earning as a cleaner?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
-            <div class="faq-a"><p>Sign up as a cleaner, complete verification, and build your profile. Clients in your area will find you, you set your own prices and availability, and you get paid securely and on time.</p></div>
+          <button class="faq-q" aria-expanded="false"><span>How do I start earning as a cleaning service?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+          <div class="faq-a"><p>Sign up as a cleaning service, complete verification, and build your profile. Clients in your area will find you, you set your own prices and availability, and you get paid securely and on time.</p></div>
           </div>
         </div>
       </div>
@@ -343,11 +353,11 @@
     <section class="section" style="background:var(--bg-soft);">
       <div class="container">
         <div class="cta-box reveal" style="background:var(--ink); border-radius:var(--radius-lg); padding:clamp(48px,7vw,88px); text-align:center; position:relative; overflow:hidden;">
-          <div class="cta-box__bg" aria-hidden="true" style="position:absolute; inset:0; background:radial-gradient(500px 300px at 50% 0%, rgba(15,157,140,0.28), transparent 70%);"></div>
+          <div class="cta-box__bg" aria-hidden="true" style="position:absolute; inset:0; background:radial-gradient(500px 300px at 50% 0%, rgba(0,119,179,0.30), transparent 70%);"></div>
           <div style="position:relative; z-index:1;">
             <h2 class="section__title section__title--light" style="color:#fff;">Coming soon to your city</h2>
             <p style="color:#a9b7bf; max-width:480px; margin:0 auto 32px; font-size:1.05rem;">
-              Join the waitlist to be the first to book trusted cleaners and quality products.
+              Join the waitlist to be the first to book trusted cleaning services and quality products.
             </p>
             <form class="cta-box__form" style="display:flex; gap:12px; max-width:480px; margin:auto; flex-wrap:wrap;" novalidate>
               <div class="field" style="flex:1; min-width:220px;">
@@ -376,7 +386,7 @@
       <div class="footer__top">
         <div>
           <a href="index.html" class="footer__brand"><span class="brand__mark" aria-hidden="true"></span><span>One Stop <span>Cleaner</span></span></a>
-          <p class="footer__about">Trusted cleaning and quality products, one stop away. Building the most trusted home-services marketplace.</p>
+          <p class="footer__about">Fresh cleaning and quality products, one stop away. Building the most trusted cleaning marketplace.</p>
         </div>
         <div class="footer__col">
           <h4>Company</h4>

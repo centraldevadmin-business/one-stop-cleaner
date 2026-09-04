@@ -2,7 +2,9 @@ import bcrypt from 'bcryptjs';
 import db from '../db/database.js';
 import { initDb } from '../db/database.js';
 
-initDb();
+// initDb() returns the better-sqlite3 instance, which has a `close()` method.
+// The module-level `db` export is a thin wrapper without it.
+const dbConn = initDb();
 
 // bcrypt.hash is async; wrap it in a promise so we can await it.
 function hash(plain) {
@@ -79,5 +81,5 @@ async function main() {
 }
 
 main()
-  .then(() => { db.close(); process.exit(0); })
+  .then(() => { dbConn.close(); process.exit(0); })
   .catch((e) => { console.error(e); process.exit(1); });

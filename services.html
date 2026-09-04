@@ -4,14 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Services — One Stop Cleaner</title>
-  <meta name="description" content="Book verified cleaners, compare trusted bids, and shop quality cleaning products. One Stop Cleaner serves clients and cleaning professionals." />
-  <meta name="theme-color" content="#0a1a24" />
+  <meta name="description" content="Book verified cleaning services, compare trusted bids, and shop quality cleaning products. One Stop Cleaner serves clients and cleaning professionals." />
+  <meta name="theme-color" content="#1a1712" />
   <meta property="og:title" content="Services — One Stop Cleaner" />
   <meta property="og:description" content="Verified cleaners, secure bookings, and quality products." />
   <meta property="og:type" content="website" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -46,13 +46,29 @@
         <div class="hero__content">
           <p class="eyebrow reveal">What we offer</p>
           <h1 class="hero__title reveal" data-delay="1">
-            Everything for a <br /><span class="grad-text">cleaner, calmer home.</span>
+            Everything for <br /><span class="grad-text">fresh, clean homes.</span>
           </h1>
           <p class="hero__sub reveal" data-delay="2">
-            Two sides, one marketplace. Clients find verified cleaners and book with
-            confidence. Cleaners find work and get paid securely. And both have access to
-            the quality products that keep spaces spotless.
+            Two sides, one marketplace. Clients find verified cleaning services and book with
+            confidence. Cleaning services find work and get paid securely. And both have access to
+            the quality products that keep your home fresh and clean.
           </p>
+        </div>
+        <div class="hero__visual reveal" data-delay="3" aria-hidden="true">
+          <div class="grid-2__visual">
+            <div class="orb orb--1"></div>
+            <div class="orb orb--2"></div>
+            <div class="float-card float-card--a">
+              <div class="float-card__row"><span class="dot dot--teal"></span> New cleaning request</div>
+              <div class="float-card__body">Home clean · 3 bed · Sat 9am</div>
+              <div class="float-card__foot"><span class="vc-bids">6 bids</span><span class="vc-price">From $89</span></div>
+            </div>
+            <div class="float-card float-card--b">
+              <div class="float-card__row"><span class="dot dot--blue"></span> Verified service</div>
+              <div class="float-card__body">SparkleClean Co. · 4.9★</div>
+              <div class="float-card__foot"><span class="vc-bids">212 jobs</span><span class="vc-price">Booked</span></div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -63,29 +79,29 @@
         <div class="section__head reveal">
           <p class="eyebrow">For clients</p>
           <h2 class="section__title">Book trusted cleaning with confidence</h2>
-          <p class="section__lead">From a quick tidy to a deep clean — find the right cleaner, securely.</p>
+          <p class="section__lead">From a regular clean to a speciality care — find the right cleaning service, securely.</p>
         </div>
         <div class="cards">
           <article class="card reveal">
             <div class="card__icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-6 9 6v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/><path d="M9 22V12h6v10"/></svg>
             </div>
-            <h3>Home cleaning</h3>
-            <p>Regular upkeep, deep cleans, and move-in/out service — matched to your space and schedule.</p>
+            <h3>Home clean</h3>
+            <p>Regular washing, drying, and folding — matched to your home and schedule.</p>
           </article>
           <article class="card reveal" data-delay="1">
             <div class="card__icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 10h20"/></svg>
             </div>
-            <h3>Office &amp; commercial</h3>
-            <p>Reliable cleaning for offices, clinics, and small businesses — with consistent quality.</p>
+            <h3>Deep clean</h3>
+            <p>Reliable cleaning for bedding, towels, and linens — with consistent quality.</p>
           </article>
           <article class="card reveal" data-delay="2">
             <div class="card__icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 2 9l9 5 9-6-9-5Z"/><path d="m2 15 10 6 10-6"/></svg>
             </div>
-            <h3>Deep &amp; speciality</h3>
-            <p>Move-out cleans, post-renovation, and speciality jobs — book verified pros for the bigger work.</p>
+            <h3>Speciality care</h3>
+            <p>Deep cleans, speciality care, and bigger jobs — book verified pros for the work.</p>
           </article>
         </div>
 
@@ -95,25 +111,31 @@
             <div class="steps" style="grid-template-columns:1fr; gap:24px; margin-top:28px;">
               <div class="step" style="display:flex; gap:20px; align-items:start;">
                 <span class="step__num" style="margin-bottom:0;">1</span>
-                <div><h3 style="font-size:1.08rem;">Post your job</h3><p style="font-size:0.95rem; color:var(--slate);">Tell us the service, location, date, and size.</p></div>
+                <div><h3 style="font-size:1.08rem;">Tell us what to clean</h3><p style="font-size:0.95rem; color:var(--slate);">Tell us the rooms, quantity, date, and service.</p></div>
               </div>
               <div class="step" style="display:flex; gap:20px; align-items:start;">
                 <span class="step__num" style="margin-bottom:0;">2</span>
-                <div><h3 style="font-size:1.08rem;">Compare bids</h3><p style="font-size:0.95rem; color:var(--slate);">Verified cleaners near you bid with price, timeline, and ratings.</p></div>
+                <div><h3 style="font-size:1.08rem;">Compare services</h3><p style="font-size:0.95rem; color:var(--slate);">Verified cleaning services near you bid with price, timeline, and ratings.</p></div>
               </div>
               <div class="step" style="display:flex; gap:20px; align-items:start;">
                 <span class="step__num" style="margin-bottom:0;">3</span>
-                <div><h3 style="font-size:1.08rem;">Book &amp; pay safely</h3><p style="font-size:0.95rem; color:var(--slate);">Book your pick and pay through secure escrow — release when you're happy.</p></div>
+                <div><h3 style="font-size:1.08rem;">Book &amp; pay safely</h3><p style="font-size:0.95rem; color:var(--slate);">Book your cleaner and pay through secure escrow — release when you're happy.</p></div>
               </div>
             </div>
           </div>
           <div class="grid-2__visual reveal" data-delay="1" aria-hidden="true">
-            <img src="https://images.unsplash.com/photo-1585421514284-efb74c2b69ba?auto=format&fit=crop&w=800&q=80" alt="Clean tidy home interior" style="position:absolute;inset:0;object-fit:cover;width:100%;height:100%;filter:brightness(1.05);" loading="lazy" />
-            <div class="visual-card" style="position:absolute;left:20px;right:20px;bottom:20px;">
-              <div class="visual-card__row"><span class="dot dot--teal"></span><span class="vc-text">New job near you</span></div>
-              <div class="visual-card__body">Deep clean · 3 bed home · Sat 9am</div>
-              <div class="visual-card__foot"><span class="vc-bids">6 bids</span><span class="vc-price">From $89</span></div>
+            <div class="float-card float-card--a">
+              <div class="float-card__row"><span class="dot dot--teal"></span><span class="vc-text">New cleaning request near you</span></div>
+              <div class="float-card__body">Home clean · 3 bed · Sat 9am</div>
+              <div class="float-card__foot"><span class="vc-bids">6 bids</span><span class="vc-price">From $89</span></div>
             </div>
+            <div class="float-card float-card--b">
+              <div class="float-card__row"><span class="dot dot--blue"></span><span class="vc-text">Verified service</span></div>
+              <div class="float-card__body">SparkleClean Co. · 4.9★</div>
+              <div class="float-card__foot"><span class="vc-bids">212 jobs</span><span class="vc-price">Booked</span></div>
+            </div>
+            <div class="orb orb--1"></div>
+            <div class="orb orb--2"></div>
           </div>
         </div>
       </div>
@@ -166,7 +188,7 @@
           <div class="grid-2__visual grid-2__visual--b reveal" data-delay="1" aria-hidden="true">
             <div class="visual-card">
               <div class="visual-card__row"><span class="dot dot--blue"></span><span class="vc-text">Starter kit</span></div>
-              <div class="visual-card__body">Multi-surface cleaner · Microfiber cloths · Sponges · Gloves</div>
+              <div class="visual-card__body">Detergent · Fabric softener · Sponges · Gloves</div>
               <div class="visual-card__foot"><span class="vc-bids">Reorder easily</span><span class="vc-price">Free delivery</span></div>
             </div>
           </div>
@@ -181,8 +203,8 @@
           <h2 class="section__title section__title--light" style="color:#fff;">Ready to get started?</h2>
           <p style="color:#a9b7bf; max-width:480px; margin:0 auto 30px; font-size:1.05rem;">Join the waitlist and be first when we launch in your city.</p>
           <div style="display:flex; gap:14px; justify-content:center; flex-wrap:wrap;">
-            <a href="contact.html" class="btn btn--primary btn--lg">I need a cleaner</a>
-            <a href="contact.html" class="btn btn--ghost btn--lg" style="background:transparent; border-color:rgba(255,255,255,0.25); color:#fff;">I'm a cleaner</a>
+            <a href="contact.html" class="btn btn--primary btn--lg">I need cleaning done</a>
+            <a href="contact.html" class="btn btn--ghost btn--lg" style="background:transparent; border-color:rgba(255,255,255,0.25); color:#fff;">I'm a cleaning service</a>
           </div>
         </div>
       </div>
@@ -195,7 +217,7 @@
       <div class="footer__top">
         <div>
           <a href="index.html" class="footer__brand"><span class="brand__mark" aria-hidden="true"></span><span>One Stop <span>Cleaner</span></span></a>
-          <p class="footer__about">Trusted cleaning and quality products, one stop away. Building the most trusted home-services marketplace.</p>
+          <p class="footer__about">Fresh cleaning and quality products, one stop away. Building the most trusted cleaning marketplace.</p>
         </div>
         <div class="footer__col">
           <h4>Company</h4>
