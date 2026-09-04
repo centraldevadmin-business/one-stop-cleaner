@@ -200,24 +200,7 @@
     });
   }
 
-  /* ---------- Dark mode toggle ---------- */
-  var THEME_KEY = 'osc_theme';
-  var toggleBtn = document.getElementById('themeToggle');
-  function applyTheme(t) {
-    document.documentElement.setAttribute('data-theme', t);
-    if (toggleBtn) toggleBtn.setAttribute('aria-pressed', t === 'dark' ? 'true' : 'false');
-  }
-  var savedTheme = localStorage.getItem(THEME_KEY) ||
-    (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-  applyTheme(savedTheme);
-  if (toggleBtn) {
-    toggleBtn.addEventListener('click', function () {
-      var cur = document.documentElement.getAttribute('data-theme');
-      var next = cur === 'dark' ? 'light' : 'dark';
-      applyTheme(next);
-      localStorage.setItem(THEME_KEY, next);
-    });
-  }
+  /* Dark mode removed — site is light-only */
 
   /* ---------- Back to top ---------- */
   var btt = document.getElementById('backToTop');

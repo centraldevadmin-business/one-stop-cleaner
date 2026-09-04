@@ -45,62 +45,43 @@
   <main>
     <!-- HERO -->
     <section class="hero hero--warm">
-      <div class="hero__bg hero__bg--warm-accent" aria-hidden="true"></div>
+      <div class="hero__bg hero__bg--fresh" aria-hidden="true"></div>
       <div class="hero__glow" aria-hidden="true"></div>
       <div class="container hero__inner">
-        <div class="hero__grid" style="display:grid; grid-template-columns:1.05fr 1fr; gap:60px; align-items:center;">
-          <div class="hero__content">
-            <p class="eyebrow reveal">Coming soon to your city</p>
+        <div class="hero__grid hero__grid--centered">
+          <div class="hero__content hero__content--centered">
+            <p class="eyebrow reveal">
+              <span class="eyebrow__dot" aria-hidden="true"></span>
+              Coming soon to your city
+            </p>
             <h1 class="hero__title reveal" data-delay="1">
-              Fresh, clean homes, <br /><span class="grad-text">one stop away.</span>
+              Fresh homes, <br /><span class="grad-text">one stop away.</span>
             </h1>
             <p class="hero__sub reveal" data-delay="2">
-              We're building a marketplace that connects you with <strong>verified cleaning
-              services</strong> — and the quality products they use. Book a cleaner,
-              pay securely, and get your home spotless and refreshed.
+              Connect with <strong>vetted, insured cleaners</strong> in your
+              neighborhood, book in seconds, and enjoy a home that sparkles —
+              guaranteed.
             </p>
             <form class="hero__actions reveal" data-delay="3" novalidate>
-              <div class="field" style="flex:1; min-width:230px;">
+              <div class="hero__field">
                 <input type="email" name="email" placeholder="Enter your email" autocomplete="email" required />
+                <button type="submit" class="btn btn--primary btn--lg">
+                  Join the waitlist
+                  <span class="btn__arrow" aria-hidden="true">→</span>
+                </button>
               </div>
-              <button type="submit" class="btn btn--primary btn--lg">
-                Notify me at launch
-                <span class="btn__arrow" aria-hidden="true">→</span>
-              </button>
               <p class="field-msg" role="status"></p>
             </form>
             <ul class="hero__trust reveal" data-delay="3">
               <li>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
-              Verified cleaning services
+                Vetted, insured cleaners
               </li>
               <li>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
-                Secure escrow payments
-              </li>
-              <li>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
-                Book with confidence
+                Pay only when satisfied
               </li>
             </ul>
-          </div>
-          <div class="hero__visual reveal" data-delay="1" aria-hidden="true">
-            <div class="clean-visual">
-              <div class="clean-visual__sparkle clean-visual__sparkle--1"></div>
-              <div class="clean-visual__sparkle clean-visual__sparkle--2"></div>
-              <div class="clean-visual__sparkle clean-visual__sparkle--3"></div>
-              <div class="clean-visual__home">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/><path d="M9 22V12h6v10"/></svg>
-              </div>
-            </div>
-            <div class="hero__badge hero__badge--1" data-delay="1">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
-              <span>Fresh &amp; on time</span>
-            </div>
-            <div class="hero__badge hero__badge--2" data-delay="2">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z" /></svg>
-              <span>Escrow-secured</span>
-            </div>
           </div>
         </div>
       </div>
@@ -208,13 +189,13 @@
             <h2 class="section__title">Fresh cleaning, guaranteed.</h2>
             <p class="section__lead">
               Find verified cleaning services near you, compare trusted bids, and book with
-              confidence. Your payment is held securely until the job is done right.
+              confidence. Your payment is held securely in escrow until the job is done right.
             </p>
             <ul class="checklist" style="margin-top:26px; display:grid; gap:15px;">
-              <li>Verified, reliable cleaning services</li>
-              <li>Secure escrow — pay only when satisfied</li>
-              <li>Transparent pricing &amp; ratings</li>
-              <li>Real support if anything goes wrong</li>
+              <li>Hand-verified cleaners with checked references</li>
+              <li>Escrow protection — pay only when satisfied</li>
+              <li>Transparent pricing &amp; real reviews</li>
+              <li>Lifetime support if anything goes wrong</li>
             </ul>
             <div style="margin-top:32px;"><a href="services.html" class="btn btn--primary">Explore services <span class="btn__arrow" aria-hidden="true">→</span></a></div>
           </div>
@@ -239,13 +220,13 @@
             <h2 class="section__title">Grow your cleaning business.</h2>
             <p class="section__lead">
               Whether you run a cleaning business on your own or manage a team, get discovered by clients who
-              are ready to book — and get paid securely and on time.
+              are ready to book — and get paid securely and on time, straight into your account.
             </p>
             <ul class="checklist" style="margin-top:26px; display:grid; gap:15px;">
-              <li>Get found by clients in your area</li>
-              <li>Set your own prices &amp; availability</li>
-              <li>Secure, timely payouts</li>
-              <li>Build a verified profile &amp; reputation</li>
+              <li>Get found by ready-to-book clients in your area</li>
+              <li>Set your own prices, hours, &amp; availability</li>
+              <li>Guaranteed, timely payouts via escrow</li>
+              <li>Build a verified profile &amp; grow your reputation</li>
             </ul>
             <div style="margin-top:32px;"><a href="services.html" class="btn btn--primary">Get started <span class="btn__arrow" aria-hidden="true">→</span></a></div>
           </div>
@@ -274,9 +255,9 @@
           <p class="eyebrow eyebrow--light">For partners &amp; investors</p>
           <h2 class="section__title" style="color:#fff; margin:16px 0 18px;">A bigger vision, building now</h2>
           <p class="section__lead section__lead--center" style="color:#a9b7bf; margin-inline:auto; max-width:620px;">
-            We're creating more than a booking platform — a trusted ecosystem for cleaning
-            services and the products that keep them running. Early support helps us launch
-            clean, scale safely, and verify every connection.
+            We're building more than a booking platform — a trusted ecosystem that connects
+            cleaning services, quality products, and the families who need them. Early support
+            helps us launch clean, scale safely, and verify every connection.
           </p>
         </div>
         <div class="reveal" data-delay="1" style="margin-top:44px;">
@@ -355,9 +336,9 @@
         <div class="cta-box reveal" style="background:var(--ink); border-radius:var(--radius-lg); padding:clamp(48px,7vw,88px); text-align:center; position:relative; overflow:hidden;">
           <div class="cta-box__bg" aria-hidden="true" style="position:absolute; inset:0; background:radial-gradient(500px 300px at 50% 0%, rgba(0,119,179,0.30), transparent 70%);"></div>
           <div style="position:relative; z-index:1;">
-            <h2 class="section__title section__title--light" style="color:#fff;">Coming soon to your city</h2>
+            <h2 class="section__title section__title--light" style="color:#fff;">Ready for a spotless home?</h2>
             <p style="color:#a9b7bf; max-width:480px; margin:0 auto 32px; font-size:1.05rem;">
-              Join the waitlist to be the first to book trusted cleaning services and quality products.
+              Join the waitlist to be the first to book trusted cleaners and shop quality products — before we launch in your city.
             </p>
             <form class="cta-box__form" style="display:flex; gap:12px; max-width:480px; margin:auto; flex-wrap:wrap;" novalidate>
               <div class="field" style="flex:1; min-width:220px;">
@@ -373,9 +354,6 @@
   </main>
 
   <!-- Floating controls -->
-  <button id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark mode">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/><line x1="21" y1="2" x2="21" y2="4"/><line x1="3" y1="20" x2="3" y2="22"/><line x1="8" y1="6" x2="8" y2="8"/><line x1="16" y1="16" x2="16" y2="18"/></svg>
-  </button>
   <button id="backToTop" aria-label="Back to top" title="Back to top">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
   </button>
