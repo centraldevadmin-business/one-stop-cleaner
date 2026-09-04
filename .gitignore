@@ -1,0 +1,18 @@
+# Dependencies
+node_modules/
+
+# Database
+data/
+*.db
+*.db-shm
+*.db-wal
+
+# Logs
+*.log
+
+# OS / editor
+.DS_Store
+.vscode/
+
+# Environment
+.env
