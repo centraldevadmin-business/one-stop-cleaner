@@ -10,7 +10,7 @@ router.post('/login', async (req, res) => {
   const { email, password } = req.body || {};
   if (!email || !password) return res.status(400).json({ error: 'Email and password required.' });
 
-  const user = db.prepare('SELECT * FROM users WHERE email = ?').get(email);
+  const user = await db.prepare('SELECT * FROM users WHERE email = ?').get(email);
   if (!user || !user.active) return res.status(401).json({ error: 'Invalid credentials.' });
 
   const ok = await verifyPassword(password, user.password_hash);
@@ -26,26 +26,26 @@ router.post('/login', async (req, res) => {
 router.post('/admins', async (req, res) => {
   const { name, email, password, role = 'superadmin' } = req.body || {};
   if (!name || !email || !password) return res.status(400).json({ error: 'name, email, password required.' });
-  const existing = db.prepare('SELECT id FROM users WHERE email = ?').get(email);
+  const existing = await db.prepare('SELECT id FROM users WHERE email = ?').get(email);
   if (existing) return res.status(409).json({ error: 'Email already registered.' });
   const password_hash = await hashPassword(password);
-  const info = db.prepare(
+  const info = await db.prepare(
     'INSERT INTO users (name, email, password_hash, role) VALUES (?, ?, ?, ?)'
   ).run(name, email, password_hash, role);
   res.status(201).json({ id: info.lastInsertRowid, name, email, role });
 });
 
 // List users (admin only)
-router.get('/', authRequired, (req, res) => {
-  const users = db.prepare('SELECT id, name, email, role, active, created_at FROM users ORDER BY rowid').all();
+router.get('/', authRequired, async (req, res) => {
+  const users = await db.prepare('SELECT id, name, email, role, active, created_at FROM users ORDER BY rowid').all();
   res.json(users);
 });
 
 // Delete user (admin only)
-router.delete('/:id', authRequired, (req, res) => {
+router.delete('/:id', authRequired, async (req, res) => {
   const id = Number(req.params.id);
   if (id === req.user.id) return res.status(400).json({ error: 'You cannot delete your own account.' });
-  db.prepare('DELETE FROM users WHERE id = ?').run(id);
+  await db.prepare('DELETE FROM users WHERE id = ?').run(id);
   res.json({ ok: true });
 });
 

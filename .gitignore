@@ -16,3 +16,9 @@ data/
 
 # Environment
 .env
+
+# Cloudflare local state / build output
+.wrangler/state/
+dist/
+tmp-*.mjs
+tmp-*.js

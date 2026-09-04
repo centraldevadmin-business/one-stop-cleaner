@@ -1,9 +1,10 @@
 import express from 'express';
 import cors from 'cors';
-import rateLimit from 'express-rate-limit';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import fs from 'fs';
+import { jsonBodyParser } from './server/json-body-parser.js';
+import { leadRateLimiter } from './server/lazy-rate-limit.js';
 import { initDb } from './db/database.js';
 import { authRequired } from './server/auth.js';
 
@@ -13,13 +14,25 @@ import campaignRoutes from './server/routes/campaigns.js';
 import cmsRoutes from './server/routes/cms.js';
 import analyticsRoutes from './server/routes/analytics.js';
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+// `import.meta.url` is undefined on Cloudflare Workers, so guard it. On
+// Workers we don't need __dirname (static files come from the assets binding).
+const isWorkersRuntime =
+  typeof navigator !== 'undefined' && navigator.userAgent === 'Cloudflare-Workers';
+const __dirname = isWorkersRuntime
+  ? ''
+  : path.dirname(fileURLToPath(import.meta.url));
 const app = express();
 const PORT = process.env.PORT || 4000;
 
 app.use(cors());
-app.use(express.json());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(jsonBodyParser());
+// express.static() calls fs.statSync on every request, which is NOT
+// implemented on Cloudflare Workers. On Workers, static files are served
+// from the assets binding (env.ASSETS.fetch) in worker.js. So only register
+// the filesystem-based static middleware in Node (local dev / tests).
+if (!isWorkersRuntime) {
+  app.use(express.static(path.join(__dirname, 'public')));
+}
 
 // Public API routes
 app.use('/api/auth', authRoutes);
@@ -28,24 +41,33 @@ app.use('/api/analytics', analyticsRoutes);
 // Public lead capture (contact/waitlist/partner/product forms) — POST only, no auth
 app.use('/api/leads', leadPublicRoutes);
 
-// Rate limit the public lead endpoint to prevent abuse
-const leadLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 30, standardHeaders: true, legacyHeaders: false });
-app.use('/api/leads', leadLimiter);
+// Rate limit the public lead endpoint to prevent abuse.
+// Created lazily (see server/lazy-rate-limit.js) so it doesn't run async I/O
+// at module-load time, which Workers forbids in global scope.
+app.use('/api/leads', leadRateLimiter);
 
 // Admin lead management (GET/PUT/DELETE) — requires auth
 app.use('/api/leads', authRequired, leadAdminRoutes);
 app.use('/api/campaigns', authRequired, campaignRoutes);
 app.use('/api/cms', authRequired, cmsRoutes);
 
-// Serve the static website (the marketing pages + admin dashboard)
+// Serve the static website (the marketing pages + admin dashboard).
+//
+// On Cloudflare Workers, `fs.*` is NOT implemented, so we must not call
+// express.static() with a filesystem path there. Static files are served
+// from the assets binding (env.ASSETS.fetch) by worker.js for every
+// non-API request, and API routes never need static file serving. So we
+// only register express.static in Node (local dev / tests).
 const siteDir = path.join(__dirname, '.');
-app.use(express.static(siteDir));
-app.get('*', (req, res, next) => {
-  if (req.path.startsWith('/api')) return next();
-  const filePath = path.join(siteDir, req.path);
-  if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) return res.sendFile(filePath);
-  return res.sendFile(path.join(siteDir, 'index.html'));
-});
+if (!isWorkersRuntime) {
+  app.use(express.static(siteDir));
+  app.get('*', (req, res, next) => {
+    if (req.path.startsWith('/api')) return next();
+    const filePath = path.join(siteDir, req.path);
+    if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) return res.sendFile(filePath);
+    return res.sendFile(path.join(siteDir, 'index.html'));
+  });
+}
 
 // Health check
 app.get('/api/health', (req, res) => res.json({ ok: true, time: new Date().toISOString() }));
@@ -56,7 +78,7 @@ app.use('/api', (req, res) => res.status(404).json({ error: 'Not found.' }));
 // Error handler
 app.use((err, req, res, next) => {
   console.error(err);
-  res.status(500).json({ error: 'Internal server error.' });
+  res.status(500).json({ error: 'Internal server error.', detail: err && err.message ? err.message : String(err) });
 });
 
 let server;

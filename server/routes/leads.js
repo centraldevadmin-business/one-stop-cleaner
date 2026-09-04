@@ -7,10 +7,10 @@ const publicRouter = Router();
 // Admin router — read/update/delete (requires authentication).
 const adminRouter = Router();
 
-const byId = (id) => db.prepare('SELECT * FROM leads WHERE id = ?').get(id);
+const byId = async (id) => await db.prepare('SELECT * FROM leads WHERE id = ?').get(id);
 
 // List leads (with optional filters) — admin only
-adminRouter.get('/', (req, res) => {
+adminRouter.get('/', async (req, res) => {
   const { status, stage, source, priority, q } = req.query;
   let sql = 'SELECT * FROM leads WHERE 1=1';
   const params = [];
@@ -20,13 +20,13 @@ adminRouter.get('/', (req, res) => {
   if (priority) { sql += ' AND priority = ?'; params.push(priority); }
   if (q) { sql += ' AND (name LIKE ? OR email LIKE ? OR company LIKE ? OR message LIKE ?)'; const s = `%${q}%`; params.push(s, s, s, s); }
   sql += ' ORDER BY rowid DESC LIMIT 500';
-  res.json(db.prepare(sql).all(...params));
+  res.json(await db.prepare(sql).all(...params));
 });
 
 // Create lead (public — from contact/waitlist forms)
-publicRouter.post('/', (req, res) => {
+publicRouter.post('/', async (req, res) => {
   const b = req.body || {};
-  const info = db.prepare(`
+  const info = await db.prepare(`
     INSERT INTO leads (source, status, stage, priority, name, email, phone, company, message, city, service_type, notes)
     VALUES (@source, @status, @stage, @priority, @name, @email, @phone, @company, @message, @city, @service_type, @notes)
   `).run({
@@ -47,15 +47,15 @@ publicRouter.post('/', (req, res) => {
 });
 
 // Get one — admin only
-adminRouter.get('/:id', (req, res) => {
-  const lead = byId(req.params.id);
+adminRouter.get('/:id', async (req, res) => {
+  const lead = await byId(req.params.id);
   if (!lead) return res.status(404).json({ error: 'Lead not found.' });
   res.json(lead);
 });
 
 // Update lead (stage/status/notes/assignee) — admin only
-adminRouter.put('/:id', (req, res) => {
-  const lead = byId(req.params.id);
+adminRouter.put('/:id', async (req, res) => {
+  const lead = await byId(req.params.id);
   if (!lead) return res.status(404).json({ error: 'Lead not found.' });
   const b = req.body || {};
   const fields = [];
@@ -66,15 +66,15 @@ adminRouter.put('/:id', (req, res) => {
   if (!fields.length) return res.status(400).json({ error: 'No updatable fields.' });
   fields.push("updated_at = datetime('now')");
   params.push(req.params.id);
-  db.prepare(`UPDATE leads SET ${fields.join(', ')} WHERE id = ?`).run(...params);
-  res.json(byId(req.params.id));
+  await db.prepare(`UPDATE leads SET ${fields.join(', ')} WHERE id = ?`).run(...params);
+  res.json(await byId(req.params.id));
 });
 
 // Delete lead — admin only
-adminRouter.delete('/:id', (req, res) => {
-  const lead = byId(req.params.id);
+adminRouter.delete('/:id', async (req, res) => {
+  const lead = await byId(req.params.id);
   if (!lead) return res.status(404).json({ error: 'Lead not found.' });
-  db.prepare('DELETE FROM leads WHERE id = ?').run(req.params.id);
+  await db.prepare('DELETE FROM leads WHERE id = ?').run(req.params.id);
   res.json({ ok: true });
 });
 
