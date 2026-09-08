@@ -30,6 +30,8 @@ if (!isWorkersRuntime) {
 let _nodeDb = null; // better-sqlite3 instance (Node)
 let _d1 = null; // D1 binding (Workers)
 
+export { _d1, _nodeDb };
+
 function isWorkers() {
   // Cloudflare Workers: no `process` object, but a Workers `navigator`.
   if (typeof navigator !== 'undefined' && navigator.userAgent === 'Cloudflare-Workers') return true;

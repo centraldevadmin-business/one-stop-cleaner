@@ -1,21 +1,14 @@
-import bcrypt from 'bcryptjs';
 import db from '../db/database.js';
 import { initDb } from '../db/database.js';
+import { hashPassword } from '../server/auth.js';
 
 // initDb() returns the better-sqlite3 instance, which has a `close()` method.
 // The module-level `db` export is a thin wrapper without it.
 const dbConn = initDb();
 
-// bcrypt.hash is async; wrap it in a promise so we can await it.
-function hash(plain) {
-  return new Promise((resolve, reject) => {
-    bcrypt.hash(plain, 10, (err, h) => (err ? reject(err) : resolve(h)));
-  });
-}
-
 async function main() {
-  const superAdminHash = await hash('admin123');
-  const agentHash = await bcrypt.hash('agent123', 10);
+  const superAdminHash = await hashPassword('admin123');
+  const agentHash = await hashPassword('agent123');
 
   // Admins
   db.prepare('DELETE FROM users').run();

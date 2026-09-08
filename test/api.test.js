@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { app } from '../server.js';
 import { initDb } from '../db/database.js';
 import db from '../db/database.js';
-import bcrypt from 'bcryptjs';
+import { hashPassword } from '../server/auth.js';
 
 // Use a test database so we never touch the real one.
 process.env.DB_PATH = ':memory:';
@@ -16,7 +16,7 @@ let adminId = 0;
 async function seed() {
   db.prepare('DELETE FROM users').run();
   db.prepare('DELETE FROM leads').run();
-  const superAdminHash = await bcrypt.hash('admin123', 10);
+  const superAdminHash = await hashPassword('admin123');
   db.prepare('INSERT INTO users (name,email,password_hash,role) VALUES (?,?,?,?)')
     .run('Super Admin', 'admin@onestopcleaner.com', superAdminHash, 'superadmin');
   const insertLead = db.prepare('INSERT INTO leads (source,status,stage,priority,name,email,phone,company,message,city,service_type,notes) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)');

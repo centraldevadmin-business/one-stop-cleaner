@@ -5,7 +5,7 @@ import { fileURLToPath } from 'url';
 import fs from 'fs';
 import { jsonBodyParser } from './server/json-body-parser.js';
 import { leadRateLimiter } from './server/lazy-rate-limit.js';
-import { initDb } from './db/database.js';
+import { initDb, _d1, _nodeDb } from './db/database.js';
 import db from './db/database.js';
 import { authRequired } from './server/auth.js';
 
@@ -111,6 +111,15 @@ if (!isWorkersRuntime) {
 
 // Health check
 app.get('/api/health', (req, res) => res.json({ ok: true, time: new Date().toISOString() }));
+
+// Debug: report which backend is active (D1 vs better-sqlite3)
+app.get('/api/_debug', (req, res) => {
+  res.json({
+    isWorkersRuntime: typeof navigator !== 'undefined' && navigator.userAgent === 'Cloudflare-Workers',
+    hasD1Binding: !!_d1,
+    hasNodeDb: !!_nodeDb,
+  });
+});
 
 // 404
 app.use('/api', (req, res) => res.status(404).json({ error: 'Not found.' }));

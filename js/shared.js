@@ -13,8 +13,8 @@
   var nav = document.getElementById("nav");
   var onScroll = function () {
     if (!nav) return;
-    if (window.scrollY > 8) nav.classList.add("scrolled");
-    else nav.classList.remove("scrolled");
+    if (window.scrollY > 8) nav.classList.add("nav-scrolled");
+    else nav.classList.remove("nav-scrolled");
   };
   onScroll();
   window.addEventListener("scroll", onScroll, { passive: true });
