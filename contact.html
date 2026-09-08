@@ -34,7 +34,7 @@
         <a href="contact.html" class="nav-link">Contact</a>
       </nav>
       <div class="nav__cta">
-        <a href="contact.html#partner" class="btn btn--ghost btn--lg">Partner with us</a>
+        <button type="button" class="btn btn--ghost btn--lg" data-cta="partner">Partner with us</button>
         <button class="navToggle" id="navToggle" aria-expanded="false" aria-controls="navLinks" aria-label="Toggle menu"><span></span></button>
       </div>
     </div>
@@ -51,8 +51,9 @@
             Let's build something <br /><span class="grad-text">fresher together.</span>
           </h1>
           <p class="hero__sub reveal" data-delay="2">
-            Whether you want to book a cleaning service, grow your cleaning business, supply
-            products, or explore investing — this is where the conversation starts.
+            We're launching soon — so we can't book a cleaner yet. But there's plenty of ways to
+            get involved: sign up to be notified when we arrive in your city, grow your cleaning
+            business with us, or partner as a supplier, tech ally, or investor.
           </p>
         </div>
         <div class="hero__visual reveal" data-delay="3" aria-hidden="true">
@@ -88,12 +89,30 @@
               Be the first to book trusted cleaning services in your city. Sign up and we'll
               reach out the moment we launch near you.
             </p>
-            <form class="waitlist-form" novalidate>
-              <div class="field">
+            <form class="waitlist-form lead-form" data-source="waitlist" novalidate>
+              <div class="field" style="margin-bottom:14px;">
+                <label for="wait-name">Your name</label>
+                <input type="text" id="wait-name" name="name" placeholder="Jane Doe" autocomplete="name" />
+              </div>
+              <div class="field" style="margin-bottom:14px;">
                 <label for="wait-email">Email address</label>
                 <input type="email" id="wait-email" name="email" placeholder="you@example.com" autocomplete="email" required />
               </div>
-              <button type="submit" class="btn btn--primary btn--lg btn--block">Notify me</button>
+              <div class="field" style="margin-bottom:14px;">
+                <label for="wait-city">City</label>
+                <input type="text" id="wait-city" name="city" placeholder="Sydney, NSW" autocomplete="address-level2" />
+              </div>
+              <div class="field">
+                <label for="wait-type">What are you interested in?</label>
+                <select id="wait-type" name="service_type">
+                  <option value="book-cleaning">Book a cleaning service</option>
+                  <option value="offer-cleaning">I run a cleaning service</option>
+                  <option value="products">Shop cleaning products</option>
+                  <option value="partner">Partner or supply products</option>
+                  <option value="invest">Invest</option>
+                </select>
+              </div>
+              <button type="submit" class="btn btn--primary btn--lg btn--block" style="margin-top:18px;">Notify me</button>
               <p class="field-msg" role="status"></p>
             </form>
           </div>
@@ -142,18 +161,18 @@
         <div class="cards">
           <article class="card reveal">
             <h3>For clients</h3>
-            <p>Need your cleaning done at home or for a business? Join the waitlist or tell us what you're looking for and we'll match you.</p>
-            <a href="#wait-email" class="link-arrow">Book cleaning <span aria-hidden="true">→</span></a>
+            <p>Need your cleaning done at home or for a business? We're launching soon — sign up and we'll notify you the moment we arrive in your city.</p>
+            <button type="button" class="link-arrow" data-cta="notify-me">Notify me <span aria-hidden="true">→</span></button>
           </article>
           <article class="card reveal" data-delay="1">
             <h3>For cleaning services &amp; companies</h3>
-            <p>Run a cleaning business or want more bookings? Grow your client base with verified jobs in your area.</p>
-            <a href="#c-message" class="link-arrow">Get started <span aria-hidden="true">→</span></a>
+            <p>Run a cleaning business or want more bookings? Grow your client base with verified jobs in your area as we launch.</p>
+            <button type="button" class="link-arrow" data-cta="grow-business">Grow my business <span aria-hidden="true">→</span></button>
           </article>
           <article class="card reveal" data-delay="2">
             <h3>Partners &amp; investors</h3>
             <p>Supplying products, building tech, or interested in the journey? We'd love to explore it with you.</p>
-            <a href="#c-message" class="link-arrow">Get in touch <span aria-hidden="true">→</span></a>
+            <button type="button" class="link-arrow" data-cta="partner">Get in touch <span aria-hidden="true">→</span></button>
           </article>
         </div>
       </div>
@@ -176,7 +195,7 @@
             </div>
             <h3>Supply products</h3>
             <p>Bring your eco-friendly cleaning products to millions of homes and verified cleaning services. We curate quality, you scale distribution.</p>
-            <a href="#c-message" class="link-arrow">Become a supplier <span aria-hidden="true">→</span></a>
+            <button type="button" class="link-arrow" data-cta="partner">Become a supplier <span aria-hidden="true">→</span></button>
           </article>
           <article class="card reveal" data-delay="1">
             <div class="card__icon">
@@ -184,7 +203,7 @@
             </div>
             <h3>Tech &amp; platform partners</h3>
             <p>Payments, verification, logistics, or AI — partner on the infrastructure that makes trusted cleaning possible at scale.</p>
-            <a href="#c-message" class="link-arrow">Explore partnerships <span aria-hidden="true">→</span></a>
+            <button type="button" class="link-arrow" data-cta="partner">Explore partnerships <span aria-hidden="true">→</span></button>
           </article>
           <article class="card reveal" data-delay="2">
             <div class="card__icon">
@@ -192,7 +211,7 @@
             </div>
             <h3>Invest</h3>
             <p>Join us in building the most trusted cleaning marketplace. Early supporters help us launch clean and scale safely.</p>
-            <a href="#c-message" class="link-arrow">Talk to the team <span aria-hidden="true">→</span></a>
+            <button type="button" class="link-arrow" data-cta="partner">Talk to the team <span aria-hidden="true">→</span></button>
           </article>
         </div>
       </div>
@@ -206,9 +225,9 @@
           <div style="position:relative; z-index:1;">
             <h2 class="section__title section__title--light" style="color:#fff;">Ready when you are</h2>
             <p style="color:#a9b7bf; max-width:480px; margin:0 auto 32px; font-size:1.05rem;">
-              Join the waitlist today and be first in line when One Stop Cleaner launches in your city.
+              We're launching soon. Sign up and be first in line when One Stop Cleaner arrives in your city.
             </p>
-            <a href="#wait-email" class="btn btn--light btn--lg">Join the waitlist</a>
+            <button type="button" class="btn btn--light btn--lg" data-cta="notify-me">Notify me</button>
           </div>
         </div>
       </div>

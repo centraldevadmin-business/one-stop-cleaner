@@ -4,11 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Contact — One Stop Cleaner</title>
-  <meta name="description" content="Join the waitlist, book a cleaning service, or partner with One Stop Cleaner. Get in touch with the team building the most trusted cleaning marketplace." />
-  <meta name="theme-color" content="#1a1712" />
+  <meta name="description" content="Book a verified cleaner, grow your cleaning business, or partner with One Stop Cleaner as a supplier, tech partner, or investor. Get in touch today." />
+  <meta name="theme-color" content="#0a2540" />
 
   <meta property="og:title" content="Contact — One Stop Cleaner" />
-  <meta property="og:description" content="Join the waitlist or partner with us. Building the most trusted cleaning marketplace." />
+  <meta property="og:description" content="Book a cleaner, grow your business, or partner with One Stop Cleaner. Get in touch." />
   <meta property="og:type" content="website" />
 
   <meta name="twitter:card" content="summary_large_image" />
@@ -18,7 +18,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
-<body>
+<body class="page-contact">
   <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
   <!-- NAV -->
   <header class="nav" id="nav">
@@ -29,12 +29,14 @@
       </a>
       <nav class="nav__links" id="navLinks" aria-label="Primary">
         <a href="index.html" class="nav-link">Home</a>
-        <a href="about.html" class="nav-link">About</a>
         <a href="services.html" class="nav-link">Services</a>
+        <a href="products.html" class="nav-link">Products</a>
+        <a href="about.html" class="nav-link">About</a>
+        <a href="contact.html#partner" class="nav-link">Partner with us</a>
         <a href="contact.html" class="nav-link">Contact</a>
       </nav>
       <div class="nav__cta">
-        <a href="contact.html#partner" class="btn btn--ghost btn--lg">Partner with us</a>
+        <a href="#wait-email" class="btn btn--ghost btn--lg">Book a cleaner</a>
         <button class="navToggle" id="navToggle" aria-expanded="false" aria-controls="navLinks" aria-label="Toggle menu"><span></span></button>
       </div>
     </div>
@@ -42,75 +44,55 @@
 
   <main>
     <!-- HERO -->
-    <section class="hero hero--warm">
-      <div class="hero__bg hero__bg--warm-accent" aria-hidden="true"></div>
-      <div class="container hero__inner">
-        <div class="hero__content" style="max-width:760px;">
-          <p class="eyebrow reveal">Get in touch</p>
-          <h1 class="hero__title reveal" data-delay="1">
-            Let's build something <br /><span class="grad-text">fresher together.</span>
-          </h1>
-          <p class="hero__sub reveal" data-delay="2">
-            Whether you want to book a cleaning service, grow your cleaning business, supply
-            products, or explore investing — this is where the conversation starts.
-          </p>
-        </div>
-        <div class="hero__visual reveal" data-delay="3" aria-hidden="true">
-          <div class="grid-2__visual">
-            <div class="orb orb--1"></div>
-            <div class="orb orb--2"></div>
-            <div class="float-card float-card--a">
-              <div class="float-card__row"><span class="dot dot--teal"></span> New message</div>
-              <div class="float-card__body">Tell us what you need</div>
-              <div class="float-card__foot"><span class="vc-bids">We reply today</span><span class="vc-price">Free</span></div>
-            </div>
-            <div class="float-card float-card--b">
-              <div class="float-card__row"><span class="dot dot--blue"></span> Booked</div>
-              <div class="float-card__body">Home clean · 3 bed</div>
-              <div class="float-card__foot"><span class="vc-bids">Confirmed</span><span class="vc-price">Sat 9am</span></div>
-            </div>
+    <section class="hero hero--bg hero--bg-dark" style="background-image:url('media/real-cleaner-uniform.jpg');">
+      <div class="container">
+        <div class="hero__grid hero__grid--centered">
+          <div class="hero__content hero__content--centered">
+            <p class="eyebrow reveal">Get in touch</p>
+            <h1 class="hero__title reveal" data-delay="1">
+              Let's build something <br /><span class="grad-text">fresher together.</span>
+            </h1>
+            <p class="hero__sub reveal" data-delay="2">
+              Whether you want to book cleaning, grow your business, supply products, or
+              explore investing — this is where the conversation starts. Tell us what
+              you need and we'll connect you with the right team.
+            </p>
           </div>
         </div>
       </div>
     </section>
 
     <!-- FORMS -->
-    <section class="section">
+    <section class="section section--bg section--bg-subtle" style="background:var(--bg-subtle);">
       <div class="container">
         <div class="grid-2" style="align-items:start; margin-bottom:96px;">
-          <!-- Waitlist -->
-          <div class="reveal" style="background:var(--bg-soft); border:1px solid var(--line); border-radius:var(--radius-lg); padding:clamp(28px,5vw,44px);">
+          <!-- Book a cleaner -->
+          <div class="reveal" style="background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-lg); padding:clamp(28px,5vw,44px);">
             <div class="card__icon" style="margin-bottom:20px;">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 12 15 5 8"/></svg>
             </div>
-            <h2 class="section__title" style="font-size:1.7rem;">Join the waitlist</h2>
+            <h2 class="section__title" style="font-size:1.7rem;">Book a cleaner</h2>
             <p class="section__lead" style="max-width:none; margin-bottom:26px;">
-              Be the first to book trusted cleaning services in your city. Sign up and we'll
-              reach out the moment we launch near you.
+              Need cleaning done at home or for a business? Leave your details and we'll
+              match you with a verified cleaner as soon as possible.
             </p>
             <form class="waitlist-form" novalidate>
               <div class="field">
                 <label for="wait-email">Email address</label>
                 <input type="email" id="wait-email" name="email" placeholder="you@example.com" autocomplete="email" required />
               </div>
-              <button type="submit" class="btn btn--primary btn--lg btn--block">Notify me</button>
+              <button type="submit" class="btn btn--primary btn--lg btn--block">Request a cleaner</button>
               <p class="field-msg" role="status"></p>
             </form>
           </div>
 
           <!-- Contact -->
           <div class="reveal" data-delay="1" style="background:var(--ink); border:1px solid transparent; border-radius:var(--radius-lg); padding:clamp(28px,5vw,44px); box-shadow:var(--shadow-md); position:relative; overflow:hidden;">
-            <div class="contact-visual" aria-hidden="true">
-              <div class="contact-visual__bubble contact-visual__bubble--1"></div>
-              <div class="contact-visual__bubble contact-visual__bubble--2"></div>
-              <div class="contact-visual__bubble contact-visual__bubble--3"></div>
-              <div class="contact-visual__wave"></div>
-            </div>
             <div class="card__icon" style="background:var(--grad-soft); margin-bottom:20px; position:relative; z-index:1;">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v12H5.2L4 18v-2Z"/><circle cx="8" cy="9" r="1"/><circle cx="12" cy="9" r="1"/><circle cx="16" cy="9" r="1"/></svg>
             </div>
             <h2 class="section__title" style="font-size:1.7rem; color:#fff;">Send a message</h2>
-            <p class="section__lead" style="color:#a9b7bf; max-width:none; margin-bottom:26px;">
+            <p class="section__lead" style="color:rgba(255,255,255,0.7); max-width:none; margin-bottom:26px;">
               Have a question or a specific request? Tell us what you need and we'll
               follow up personally.
             </p>
@@ -142,17 +124,17 @@
         <div class="cards">
           <article class="card reveal">
             <h3>For clients</h3>
-            <p>Need your cleaning done at home or for a business? Join the waitlist or tell us what you're looking for and we'll match you.</p>
+            <p>Need cleaning done at home or for a business? Tell us what you need and we'll match you with a verified cleaner.</p>
             <a href="#wait-email" class="link-arrow">Book cleaning <span aria-hidden="true">→</span></a>
           </article>
           <article class="card reveal" data-delay="1">
             <h3>For cleaning services &amp; companies</h3>
-            <p>Run a cleaning business or want more bookings? Grow your client base with verified jobs in your area.</p>
+            <p>Run a cleaning business or want more bookings? Grow your client base with verified jobs.</p>
             <a href="#c-message" class="link-arrow">Get started <span aria-hidden="true">→</span></a>
           </article>
           <article class="card reveal" data-delay="2">
             <h3>Partners &amp; investors</h3>
-            <p>Supplying products, building tech, or interested in the journey? We'd love to explore it with you.</p>
+            <p>Supplying products, building tech, or interested in the journey? Let's explore it.</p>
             <a href="#c-message" class="link-arrow">Get in touch <span aria-hidden="true">→</span></a>
           </article>
         </div>
@@ -160,23 +142,22 @@
     </section>
 
     <!-- PARTNER WITH US -->
-    <section class="section" id="partner">
+    <section class="section section--bg section--bg-dark" id="partner" style="background:linear-gradient(180deg, rgba(15,23,42,0.94), rgba(15,23,42,0.96));">
       <div class="container">
         <div class="section__head section__head--center reveal">
           <p class="eyebrow">Partner with us</p>
           <h2 class="section__title">Build a fresher future with us</h2>
           <p class="section__lead section__lead--center">
-            Whether you supply products, offer tech, or want to invest — there's a place for you in the One Stop Cleaner ecosystem.
+            Whether you supply products, offer tech, or want to invest — there's a place for you. Tell us about your business and we'll route your inquiry to the right team.
           </p>
         </div>
-        <div class="cards">
+        <div class="cards" style="margin-bottom:48px;">
           <article class="card reveal">
             <div class="card__icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v3"/><path d="M3 8v11a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8"/><path d="M9 12h6"/></svg>
             </div>
             <h3>Supply products</h3>
-            <p>Bring your eco-friendly cleaning products to millions of homes and verified cleaning services. We curate quality, you scale distribution.</p>
-            <a href="#c-message" class="link-arrow">Become a supplier <span aria-hidden="true">→</span></a>
+            <p>Bring your eco-friendly products to millions of homes and verified cleaners. We curate quality, you scale distribution.</p>
           </article>
           <article class="card reveal" data-delay="1">
             <div class="card__icon">
@@ -184,31 +165,65 @@
             </div>
             <h3>Tech &amp; platform partners</h3>
             <p>Payments, verification, logistics, or AI — partner on the infrastructure that makes trusted cleaning possible at scale.</p>
-            <a href="#c-message" class="link-arrow">Explore partnerships <span aria-hidden="true">→</span></a>
           </article>
           <article class="card reveal" data-delay="2">
             <div class="card__icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
             </div>
             <h3>Invest</h3>
-            <p>Join us in building the most trusted cleaning marketplace. Early supporters help us launch clean and scale safely.</p>
-            <a href="#c-message" class="link-arrow">Talk to the team <span aria-hidden="true">→</span></a>
+            <p>Join us and help build the most trusted cleaning marketplace. Early supporters help us launch clean and scale safely.</p>
           </article>
+        </div>
+        <div class="reveal" data-delay="1" style="background:var(--bg-soft); border:1px solid var(--line); border-radius:var(--radius-lg); padding:clamp(28px,5vw,44px);">
+          <h3 style="font-size:1.3rem; margin-bottom:8px;">Start a partnership conversation</h3>
+          <p style="color:var(--slate); margin-bottom:26px;">Fill out the form below and we'll route your inquiry to the right team.</p>
+          <form class="partner-form" novalidate>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px;">
+              <div class="field">
+                <label for="p-name">Your name</label>
+                <input type="text" id="p-name" name="name" placeholder="Jane Doe" autocomplete="name" required />
+              </div>
+              <div class="field">
+                <label for="p-company">Company (optional)</label>
+                <input type="text" id="p-company" name="company" placeholder="Company name" autocomplete="organization" />
+              </div>
+            </div>
+            <div class="field" style="margin-bottom:16px;">
+              <label for="p-email">Work email</label>
+              <input type="email" id="p-email" name="email" placeholder="you@company.com" autocomplete="email" required />
+            </div>
+            <div class="field" style="margin-bottom:16px;">
+              <label for="p-type">I'm interested in</label>
+              <select id="p-type" name="type" required>
+                <option value="" disabled selected>Select a partnership type</option>
+                <option value="supply">Supply products</option>
+                <option value="tech">Tech &amp; platform partnership</option>
+                <option value="invest">Investment opportunity</option>
+                <option value="other">Something else</option>
+              </select>
+            </div>
+            <div class="field" style="margin-bottom:24px;">
+              <label for="p-message">Tell us about your interest</label>
+              <textarea id="p-message" name="message" rows="4" placeholder="How would you like to partner with us?" required></textarea>
+            </div>
+            <button type="submit" class="btn btn--primary btn--lg btn--block">Send partnership inquiry</button>
+            <p class="field-msg" role="status"></p>
+          </form>
         </div>
       </div>
     </section>
 
     <!-- CTA -->
-    <section class="section" style="background:var(--bg-soft);">
+    <section class="section section--bg section--bg-dark" style="background:linear-gradient(180deg, rgba(15,23,42,0.94), rgba(15,23,42,0.96));">
       <div class="container">
         <div class="cta-box reveal" style="background:var(--ink); border-radius:var(--radius-lg); padding:clamp(48px,7vw,88px); text-align:center; position:relative; overflow:hidden;">
-          <div class="cta-box__bg" aria-hidden="true" style="position:absolute; inset:0; background:radial-gradient(500px 300px at 50% 0%, rgba(0,119,179,0.30), transparent 70%);"></div>
+          <div class="cta-box__bg" aria-hidden="true" style="position:absolute; inset:0; background:radial-gradient(500px 300px at 50% 0%, rgba(26,115,232,0.30), transparent 70%);"></div>
           <div style="position:relative; z-index:1;">
-            <h2 class="section__title section__title--light" style="color:#fff;">Ready when you are</h2>
-            <p style="color:#a9b7bf; max-width:480px; margin:0 auto 32px; font-size:1.05rem;">
-              Join the waitlist today and be first in line when One Stop Cleaner launches in your city.
+            <h2 class="section__title section__title--light" style="color:#fff;">Ready for a spotless home?</h2>
+            <p style="color:rgba(255,255,255,0.85); max-width:480px; margin:0 auto 32px; font-size:1.05rem;">
+              Book a verified cleaner today, or grow your cleaning business with us.
             </p>
-            <a href="#wait-email" class="btn btn--light btn--lg">Join the waitlist</a>
+            <a href="#wait-email" class="btn btn--light btn--lg">Book a cleaner <span class="btn__arrow" aria-hidden="true">→</span></a>
           </div>
         </div>
       </div>
@@ -221,7 +236,7 @@
       <div class="footer__top">
         <div>
           <a href="index.html" class="footer__brand"><span class="brand__mark" aria-hidden="true"></span><span>One Stop <span>Cleaner</span></span></a>
-          <p class="footer__about">Fresh cleaning and quality products, one stop away. Building the most trusted cleaning marketplace.</p>
+          <p class="footer__about">Professional cleaning services, verified cleaners, and professional products — one trusted marketplace.</p>
         </div>
         <div class="footer__col">
           <h4>Company</h4>
@@ -238,7 +253,7 @@
         </div>
         <div class="footer__col">
           <h4>Connect</h4>
-          <a href="contact.html">Waitlist</a>
+          <a href="contact.html">Get help</a>
           <a href="contact.html">Partner with us</a>
           <a href="contact.html">Press</a>
         </div>

@@ -119,6 +119,23 @@
     .toast { position: fixed; bottom: 24px; right: 24px; background: var(--ink); color: #fff; padding: 14px 20px; border-radius: 12px; box-shadow: var(--shadow-lg); font-size: 14px; transform: translateY(120%); transition: transform 0.3s var(--ease-out); z-index: 500; }
     .toast.show { transform: translateY(0); }
 
+    /* Ticket modal */
+    .ticket-modal { position: fixed; inset: 0; z-index: 600; }
+    .ticket-modal__backdrop { position: absolute; inset: 0; background: rgba(8,15,28,0.55); }
+    .ticket-modal__panel { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: min(720px, 94vw); max-height: 90vh; overflow: auto; background: var(--surface); border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); }
+    .ticket-modal__head { display: flex; align-items: flex-start; justify-content: space-between; padding: 24px 28px; border-bottom: 1px solid var(--line); }
+    .ticket-modal__body { padding: 28px; }
+    .ticket-messages { display: flex; flex-direction: column; gap: 14px; margin-bottom: 24px; min-height: 60px; }
+    .ticket-msg { padding: 12px 16px; border-radius: 12px; font-size: 14px; }
+    .ticket-msg--customer { background: var(--bg-soft); align-self: flex-start; max-width: 85%; }
+    .ticket-msg--agent { background: var(--brand-soft); align-self: flex-end; max-width: 85%; }
+    .ticket-msg .msg-meta { font-size: 12px; color: var(--muted); margin-bottom: 4px; }
+    .ticket-message-form { background: var(--bg-soft); padding: 18px; border-radius: var(--radius); }
+    .perm-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+    .perm-chip { padding: 6px 12px; border: 1px solid var(--line); border-radius: 999px; font-size: 12.5px; cursor: pointer; user-select: none; color: var(--slate); }
+    .perm-chip.on { background: var(--grad); color: #fff; border-color: transparent; }
+    .empty-state { text-align: center; padding: 40px 20px; color: var(--muted); }
+
     @media (max-width: 900px) {
       .admin__sidebar { position: fixed; left: 0; top: 0; z-index: 300; transform: translateX(-100%); transition: transform 0.3s var(--ease-out); }
       .admin__sidebar.open { transform: none; }
@@ -162,7 +179,12 @@
         <a href="#" data-panel="campaigns"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>Campaigns</a>
         <a href="#" data-panel="cms"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/></svg>Content</a>
         <a href="#" data-panel="products"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>Products</a>
+        <a href="#" data-panel="contacts"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v12H5.2L4 18v-2Z"/><circle cx="8" cy="9" r="1"/><circle cx="12" cy="9" r="1"/><circle cx="16" cy="9" r="1"/></svg>Contacts</a>
+        <a href="#" data-panel="tickets"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6"/><path d="M9 13h4"/></svg>Tickets</a>
+        <a href="#" data-panel="blog"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"/><path d="M8 8h8"/><path d="M8 12h8"/><path d="M8 16h5"/></svg>Blog</a>
         <a href="#" data-panel="users"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Users</a>
+        <a href="#" data-panel="roles"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 7l10 5 10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>Roles</a>
+        <a href="#" data-panel="audit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M8 13h8"/><path d="M8 17h5"/></svg>Audit</a>
         <a href="#" data-panel="media"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>Media</a>
       </nav>
       <div class="spacer"></div>
@@ -259,10 +281,9 @@
           <div class="panel__head"><h2>Product catalog</h2></div>
           <div class="table-wrap"><table id="productsTable"><thead><tr><th>Name</th><th>Category</th><th>Price</th><th>In stock</th><th></th></tr></thead><tbody></tbody></table></div>
         </div>
-      </main>
-    </div>
+      </div>
 
-    <!-- USERS PANEL -->
+      <!-- USERS PANEL -->
     <div class="admin__panel" id="panel-users">
       <div class="admin__top"><div><h1>Users</h1><p>Manage admin accounts and their roles.</p></div></div>
       <div class="panel">
@@ -283,28 +304,151 @@
       </div>
     </div>
 
-    <!-- MEDIA PANEL -->
-    <div class="admin__panel" id="panel-media">
-      <div class="admin__top"><div><h1>Media Library</h1><p>Upload and manage images and videos used across your site.</p></div></div>
-      <div class="panel">
-        <div class="panel__head"><h2>Upload media</h2></div>
-        <form id="mediaForm" novalidate>
-          <div class="form-grid">
-            <div class="field"><label for="m-title">Title</label><input type="text" id="m-title" name="title" required /></div>
-            <div class="field"><label for="m-type">Type</label><select id="m-type" name="type"><option value="image">Image</option><option value="video">Video</option></select></div>
-            <div class="field full"><label for="m-url">Image URL</label><input type="text" id="m-url" name="url" placeholder="https://..." required /></div>
+<!-- CONTACTS CRM PANEL -->
+      <div class="admin__panel" id="panel-contacts">
+        <div class="admin__top"><div><h1>Contacts CRM</h1><p>Every inquiry from your website — bookings, partnerships, and investments — in one pipeline.</p></div></div>
+        <div class="panel">
+          <div class="panel__head"><h2>All contacts</h2></div>
+          <div style="display:flex; gap:10px; margin-bottom:16px; flex-wrap:wrap;">
+            <input type="search" id="contact-q" placeholder="Search name, email, company…" style="flex:1; min-width:200px; padding:11px 14px; border:1px solid var(--line); border-radius:var(--radius-sm); font-family:inherit;" />
+            <select id="contact-status" style="padding:11px 14px; border:1px solid var(--line); border-radius:var(--radius-sm); font-family:inherit;"><option value="">All statuses</option><option value="new">New</option><option value="contacted">Contacted</option><option value="qualified">Qualified</option><option value="lost">Lost</option></select>
+            <button type="button" class="btn btn--ghost" id="contact-refresh">Refresh</button>
           </div>
-          <div style="margin-top:16px;"><button type="submit" class="btn btn--primary">Add media</button></div>
-        </form>
+          <div class="table-wrap"><table id="contactsTable"><thead><tr><th>Name</th><th>Email</th><th>Type</th><th>Interest</th><th>Priority</th><th>Status</th><th>Company</th><th>Received</th></tr></thead><tbody></tbody></table></div>
+        </div>
       </div>
-      <div class="panel">
-        <div class="panel__head"><h2>Library</h2></div>
-        <div class="media-grid" id="mediaGrid"></div>
+
+      <!-- TICKETS PANEL -->
+      <div class="admin__panel" id="panel-tickets">
+        <div class="admin__top"><div><h1>Support Tickets</h1><p>Track and resolve customer support requests.</p></div></div>
+        <div class="panel">
+          <div class="panel__head"><h2>All tickets</h2></div>
+          <div style="display:flex; gap:10px; margin-bottom:16px; flex-wrap:wrap;">
+            <input type="search" id="ticket-q" placeholder="Search subject, name, ref…" style="flex:1; min-width:200px; padding:11px 14px; border:1px solid var(--line); border-radius:var(--radius-sm); font-family:inherit;" />
+            <select id="ticket-status" style="padding:11px 14px; border:1px solid var(--line); border-radius:var(--radius-sm); font-family:inherit;"><option value="">All statuses</option><option value="open">Open</option><option value="in_progress">In Progress</option><option value="resolved">Resolved</option><option value="closed">Closed</option></select>
+            <button type="button" class="btn btn--ghost" id="ticket-refresh">Refresh</button>
+          </div>
+          <div class="table-wrap"><table id="ticketsTable"><thead><tr><th>Ref</th><th>Subject</th><th>Requester</th><th>Priority</th><th>Status</th><th>Created</th><th></th></tr></thead><tbody></tbody></table></div>
+        </div>
       </div>
-    </div>
+
+      <!-- TICKET DETAIL MODAL -->
+      <div id="ticketModal" class="ticket-modal" style="display:none;">
+        <div class="ticket-modal__backdrop" data-close-ticket></div>
+        <div class="ticket-modal__panel">
+          <div class="ticket-modal__head">
+            <div><h2 id="tm-title"></h2><p id="tm-meta" style="color:var(--slate); font-size:13px; margin:4px 0 0;"></p></div>
+            <button class="icon-btn" id="tm-close" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+          </div>
+          <div class="ticket-modal__body">
+            <div class="ticket-modal__meta" style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom:20px;">
+              <div class="field" style="flex:1; min-width:140px;"><label for="tm-status">Status</label><select id="tm-status"><option value="open">Open</option><option value="in_progress">In Progress</option><option value="resolved">Resolved</option><option value="closed">Closed</option></select></div>
+              <div class="field" style="flex:1; min-width:140px;"><label for="tm-priority">Priority</label><select id="tm-priority"><option value="low">Low</option><option value="normal">Normal</option><option value="high">High</option><option value="urgent">Urgent</option></select></div>
+              <div class="field" style="flex:1; min-width:140px;"><label for="tm-category">Category</label><input type="text" id="tm-category" /></div>
+            </div>
+            <div class="ticket-messages" id="tm-messages"></div>
+            <form id="tm-message-form" class="ticket-message-form">
+              <div class="field"><label for="tm-author">Your name</label><input type="text" id="tm-author" required /></div>
+              <div class="field"><label for="tm-msg">Reply</label><textarea id="tm-msg" rows="3" required></textarea></div>
+              <div style="margin-top:12px;"><button type="submit" class="btn btn--primary">Send reply</button></div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- BLOG CMS PANEL -->
+      <div class="admin__panel" id="panel-blog">
+        <div class="admin__top"><div><h1>Blog</h1><p>Write and publish articles for your audience.</p></div></div>
+        <div class="panel">
+          <div class="panel__head"><h2>New post</h2></div>
+          <form id="blogForm" novalidate>
+            <div class="form-grid">
+              <div class="field"><label for="bl-title">Title</label><input type="text" id="bl-title" name="title" required /></div>
+              <div class="field"><label for="bl-author">Author</label><input type="text" id="bl-author" name="author" value="One Stop Cleaner" /></div>
+              <div class="field"><label for="bl-category">Category</label><input type="text" id="bl-category" name="category" value="guide" /></div>
+              <div class="field"><label for="bl-status">Status</label><select id="bl-status" name="status"><option value="draft">Draft</option><option value="published">Published</option></select></div>
+              <div class="field full"><label for="bl-cover">Cover image URL</label><input type="text" id="bl-cover" name="cover_url" placeholder="media/real-clean-floor.jpg" /></div>
+              <div class="field full"><label for="bl-excerpt">Excerpt</label><input type="text" id="bl-excerpt" name="excerpt" /></div>
+              <div class="field full"><label for="bl-body">Body (HTML)</label><textarea id="bl-body" name="body" rows="8" required></textarea></div>
+            </div>
+            <div style="margin-top:16px;"><button type="submit" class="btn btn--primary">Create post</button></div>
+          </form>
+        </div>
+        <div class="panel">
+          <div class="panel__head"><h2>All posts</h2></div>
+          <div class="table-wrap"><table id="blogTable"><thead><tr><th>Title</th><th>Category</th><th>Status</th><th>Author</th><th>Created</th><th></th></tr></thead><tbody></tbody></table></div>
+        </div>
+      </div>
+
+      <!-- RBAC / ROLES PANEL -->
+      <div class="admin__panel" id="panel-roles">
+        <div class="admin__top"><div><h1>Roles &amp; Permissions</h1><p>Define RBAC roles and assign them to users.</p></div></div>
+        <div class="panel">
+          <div class="panel__head"><h2>New role</h2></div>
+          <form id="roleForm" novalidate>
+            <div class="form-grid">
+              <div class="field"><label for="r-name">Role name</label><input type="text" id="r-name" name="name" placeholder="support" required /></div>
+              <div class="field"><label for="r-label">Display label</label><input type="text" id="r-label" name="label" placeholder="Support Agent" /></div>
+              <div class="field full"><label>Permissions</label>
+                <div class="perm-grid" id="r-perms"></div>
+              </div>
+            </div>
+            <div style="margin-top:16px;"><button type="submit" class="btn btn--primary">Create role</button></div>
+          </form>
+        </div>
+        <div class="panel">
+          <div class="panel__head"><h2>Roles</h2></div>
+          <div class="table-wrap"><table id="rolesTable"><thead><tr><th>Name</th><th>Label</th><th>Assigned</th><th>Permissions</th><th></th></tr></thead><tbody></tbody></table></div>
+        </div>
+        <div class="panel">
+          <div class="panel__head"><h2>Assign roles</h2></div>
+          <form id="assignForm" novalidate>
+            <div class="form-grid">
+              <div class="field"><label for="a-user">User</label><select id="a-user" required></select></div>
+              <div class="field"><label for="a-role">Role</label><select id="a-role" required></select></div>
+            </div>
+            <div style="margin-top:16px;"><button type="submit" class="btn btn--primary">Assign</button></div>
+          </form>
+        </div>
+      </div>
+
+      <!-- AUDIT LOGS PANEL -->
+      <div class="admin__panel" id="panel-audit">
+        <div class="admin__top"><div><h1>Audit Logs</h1><p>Full history of admin actions.</p></div></div>
+        <div class="panel">
+          <div class="panel__head"><h2>Activity</h2></div>
+          <div style="display:flex; gap:10px; margin-bottom:16px; flex-wrap:wrap;">
+            <input type="search" id="audit-q" placeholder="Search action, role, detail…" style="flex:1; min-width:200px; padding:11px 14px; border:1px solid var(--line); border-radius:var(--radius-sm); font-family:inherit;" />
+            <button type="button" class="btn btn--ghost" id="audit-refresh">Refresh</button>
+          </div>
+          <div class="table-wrap"><table id="auditTable"><thead><tr><th>When</th><th>Actor</th><th>Role</th><th>Action</th><th>Detail</th></tr></thead><tbody></tbody></table></div>
+        </div>
+      </div>
+
+      <!-- MEDIA PANEL -->
+      <div class="admin__panel" id="panel-media">
+        <div class="admin__top"><div><h1>Media Library</h1><p>Upload and manage images and videos used across your site.</p></div></div>
+        <div class="panel">
+          <div class="panel__head"><h2>Upload media</h2></div>
+          <form id="mediaForm" novalidate>
+            <div class="form-grid">
+              <div class="field"><label for="m-title">Title</label><input type="text" id="m-title" name="title" required /></div>
+              <div class="field"><label for="m-type">Type</label><select id="m-type" name="type"><option value="image">Image</option><option value="video">Video</option></select></div>
+              <div class="field full"><label for="m-url">Image URL</label><input type="text" id="m-url" name="url" placeholder="https://..." required /></div>
+            </div>
+            <div style="margin-top:16px;"><button type="submit" class="btn btn--primary">Add media</button></div>
+          </form>
+        </div>
+        <div class="panel">
+          <div class="panel__head"><h2>Library</h2></div>
+          <div class="media-grid" id="mediaGrid"></div>
+        </div>
+      </div>
+    </main>
   </div>
+</div>
 
   <div class="toast" id="toast"></div>
-  <script src="js/admin.js"></script>
+  <script src="js/dashboard.js"></script>
 </body>
 </html>

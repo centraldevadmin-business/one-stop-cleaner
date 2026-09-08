@@ -1,46 +1,46 @@
 /* =========================================================================
    One Stop Cleaner — Design System
-   Modern · minimalistic · elegant. A clean, airy, trustworthy language
-   for a pre-launch cleaning marketplace.
+   Enterprise-grade · clean · trustworthy. Blue & white palette.
+   Core theme: professional cleaning services + hiring marketplace,
+   plus a dedicated cleaning-products shop.
    ========================================================================= */
 
 /* ---------- Tokens ---------- */
 :root {
-  /* Neutrals — crisp, cool-white base */
-  --ink: #0f172a;
-  --ink-strong: #0b1016;
-  --slate: #5b6b78;
-  --muted: #8a99a6;
-  --line: #e7ecf0;
-  --line-strong: #d4dbe0;
-  --bg: #ffffff;
-  --bg-soft: #f7f9fa;
-  --bg-subtle: #f0f4f6;
-  --surface: #ffffff;
+  /* Blues */
+  --brand: #1a73e8;
+  --brand-2: #1557b0;
+  --brand-3: #0d3b7e;
+  --brand-deep: #082a5c;
+  --brand-line: #bcd7f5;
+  --brand-soft: #eaf2ff;
+  --brand-soft-2: #f4f8ff;
 
-  /* Brand — a refined, trustworthy blue */
-  --brand: #0077b3;
-  --brand-2: #005f8f;
-  --brand-3: #004a70;
-  --brand-soft: #e0f7fa;
-  --brand-line: #b8e6ee;
-  --accent: #006ba1;
+  /* Whites / neutrals */
+  --ink: #0a2540;
+  --ink-strong: #071c33;
+  --slate: #4a5a6b;
+  --muted: #8494a6;
+  --line: #dbe6f2;
+  --line-strong: #c2d2e5;
+  --bg: #ffffff;
+  --bg-soft: #f6f9fd;
+  --bg-subtle: #eef4fb;
+  --surface: #ffffff;
+  --surface-2: #f9fbfe;
 
   /* Gradients */
-  --grad: linear-gradient(135deg, #0077b3 0%, #005f8f 100%);
-  --grad-soft: linear-gradient(135deg, rgba(0, 119, 179, 0.10), rgba(0, 119, 179, 0.04));
-  --grad-text: linear-gradient(115deg, #0077b3 0%, #004a70 100%);
-  --grad-subtle: linear-gradient(180deg, #f7f9fa 0%, #ffffff 100%);
+  --grad: linear-gradient(135deg, #1a73e8 0%, #0d3b7e 100%);
+  --grad-soft: linear-gradient(135deg, rgba(26, 115, 232, 0.10), rgba(26, 115, 232, 0.04));
+  --grad-text: linear-gradient(115deg, #1a73e8 0%, #0d3b7e 100%);
+  --grad-subtle: linear-gradient(180deg, #f6f9fd 0%, #ffffff 100%);
 
-  /* Surfaces */
-  --surface-2: #fbfcfd;
-
-  /* Shadows — soft, layered, no color bleed */
-  --shadow-xs: 0 1px 2px rgba(15, 23, 42, 0.04);
-  --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.05), 0 8px 24px rgba(15, 23, 42, 0.04);
-  --shadow-md: 0 20px 50px rgba(15, 23, 42, 0.08);
-  --shadow-lg: 0 40px 90px rgba(15, 23, 42, 0.12);
-  --shadow-brand: 0 20px 50px rgba(0, 119, 179, 0.28);
+  /* Shadows */
+  --shadow-xs: 0 1px 2px rgba(10, 37, 64, 0.05);
+  --shadow-sm: 0 2px 8px rgba(10, 37, 64, 0.06), 0 8px 24px rgba(10, 37, 64, 0.04);
+  --shadow-md: 0 20px 50px rgba(10, 37, 64, 0.10);
+  --shadow-lg: 0 40px 90px rgba(10, 37, 64, 0.16);
+  --shadow-brand: 0 20px 50px rgba(26, 115, 232, 0.28);
 
   /* Radii */
   --radius-sm: 12px;
@@ -56,13 +56,8 @@
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Dark mode tokens removed — site is light-only */
-
-/* ---------- Dark panel backgrounds ---------- */
-/* Used by the investor section and CTA box. In light mode these are the
-  deep ink navy; in dark mode we force a true dark surface so the panels
-  never turn bright white (which happens when --ink is used directly, since
-  --ink is a light text color in dark mode). */
+/* ---------- Deep navy panel backgrounds ---------- */
+/* Used by hero and CTA sections with photos/text overlays. */
 .hero--dark,
 .dark-panel {
   background: var(--ink);
@@ -129,12 +124,12 @@ input, textarea, button, select { color: inherit; }
 }
 .eyebrow__dot {
   width: 8px; height: 8px; border-radius: 50%;
-  background: #34d399; box-shadow: 0 0 0 4px rgba(52, 211, 153, 0.2);
+  background: var(--brand); box-shadow: 0 0 0 4px rgba(26, 115, 232, 0.18);
   animation: dotPulse 2.4s var(--ease) infinite;
 }
 @keyframes dotPulse {
-  0%, 100% { box-shadow: 0 0 0 4px rgba(52, 211, 153, 0.2); }
-  50% { box-shadow: 0 0 0 8px rgba(52, 211, 153, 0.06); }
+  0%, 100% { box-shadow: 0 0 0 4px rgba(26, 115, 232, 0.18); }
+  50% { box-shadow: 0 0 0 8px rgba(26, 115, 232, 0.08); }
 }
 
 /* ---------- Buttons ---------- */
@@ -164,11 +159,10 @@ input, textarea, button, select { color: inherit; }
 .btn--light:hover { border-color: var(--line-strong); box-shadow: var(--shadow-md); }
 
 .btn--ghost {
-  background: rgba(255, 255, 255, 0.08); color: var(--ink);
-  border-color: var(--line);
-  backdrop-filter: blur(8px);
+  background: transparent; color: var(--ink);
+  border-color: var(--line-strong);
 }
-.btn--ghost:hover { background: var(--bg-soft); border-color: var(--line-strong); }
+.btn--ghost:hover { background: var(--brand-soft); border-color: var(--brand); color: var(--brand-2); }
 
 .btn--outline { background: transparent; color: var(--ink); border-color: var(--line-strong); }
 .btn--outline:hover { border-color: var(--brand); color: var(--brand); background: var(--brand-soft); }
@@ -920,6 +914,79 @@ input, textarea, button, select { color: inherit; }
 @keyframes waveSway {
   0%, 100% { transform: translateX(-3%); } 50% { transform: translateX(3%); }
 }
+
+/* =========================================================================
+   CTA MODAL SYSTEM
+   ========================================================================= */
+.cta-modal-overlay {
+  position: fixed; inset: 0; z-index: 10000;
+  display: grid; place-items: center; padding: 20px;
+  background: rgba(10, 37, 64, 0.55); backdrop-filter: blur(6px);
+  opacity: 0; visibility: hidden; transition: opacity .22s ease, visibility .22s ease;
+}
+.cta-modal-overlay.cta-modal__open { opacity: 1; visibility: visible; }
+.cta-modal {
+  position: relative; width: 100%; max-width: 480px;
+  background: #fff; border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg); padding: clamp(28px, 5vw, 44px);
+  transform: translateY(18px) scale(.97); transition: transform .26s var(--ease);
+  max-height: calc(100vh - 40px); overflow-y: auto;
+}
+.cta-modal-overlay.cta-modal__open .cta-modal { transform: translateY(0) scale(1); }
+.cta-modal__close {
+  position: absolute; top: 16px; right: 20px; border: none; background: transparent;
+  font-size: 28px; line-height: 1; color: var(--muted); cursor: pointer; padding: 4px 10px;
+  border-radius: 8px; transition: background .15s ease, color .15s ease;
+}
+.cta-modal__close:hover { background: var(--bg-subtle); color: var(--ink); }
+.cta-modal__icon {
+  width: 52px; height: 52px; border-radius: 14px; margin: 0 auto 18px;
+  display: grid; place-items: center; background: var(--grad-soft);
+  background-image: var(--grad);
+}
+.cta-modal__icon::before {
+  content: ""; width: 22px; height: 22px;
+  background: center/no-repeat;
+}
+.cta-modal__title { text-align: center; font-size: 1.7rem; margin: 0 0 10px; color: var(--ink); }
+.cta-modal__sub { text-align: center; color: var(--slate); margin: 0 0 26px; font-size: 1rem; line-height: 1.55; }
+.cta-modal__form { display: grid; gap: 16px; }
+.cta-field { display: grid; gap: 7px; }
+.cta-field label { font-size: 13px; font-weight: 600; color: var(--ink); }
+.cta-field input, .cta-field textarea {
+  width: 100%; padding: 13px 15px; font-size: 15px; font-family: inherit;
+  border: 1px solid var(--line-strong); border-radius: 12px; background: var(--surface-2);
+  color: var(--ink); transition: border-color .15s ease, box-shadow .15s ease, background .15s ease;
+}
+.cta-field input::placeholder, .cta-field textarea::placeholder { color: var(--muted); }
+.cta-field input:focus, .cta-field textarea:focus {
+  outline: none; border-color: var(--brand); background: #fff;
+  box-shadow: 0 0 0 4px rgba(26, 115, 232, 0.12);
+}
+.cta-field textarea { resize: vertical; min-height: 90px; }
+
+/* ---- CTA cards (used on contact page) ---- */
+.cta-card {
+  position: relative; display: flex; flex-direction: column; gap: 14px;
+  background: var(--bg-soft); border: 1px solid var(--line);
+  border-radius: var(--radius-lg); padding: clamp(28px, 5vw, 40px);
+  transition: transform .2s var(--ease), box-shadow .2s var(--ease), border-color .2s ease;
+  height: 100%;
+}
+.cta-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: var(--line-strong); }
+.cta-card__icon {
+  width: 54px; height: 54px; border-radius: 14px; display: grid; place-items: center;
+  background: var(--grad-soft); color: var(--brand);
+}
+.cta-card h3 { margin: 0; font-size: 1.3rem; color: var(--ink); }
+.cta-card p { margin: 0; color: var(--slate); line-height: 1.6; }
+.cta-card__link { margin-top: auto; font-weight: 600; color: var(--brand); text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
+.cta-card__link:hover { gap: 10px; }
+.cta-card--featured { background: var(--ink); border-color: transparent; box-shadow: var(--shadow-md); }
+.cta-card--featured h3 { color: #fff; }
+.cta-card--featured p { color: #a9b7bf; }
+.cta-card--featured .cta-card__icon { background: var(--grad-soft); color: #fff; }
+.cta-card--featured .cta-card__link { color: #fff; }
 
 /* =========================================================================
    EXTRA ANIMATIONS

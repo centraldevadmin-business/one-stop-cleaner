@@ -6,6 +6,7 @@ import fs from 'fs';
 import { jsonBodyParser } from './server/json-body-parser.js';
 import { leadRateLimiter } from './server/lazy-rate-limit.js';
 import { initDb } from './db/database.js';
+import db from './db/database.js';
 import { authRequired } from './server/auth.js';
 
 import authRoutes from './server/routes/auth.js';
@@ -13,6 +14,11 @@ import { publicRouter as leadPublicRoutes, adminRouter as leadAdminRoutes } from
 import campaignRoutes from './server/routes/campaigns.js';
 import cmsRoutes from './server/routes/cms.js';
 import analyticsRoutes from './server/routes/analytics.js';
+import contactsRoutes from './server/routes/contacts.js';
+import ticketsRoutes from './server/routes/tickets.js';
+import { publicRouter as blogPublicRoutes, adminRouter as blogAdminRoutes } from './server/routes/blog.js';
+import rolesRoutes from './server/routes/roles.js';
+import { requireRole, checkPermission } from './server/auth.js';
 
 // `import.meta.url` is undefined on Cloudflare Workers, so guard it. On
 // Workers we don't need __dirname (static files come from the assets binding).
@@ -51,6 +57,38 @@ app.use('/api/leads', authRequired, leadAdminRoutes);
 app.use('/api/campaigns', authRequired, campaignRoutes);
 app.use('/api/cms', authRequired, cmsRoutes);
 
+// Public blog feed (published posts) — no auth
+app.use('/api/blog', blogPublicRoutes);
+// Admin blog management — requires auth
+app.use('/api/blog', blogAdminRoutes);
+
+// CRM: contacts (public capture + admin management)
+app.use('/api/contacts', contactsRoutes);
+app.use('/api/contacts', authRequired, contactsRoutes);
+
+// Support tickets (public create + admin management)
+app.use('/api/tickets', ticketsRoutes);
+app.use('/api/tickets', authRequired, ticketsRoutes);
+
+// RBAC: roles + assignments (superadmin only)
+app.use('/api/roles', authRequired, requireRole('superadmin'), rolesRoutes);
+
+// Audit logs (superadmin only)
+app.get('/api/audit', authRequired, requireRole('superadmin'), async (req, res) => {
+  try {
+    const { action, actor_role, limit = 200 } = req.query;
+    let sql = 'SELECT * FROM audit_logs WHERE 1=1';
+    const params = [];
+    if (action) { sql += ' AND action = ?'; params.push(action); }
+    if (actor_role) { sql += ' AND actor_role = ?'; params.push(actor_role); }
+    sql += ' ORDER BY rowid DESC LIMIT ?';
+    params.push(Number(limit) || 200);
+    res.json(await db.prepare(sql).all(...params));
+  } catch (e) {
+    res.status(500).json({ error: 'Could not load audit logs.' });
+  }
+});
+
 // Serve the static website (the marketing pages + admin dashboard).
 //
 // On Cloudflare Workers, `fs.*` is NOT implemented, so we must not call
@@ -61,6 +99,8 @@ app.use('/api/cms', authRequired, cmsRoutes);
 const siteDir = path.join(__dirname, '.');
 if (!isWorkersRuntime) {
   app.use(express.static(siteDir));
+  // Hidden admin dashboard — served at /dashboard, never linked from marketing pages.
+  app.get('/dashboard', (req, res) => res.sendFile(path.join(siteDir, 'public', 'dashboard.html')));
   app.get('*', (req, res, next) => {
     if (req.path.startsWith('/api')) return next();
     const filePath = path.join(siteDir, req.path);

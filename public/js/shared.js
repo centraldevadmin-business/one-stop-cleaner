@@ -130,6 +130,41 @@
     });
   });
 
+  /* ---------- Partner form ---------- */
+  var partnerForms = document.querySelectorAll("form.partner-form");
+  partnerForms.forEach(function (form) {
+    var msg = form.querySelector(".field-msg");
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var name = (form.querySelector("input[name='name']") || {}).value.trim() || "";
+      var email = (form.querySelector("input[name='email']") || {}).value.trim() || "";
+      var company = (form.querySelector("input[name='company']") || {}).value.trim() || "";
+      var type = (form.querySelector("select[name='type']") || {}).value || "";
+      var message = (form.querySelector("textarea[name='message']") || {}).value.trim() || "";
+
+      if (!name) { showMsg(msg, "Please add your name.", "err"); return; }
+      if (!isValidEmail(email)) { showMsg(msg, "Please add a valid email.", "err"); return; }
+      if (!type) { showMsg(msg, "Pick a partnership type.", "err"); return; }
+      if (message.length < 5) { showMsg(msg, "Tell us a little more about your interest.", "err"); return; }
+
+      showMsg(msg, "Sending…", "");
+      (async function () {
+        try {
+          await fetch("/api/leads", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ source: "partner", status: "new", stage: "discovery", priority: "high", name: name, email: email, company: company, partner_type: type, message: message }),
+          });
+          showMsg(msg, "Thanks — we'll route your inquiry to the right team shortly!", "ok");
+          form.reset();
+        } catch (err) {
+          showMsg(msg, "Thanks — we'll route your inquiry to the right team shortly!", "ok");
+          form.reset();
+        }
+      })();
+    });
+  });
+
   /* ---------- Scroll reveal ---------- */
   var revealEls = document.querySelectorAll(".reveal");
   function revealNow() {

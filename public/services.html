@@ -3,18 +3,18 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Services — One Stop Cleaner</title>
-  <meta name="description" content="Book verified cleaning services, compare trusted bids, and shop quality cleaning products. One Stop Cleaner serves clients and cleaning professionals." />
-  <meta name="theme-color" content="#1a1712" />
-  <meta property="og:title" content="Services — One Stop Cleaner" />
-  <meta property="og:description" content="Verified cleaners, secure bookings, and quality products." />
+  <title>Professional Cleaning Services — One Stop Cleaner</title>
+  <meta name="description" content="Book verified cleaners and cleaning companies for home, office, and deep cleaning. Compare bids and reviews, pay securely, and shop professional cleaning products." />
+  <meta name="theme-color" content="#0a2540" />
+  <meta property="og:title" content="Professional Cleaning Services — One Stop Cleaner" />
+  <meta property="og:description" content="Verified cleaners. Secure bookings. Professional products. Book a cleaner today." />
   <meta property="og:type" content="website" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
-<body>
+<body class="page-services">
   <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
   <!-- NAV -->
   <header class="nav" id="nav">
@@ -32,7 +32,7 @@
         <a href="contact.html" class="nav-link">Contact</a>
       </nav>
       <div class="nav__cta">
-        <a href="contact.html" class="btn btn--ghost btn--lg">Join the waitlist</a>
+        <a href="services.html" class="btn btn--ghost btn--lg">Book a cleaner</a>
         <button class="navToggle" id="navToggle" aria-expanded="false" aria-controls="navLinks" aria-label="Toggle menu"><span></span></button>
       </div>
     </div>
@@ -40,33 +40,21 @@
 
   <main>
     <!-- HERO -->
-    <section class="hero hero--light">
-      <div class="hero__bg hero__bg--soft" aria-hidden="true"></div>
-      <div class="container hero__inner">
-        <div class="hero__content">
-          <p class="eyebrow reveal">What we offer</p>
-          <h1 class="hero__title reveal" data-delay="1">
-            Everything for <br /><span class="grad-text">fresh, clean homes.</span>
-          </h1>
-          <p class="hero__sub reveal" data-delay="2">
-            Two sides, one marketplace. Clients find verified cleaning services and book with
-            confidence. Cleaning services find work and get paid securely. And both have access to
-            the quality products that keep your home fresh and clean.
-          </p>
-        </div>
-        <div class="hero__visual reveal" data-delay="3" aria-hidden="true">
-          <div class="grid-2__visual">
-            <div class="orb orb--1"></div>
-            <div class="orb orb--2"></div>
-            <div class="float-card float-card--a">
-              <div class="float-card__row"><span class="dot dot--teal"></span> New cleaning request</div>
-              <div class="float-card__body">Home clean · 3 bed · Sat 9am</div>
-              <div class="float-card__foot"><span class="vc-bids">6 bids</span><span class="vc-price">From $89</span></div>
-            </div>
-            <div class="float-card float-card--b">
-              <div class="float-card__row"><span class="dot dot--blue"></span> Verified service</div>
-              <div class="float-card__body">SparkleClean Co. · 4.9★</div>
-              <div class="float-card__foot"><span class="vc-bids">212 jobs</span><span class="vc-price">Booked</span></div>
+    <section class="hero hero--bg hero--bg-dark" style="background-image:url('media/real-clean-home-exterior.jpg');">
+      <div class="container">
+        <div class="hero__grid hero__grid--centered">
+          <div class="hero__content hero__content--centered">
+            <p class="eyebrow reveal">Cleaning services &amp; verified cleaners</p>
+            <h1 class="hero__title reveal" data-delay="1">
+              Professional cleaning, <br /><span class="grad-text">booked in minutes.</span>
+            </h1>
+            <p class="hero__sub reveal" data-delay="2">
+              From a regular home clean to a deep clean or office service — match with
+              <strong>verified cleaners and companies</strong>, compare trusted bids and reviews, and book with confidence.
+            </p>
+            <div class="hero__actions hero__actions--centered reveal" data-delay="3">
+              <a href="#clients" class="btn btn--primary btn--lg">Book a cleaner <span class="btn__arrow" aria-hidden="true">→</span></a>
+              <a href="#providers" class="btn btn--light btn--lg">Grow your business</a>
             </div>
           </div>
         </div>
@@ -74,34 +62,34 @@
     </section>
 
     <!-- FOR CLIENTS -->
-    <section class="section">
+    <section class="section" style="background:var(--bg-soft);">
       <div class="container">
-        <div class="section__head reveal">
+        <div class="section__head section__head--center reveal">
           <p class="eyebrow">For clients</p>
           <h2 class="section__title">Book trusted cleaning with confidence</h2>
-          <p class="section__lead">From a regular clean to a speciality care — find the right cleaning service, securely.</p>
+          <p class="section__lead section__lead--center">From a regular clean to a speciality care — find the right cleaning service, securely.</p>
         </div>
         <div class="cards">
           <article class="card reveal">
             <div class="card__icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-6 9 6v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/><path d="M9 22V12h6v10"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5 12 3l9 6.5V20a1 1 0 0 1-1 1h-6v-6H9v6H4a1 1 0 0 1-1-1V9.5Z"/></svg>
             </div>
             <h3>Home clean</h3>
-            <p>Regular washing, drying, and folding — matched to your home and schedule.</p>
+            <p>Regular cleaning, tidying, and sanitising — matched to your home and schedule. Choose from verified cleaners near you.</p>
           </article>
           <article class="card reveal" data-delay="1">
             <div class="card__icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 10h20"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3v4M15 3v4M3 9h18M3 15h18M7 3v4M17 3v4"/><path d="M5 5h14v14H5z"/></svg>
             </div>
             <h3>Deep clean</h3>
-            <p>Reliable cleaning for bedding, towels, and linens — with consistent quality.</p>
+            <p>A thorough top-to-bottom clean for kitchens, bathrooms, and every room. Ideal for move-in, move-out, or seasonal refreshes.</p>
           </article>
           <article class="card reveal" data-delay="2">
             <div class="card__icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 2 9l9 5 9-6-9-5Z"/><path d="m2 15 10 6 10-6"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M6 6l2 2M16 16l2 2M18 6l-2 2M8 16l-2 2"/><circle cx="12" cy="12" r="3"/></svg>
             </div>
-            <h3>Speciality care</h3>
-            <p>Deep cleans, speciality care, and bigger jobs — book verified pros for the work.</p>
+            <h3>Office &amp; commercial</h3>
+            <p>Reliable cleaning for offices, shops, and workspaces — on a schedule that fits your business.</p>
           </article>
         </div>
 
@@ -123,88 +111,79 @@
               </div>
             </div>
           </div>
-          <div class="grid-2__visual reveal" data-delay="1" aria-hidden="true">
-            <div class="float-card float-card--a">
-              <div class="float-card__row"><span class="dot dot--teal"></span><span class="vc-text">New cleaning request near you</span></div>
-              <div class="float-card__body">Home clean · 3 bed · Sat 9am</div>
-              <div class="float-card__foot"><span class="vc-bids">6 bids</span><span class="vc-price">From $89</span></div>
+          <div class="grid-2__visual reveal" data-delay="1">
+            <img src="media/real-cleaner-mopping.jpg" alt="A cleaner in action" class="section-image" />
+            <div class="float-badge float-badge--image float-badge--a">
+              <div>
+                <div class="float-badge__label">Verified cleaners</div>
+                <div class="float-badge__value">Home clean · From $89</div>
+              </div>
             </div>
-            <div class="float-card float-card--b">
-              <div class="float-card__row"><span class="dot dot--blue"></span><span class="vc-text">Verified service</span></div>
-              <div class="float-card__body">SparkleClean Co. · 4.9★</div>
-              <div class="float-card__foot"><span class="vc-bids">212 jobs</span><span class="vc-price">Booked</span></div>
-            </div>
-            <div class="orb orb--1"></div>
-            <div class="orb orb--2"></div>
           </div>
         </div>
       </div>
     </section>
 
     <!-- FOR CLEANERS -->
-    <section class="section" style="background:var(--bg-soft);">
+    <section class="section section--bg section--bg-subtle" id="providers" style="background:linear-gradient(180deg, rgba(15,23,42,0.82), rgba(15,23,42,0.86));">
       <div class="container">
-        <div class="section__head reveal">
+        <div class="section__head section__head--center reveal">
           <p class="eyebrow">For cleaners &amp; companies</p>
           <h2 class="section__title">Grow your cleaning business</h2>
-          <p class="section__lead">Whether you work alone or run a team — get found by clients ready to book.</p>
+          <p class="section__lead section__lead--center">Whether you work alone or run a team — get found by clients ready to book.</p>
         </div>
         <div class="cards">
-          <article class="card reveal">
-            <div class="card__icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <article class="card card--image reveal">
+            <img src="media/real-clean-bathroom.jpg" alt="Professional cleaning in action" class="card__image" />
+            <div class="card__body">
+              <h3>Get discovered</h3>
+              <p>Clients in your area find you based on location, ratings, and availability. Build a verified profile that stands out.</p>
             </div>
-            <h3>Get discovered</h3>
-            <p>Clients in your area find you based on location, ratings, and availability.</p>
           </article>
-          <article class="card reveal" data-delay="1">
-            <div class="card__icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 10h18"/><path d="M8 2v4M16 2v4"/></svg>
+          <article class="card card--image reveal" data-delay="1">
+            <img src="media/real-clean-bedroom.jpg" alt="A clean modern home" class="card__image" />
+            <div class="card__body">
+              <h3>Set your terms</h3>
+              <p>You control your prices, availability, and service area. Book work that fits your schedule.</p>
             </div>
-            <h3>Set your terms</h3>
-            <p>You control your prices, availability, and service area. Book work that fits you.</p>
           </article>
-          <article class="card reveal" data-delay="2">
-            <div class="card__icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
+          <article class="card card--image reveal" data-delay="2">
+            <img src="media/real-cleaner-dusting.jpg" alt="Secure payment for cleaners" class="card__image" />
+            <div class="card__body">
+              <h3>Get paid securely</h3>
+              <p>Secure, timely payouts. Payment is held safely in escrow and released when the job is done right.</p>
             </div>
-            <h3>Get paid securely</h3>
-            <p>Secure, timely payouts. Payment is held safely and released when the job is done right.</p>
           </article>
         </div>
       </div>
     </section>
 
     <!-- PRODUCTS -->
-    <section class="section">
+    <section class="section section--bg section--bg-light" style="background:linear-gradient(180deg, rgba(255,255,255,0.94), rgba(255,255,255,0.9));;">
       <div class="container">
         <div class="grid-2" style="margin-bottom:24px;">
           <div class="reveal">
             <p class="eyebrow">Cleaning products</p>
             <h2 class="section__title">Quality products, one click away</h2>
-            <p class="section__lead">Add professional-grade cleaning products to any booking — or shop on their own. Starter kits, refills, and everyday consumables.</p>
+            <p class="section__lead">Add professional-grade products to any booking — or shop on their own. Starter kits, refills, and consumables.</p>
             <div style="margin-top:28px;"><a href="products.html" class="btn btn--primary btn--lg">Explore products <span class="btn__arrow" aria-hidden="true">→</span></a></div>
           </div>
-          <div class="grid-2__visual grid-2__visual--b reveal" data-delay="1" aria-hidden="true">
-            <div class="visual-card">
-              <div class="visual-card__row"><span class="dot dot--blue"></span><span class="vc-text">Starter kit</span></div>
-              <div class="visual-card__body">Detergent · Fabric softener · Sponges · Gloves</div>
-              <div class="visual-card__foot"><span class="vc-bids">Reorder easily</span><span class="vc-price">Free delivery</span></div>
-            </div>
+          <div class="grid-2__visual grid-2__visual--b reveal" data-delay="1">
+            <img src="media/real-clean-window.jpg" alt="Professional cleaning products" class="section-image" />
           </div>
         </div>
       </div>
     </section>
 
     <!-- CTA -->
-    <section class="section" style="background:var(--bg-soft);">
+    <section class="section section--bg section--bg-dark" style="background:linear-gradient(180deg, rgba(15,23,42,0.94), rgba(15,23,42,0.96));">
       <div class="container">
         <div class="cta-box reveal" style="background:var(--ink); border-radius:var(--radius-lg); padding:clamp(48px,7vw,72px); text-align:center;">
           <h2 class="section__title section__title--light" style="color:#fff;">Ready to get started?</h2>
-          <p style="color:#a9b7bf; max-width:480px; margin:0 auto 30px; font-size:1.05rem;">Join the waitlist and be first when we launch in your city.</p>
+          <p style="color:rgba(255,255,255,0.85); max-width:480px; margin:0 auto 30px; font-size:1.05rem;">Book a verified cleaner today, or grow your cleaning business with us.</p>
           <div style="display:flex; gap:14px; justify-content:center; flex-wrap:wrap;">
-            <a href="contact.html" class="btn btn--primary btn--lg">I need cleaning done</a>
-            <a href="contact.html" class="btn btn--ghost btn--lg" style="background:transparent; border-color:rgba(255,255,255,0.25); color:#fff;">I'm a cleaning service</a>
+            <a href="#clients" class="btn btn--primary btn--lg">Book a cleaner <span class="btn__arrow" aria-hidden="true">→</span></a>
+            <a href="#providers" class="btn btn--ghost btn--lg" style="background:transparent; border-color:rgba(255,255,255,0.25); color:#fff;">Grow your business</a>
           </div>
         </div>
       </div>
@@ -217,7 +196,7 @@
       <div class="footer__top">
         <div>
           <a href="index.html" class="footer__brand"><span class="brand__mark" aria-hidden="true"></span><span>One Stop <span>Cleaner</span></span></a>
-          <p class="footer__about">Fresh cleaning and quality products, one stop away. Building the most trusted cleaning marketplace.</p>
+          <p class="footer__about">Professional cleaning services and verified cleaners, plus the products that keep everything shining — one stop away.</p>
         </div>
         <div class="footer__col">
           <h4>Company</h4>
@@ -234,7 +213,7 @@
         </div>
         <div class="footer__col">
           <h4>Connect</h4>
-          <a href="contact.html">Waitlist</a>
+          <a href="contact.html">Get help</a>
           <a href="contact.html">Partner with us</a>
           <a href="contact.html">Press</a>
         </div>

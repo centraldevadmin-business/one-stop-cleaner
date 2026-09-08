@@ -98,6 +98,44 @@
     handleForm(form, msg);
   });
 
+  /* ---------- Lead capture forms ----------
+     Handles multi-field forms (class "lead-form") that post to /api/leads.
+     Recognised fields: name, email, phone, service_type, city, source.
+     The form's data-source attribute sets the lead source (defaults to
+     "waitlist"). Works for the hero, waitlist, and CTA forms on every page. */
+  function handleLeadForm(form) {
+    if (!form) return;
+    form.addEventListener("submit", async function (e) {
+      e.preventDefault();
+      var data = {};
+      var fields = ["name", "email", "phone", "service_type", "city"];
+      fields.forEach(function (f) {
+        var el = form.querySelector("input[name='" + f + "'], select[name='" + f + "'], textarea[name='" + f + "']");
+        if (el) data[f] = el.value.trim();
+      });
+      var msgEl = form.querySelector(".field-msg");
+      var email = data.email || "";
+      if (!email) { showMsg(msgEl, "Please enter your email.", "err"); return; }
+      if (!isValidEmail(email)) { showMsg(msgEl, "That email doesn't look right. Try again?", "err"); return; }
+      data.source = form.getAttribute("data-source") || "waitlist";
+      showMsg(msgEl, "Sending…", "");
+      try {
+        await fetch("/api/leads", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        });
+        showMsg(msgEl, "You're on the list — we'll be in touch soon!", "ok");
+        form.reset();
+      } catch (err) {
+        showMsg(msgEl, "Thanks — we'll be in touch shortly!", "ok");
+        form.reset();
+      }
+    });
+  }
+
+  document.querySelectorAll("form.lead-form, form.hero__lead, form.cta-box__form").forEach(handleLeadForm);
+
   /* ---------- Contact form ---------- */
   var contactForms = document.querySelectorAll("form.contact-form");
   contactForms.forEach(function (form) {
@@ -127,6 +165,157 @@
           form.reset();
         }
       })();
+    });
+  });
+
+  /* ---------- CTA Modal system
+     Three calls-to-action across the site — each opens a lead-capture
+     modal. We can't book a cleaner yet, so every CTA is a "notify me"
+     lead that we route to the right team:
+       - "Notify me"      → client waitlist (coming soon to your city)
+       - "Grow your business" → cleaning service / provider signup
+       - "Partner with us" → supplier / tech partner / investor inquiry
+     Each modal posts to /api/leads with the correct source + stage. */
+  var CTA_TYPES = {
+    "notify-me": {
+      title: "Be first in your city",
+      subtitle: "We're launching soon. Leave your details and we'll notify you the moment One Stop Cleaner comes to your area — you'll be first to book trusted cleaners and shop products.",
+      fields: [
+        { type: "text", name: "name", label: "Your name", placeholder: "Jane Doe", autocomplete: "name" },
+        { type: "email", name: "email", label: "Email address", placeholder: "you@example.com", autocomplete: "email", required: true },
+        { type: "text", name: "city", label: "City", placeholder: "Sydney, NSW", autocomplete: "address-level2" },
+      ],
+      button: "Notify me",
+      source: "waitlist",
+      stage: "discovery",
+      priority: "normal",
+    },
+    "grow-business": {
+      title: "Grow your cleaning business",
+      subtitle: "We're building the most trusted cleaning marketplace in Australia. Join now as a cleaning service and get matched with ready-to-book clients in your area the moment we launch.",
+      fields: [
+        { type: "text", name: "name", label: "Your name", placeholder: "Jane Doe", autocomplete: "name" },
+        { type: "email", name: "email", label: "Email address", placeholder: "you@example.com", autocomplete: "email", required: true },
+        { type: "text", name: "company", label: "Business name", placeholder: "SparkleClean Co.", autocomplete: "organization" },
+        { type: "text", name: "city", label: "Service area", placeholder: "Sydney, NSW", autocomplete: "address-level2" },
+      ],
+      button: "Grow my business",
+      source: "provider",
+      stage: "discovery",
+      priority: "high",
+    },
+    "partner": {
+      title: "Partner with us",
+      subtitle: "Whether you supply products, build tech, or want to invest — there's a place for you in the One Stop Cleaner ecosystem. Tell us about your interest and we'll be in touch.",
+      fields: [
+        { type: "text", name: "name", label: "Your name", placeholder: "Jane Doe", autocomplete: "name" },
+        { type: "email", name: "email", label: "Email address", placeholder: "you@example.com", autocomplete: "email", required: true },
+        { type: "text", name: "company", label: "Company", placeholder: "Your company", autocomplete: "organization" },
+        { type: "textarea", name: "message", label: "How would you like to partner?", placeholder: "We supply eco-friendly cleaning products and want to partner…" },
+      ],
+      button: "Let's talk",
+      source: "partner",
+      stage: "discovery",
+      priority: "high",
+    },
+  };
+
+  function openCtaModal(type) {
+    var spec = CTA_TYPES[type];
+    if (!spec) return;
+    var existing = document.getElementById("ctaModal");
+    if (existing) existing.remove();
+
+    var fieldsHtml = spec.fields.map(function (f) {
+      var req = f.required ? " required" : "";
+      var val = f.value ? " value=\"" + f.value + "\"" : "";
+      if (f.type === "textarea") {
+        return '<div class="cta-field"><label for="cta-' + f.name + '">' + f.label + "</label><textarea id=\"cta-" + f.name + "\" name=\"" + f.name + "\" rows=\"4\" placeholder=\"" + f.placeholder + "\"" + req + ">" + val + "</textarea></div>";
+      }
+      return '<div class="cta-field"><label for="cta-' + f.name + '">' + f.label + "</label><input type=\"" + f.type + "\" id=\"cta-" + f.name + "\" name=\"" + f.name + "\" placeholder=\"" + f.placeholder + "\"" + req + val + "></div>";
+    }).join("");
+
+    var modal = document.createElement("div");
+    modal.id = "ctaModal";
+    modal.className = "cta-modal-overlay";
+    modal.setAttribute("role", "dialog");
+    modal.setAttribute("aria-modal", "true");
+    modal.setAttribute("aria-labelledby", "ctaModalTitle");
+    modal.innerHTML =
+      '<div class="cta-modal"><button class="cta-modal__close" type="button" aria-label="Close">&times;</button>' +
+      '<div class="cta-modal__icon" aria-hidden="true"></div>' +
+      '<h2 class="cta-modal__title" id="ctaModalTitle">' + spec.title + "</h2>" +
+      '<p class="cta-modal__sub">' + spec.subtitle + "</p>" +
+      '<form class="cta-modal__form" novalidate>' + fieldsHtml +
+      '<button type="submit" class="btn btn--primary btn--lg btn--block">' + spec.button + "</button>" +
+      '<p class="field-msg" role="status"></p></form></div>';
+
+    document.body.appendChild(modal);
+    document.body.style.overflow = "hidden";
+    var closeBtn = modal.querySelector(".cta-modal__close");
+    var msgEl = modal.querySelector(".field-msg");
+    var form = modal.querySelector(".cta-modal__form");
+
+    function closeModal() {
+      modal.classList.remove("cta-modal__open");
+      setTimeout(function () {
+        modal.remove();
+        document.body.style.overflow = "";
+      }, 220);
+    }
+
+    modal.addEventListener("click", function (e) {
+      if (e.target === modal || e.target.closest(".cta-modal__overlay-bg")) closeModal();
+    });
+    closeBtn.addEventListener("click", closeModal);
+    document.addEventListener("keydown", function onKey(e) {
+      if (e.key === "Escape") { closeModal(); document.removeEventListener("keydown", onKey); }
+    });
+
+    form.addEventListener("submit", async function (e) {
+      e.preventDefault();
+      var data = {};
+      spec.fields.forEach(function (f) {
+        var el = form.querySelector("[name='" + f.name + "']");
+        if (el) data[f.name] = el.value.trim();
+      });
+      if (!data.email || !isValidEmail(data.email)) {
+        showMsg(msgEl, "Please enter a valid email.", "err");
+        return;
+      }
+      showMsg(msgEl, "Sending…", "");
+      data.source = spec.source;
+      data.stage = spec.stage;
+      data.priority = spec.priority;
+      data.status = "new";
+      try {
+        await fetch("/api/leads", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        });
+        var thanks = spec.source === "provider" ? "You're on the list — we'll be in touch as we launch!" :
+          spec.source === "partner" ? "Thanks — we'll reach out about partnering soon!" :
+          "You're on the list — we'll notify you the moment we launch in your city!";
+        showMsg(msgEl, thanks, "ok");
+        form.reset();
+        setTimeout(closeModal, 1600);
+      } catch (err) {
+        showMsg(msgEl, "Thanks — we'll be in touch shortly!", "ok");
+        setTimeout(closeModal, 1600);
+      }
+    });
+
+    setTimeout(function () { modal.classList.add("cta-modal__open"); }, 16);
+    var first = form.querySelector("input, textarea");
+    if (first) first.focus();
+  }
+
+  // Wire every CTA button/link to its modal.
+  document.querySelectorAll("[data-cta]").forEach(function (el) {
+    el.addEventListener("click", function (e) {
+      e.preventDefault();
+      openCtaModal(el.getAttribute("data-cta"));
     });
   });
 

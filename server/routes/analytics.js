@@ -22,6 +22,9 @@ router.get('/dashboard', async (req, res) => {
   const products = (await db.prepare('SELECT COUNT(*) c FROM products WHERE active = 1')).get().c;
   const signups = (await db.prepare("SELECT COUNT(*) c FROM analytics_events WHERE event_name = 'waitlist_signup'")).get().c;
   const partners = (await db.prepare("SELECT COUNT(*) c FROM leads WHERE source = 'partner'")).get().c;
+  const contacts = (await db.prepare('SELECT COUNT(*) c FROM contacts')).get().c;
+  const openTickets = (await db.prepare("SELECT COUNT(*) c FROM tickets WHERE status IN ('open','in_progress')")).get().c;
+  const posts = (await db.prepare('SELECT COUNT(*) c FROM blog_posts')).get().c;
 
   // Campaign totals
   const sent = (await db.prepare("SELECT COALESCE(SUM(count),0) c FROM campaign_stats WHERE event = 'sent'")).get().c;
@@ -40,6 +43,7 @@ router.get('/dashboard', async (req, res) => {
 
   res.json({
     leads, newLeads, campaigns, running, products, signups, partners,
+    contacts, openTickets, posts,
     sent, opened, clicked,
     byStatus, byStage, bySource, topEvents
   });
