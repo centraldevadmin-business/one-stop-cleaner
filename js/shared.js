@@ -32,7 +32,38 @@
       a.addEventListener("click", function () {
         nav.classList.remove("nav--open");
         toggle.setAttribute("aria-expanded", "false");
+        document.querySelectorAll(".nav-dropdown").forEach(function (d) {
+          d.classList.remove("nav-dropdown--open");
+        });
       });
+    });
+
+    // Dropdown toggle on tap (mobile) and click
+    document.querySelectorAll(".nav-dropdown").forEach(function (dd) {
+      var trigger = dd.querySelector(".nav-link");
+      if (trigger) {
+        trigger.addEventListener("click", function (e) {
+          if (window.matchMedia("(max-width: 860px)").matches) {
+            e.preventDefault();
+            var isOpen = dd.classList.toggle("nav-dropdown--open");
+            document.querySelectorAll(".nav-dropdown").forEach(function (other) {
+              if (other !== dd) other.classList.remove("nav-dropdown--open");
+            });
+            if (isOpen) {
+              toggle.setAttribute("aria-expanded", "true");
+            } else {
+              toggle.setAttribute("aria-expanded", "false");
+            }
+          }
+        });
+      }
+    });
+    document.addEventListener("click", function (e) {
+      if (!e.target.closest(".nav-dropdown")) {
+        document.querySelectorAll(".nav-dropdown").forEach(function (d) {
+          d.classList.remove("nav-dropdown--open");
+        });
+      }
     });
     // Close on Escape
     document.addEventListener("keydown", function (e) {

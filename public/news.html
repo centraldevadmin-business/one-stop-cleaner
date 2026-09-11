@@ -3,22 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Blog — One Stop Cleaner</title>
-  <meta name="description" content="Tips, guides, and news about professional cleaning, verified cleaners, and keeping your home fresh." />
-  <meta name="theme-color" content="#0a2540" />
-
-  <meta property="og:title" content="One Stop Cleaner — Blog" />
-  <meta property="og:description" content="Tips, guides, and news about professional cleaning and verified cleaners." />
-  <meta property="og:type" content="website" />
-
+  <title>News — One Stop Cleaner</title>
+  <meta name="description" content="News and updates from One Stop Cleaner, the future of home cleaning." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
-<body class="page-blog">
-  <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
-  <!-- NAV -->
+<body>
+  <!-- ===================== HEADER ===================== -->
   <header class="nav fixed top-0 inset-x-0 z-50 transition-all duration-300" id="nav">
     <div class="max-w-7xl mx-auto px-5 sm:px-8 flex items-center justify-between h-16 sm:h-20">
       <a href="index.html" class="flex items-center gap-2.5 font-display font-extrabold text-lg sm:text-xl tracking-tight text-white">
@@ -39,7 +32,6 @@
         </div>
         <a href="products.html" class="nav-link text-sm font-semibold text-white hover:text-mint-300 transition-colors">Products</a>
         <a href="about.html" class="nav-link text-sm font-semibold text-white hover:text-mint-300 transition-colors">About</a>
-        <a href="blog.html" class="nav-link text-sm font-semibold text-mint-300">Blog</a>
         <a href="news.html" class="nav-link text-sm font-semibold text-white hover:text-mint-300 transition-colors">News</a>
       </nav>
 
@@ -47,7 +39,7 @@
         <a href="contact.html#partner" class="hidden sm:inline-flex text-sm font-semibold text-white hover:text-mint-300 transition-colors">Partner with us</a>
         <button type="button" class="btn btn--primary btn--lg" data-cta="notify-me">Join Waitlist</button>
         <button class="lg:hidden w-10 h-10 grid place-items-center rounded-lg text-white" id="navToggle" aria-expanded="false" aria-controls="navLinks" aria-label="Toggle menu">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="w-6 h-6"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
         </button>
       </div>
     </div>
@@ -59,7 +51,6 @@
         <a href="cleaners.html" class="px-3 py-2.5 rounded-lg text-base font-semibold text-white hover:bg-navy-800">For Cleaners</a>
         <a href="products.html" class="px-3 py-2.5 rounded-lg text-base font-semibold text-white hover:bg-navy-800">Products</a>
         <a href="about.html" class="px-3 py-2.5 rounded-lg text-base font-semibold text-white hover:bg-navy-800">About</a>
-        <a href="blog.html" class="px-3 py-2.5 rounded-lg text-base font-semibold text-mint-300">Blog</a>
         <a href="news.html" class="px-3 py-2.5 rounded-lg text-base font-semibold text-white hover:bg-navy-800">News</a>
         <a href="contact.html#partner" class="px-3 py-2.5 rounded-lg text-base font-semibold text-mint-300">Partner with us</a>
       </div>
@@ -67,55 +58,81 @@
   </header>
 
   <main>
-    <!-- HERO -->
-    <section class="section section--bg hero--bg hero--bg-dark" style="background-image:url('media/real-clean-floor.jpg'); padding-block: clamp(80px, 14vw, 150px);">
-      <div class="container" style="position:relative; z-index:1;">
-        <p class="eyebrow reveal" style="color:#bcd7f5;"><span class="eyebrow__dot" aria-hidden="true" style="background:#7db4f0;"></span>News · Guides · Tips</p>
-        <h1 class="hero__title reveal" data-delay="1" style="color:#fff; max-width:760px;">Everything you need to keep your home <span style="color:#7db4f0;">spotless.</span></h1>
-        <p class="hero__sub reveal" data-delay="2" style="max-width:620px;">Practical guides, cleaning tips, and news from One Stop Cleaner — written to help you book the right cleaner and keep your home fresh.</p>
+    <!-- ===================== HERO ===================== -->
+    <section class="relative pt-40 sm:pt-48 pb-24 sm:pb-32 overflow-hidden">
+      <div class="absolute inset-0 -z-10">
+        <img
+          src="media/new_team.jpg"
+          alt="One Stop Cleaner team"
+          class="w-full h-full object-cover"
+        />
+        <div class="absolute inset-0 bg-gradient-to-r from-navy-950/95 via-navy-950/80 to-navy-950/40"></div>
+      </div>
+
+      <div class="relative max-w-7xl mx-auto px-5 sm:px-8 text-center">
+        <span class="reveal inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/15 text-white text-sm font-semibold mb-8 backdrop-blur">
+          <span class="w-2 h-2 rounded-full bg-white/80 animate-pulse"></span>
+          News &amp; Updates
+        </span>
+
+        <h1 class="reveal font-display font-extrabold tracking-tight text-5xl sm:text-6xl lg:text-7xl text-white mt-4">
+          The latest from <br class="hidden sm:block" /><span class="grad-text">One Stop Cleaner</span>
+        </h1>
+
+        <p class="reveal max-w-2xl mx-auto mt-7 text-lg sm:text-xl text-white/90 leading-relaxed" data-delay="2">
+          Launch announcements, city-by-city updates, and news from the future of home cleaning.
+        </p>
       </div>
     </section>
 
-    <!-- BLOG LISTING -->
-    <section class="section section--tight" id="blog-list">
-      <div class="container">
-        <div class="section__head section__head--center reveal">
-          <h2 class="section__title">Latest from the blog</h2>
-          <p class="section__lead section__lead--center">Guides and tips to help you trust, book, and maintain a cleaner home.</p>
+    <!-- ===================== NEWS GRID ===================== -->
+    <section class="relative py-16 sm:py-24">
+      <div class="max-w-5xl mx-auto px-5 sm:px-8">
+        <!-- Listing view -->
+        <div id="newsGrid" class="grid gap-8"></div>
+        <div id="newsEmpty" class="reveal text-center py-16" style="display:none;">
+          <h2 class="font-display font-extrabold tracking-tight text-2xl text-navy-950 mb-3">No articles yet</h2>
+          <p class="text-slate-500">Check back soon for the latest news and updates.</p>
         </div>
-        <div id="blogGrid" class="cards"></div>
-        <div id="blogEmpty" class="reveal" style="text-align:center; padding:60px 20px; color:var(--muted); display:none;">
-          <p style="font-size:1.1rem;">No posts yet. Check back soon.</p>
-        </div>
+
+        <!-- Single article view -->
+        <div id="news-post"></div>
       </div>
     </section>
 
-    <!-- CTA -->
-    <section class="section section--bg section--bg-dark" style="background:linear-gradient(180deg, rgba(15,23,42,0.94), rgba(15,23,42,0.96));">
-      <div class="container">
-        <div class="cta-box reveal" style="background:var(--ink); border-radius:var(--radius-lg); padding:clamp(48px,7vw,88px); text-align:center; position:relative; overflow:hidden;">
-          <div class="cta-box__bg" aria-hidden="true" style="position:absolute; inset:0; background:radial-gradient(500px 300px at 50% 0%, rgba(0,119,179,0.30), transparent 70%);"></div>
-          <div style="position:relative; z-index:1;">
-            <h2 class="section__title section__title--light" style="color:#fff;">Ready for a spotless home?</h2>
-            <p style="color:rgba(255,255,255,0.85); max-width:480px; margin:0 auto 32px; font-size:1.05rem;">
-              Book a verified cleaner today, or shop the professional-grade cleaning products that keep everything shining.
-            </p>
-            <div style="display:flex; gap:14px; justify-content:center; flex-wrap:wrap;">
-              <a href="services.html" class="btn btn--primary btn--lg">Book a cleaner <span class="btn__arrow" aria-hidden="true">→</span></a>
-              <a href="products.html" class="btn btn--light btn--lg">Shop products</a>
-            </div>
+    <!-- ===================== EMAIL CAPTURE ===================== -->
+    <section class="relative py-16 sm:py-24">
+      <div class="max-w-4xl mx-auto px-5 sm:px-8">
+        <div class="reveal relative rounded-3xl bg-navy-950 text-white overflow-hidden px-8 py-16 sm:px-16 sm:py-20 shadow-xl">
+          <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(500px_300px_at_50%_0%,rgba(14,163,148,0.28),transparent_70%)]" aria-hidden="true"></div>
+          <div class="relative text-center">
+            <h2 class="font-display font-extrabold tracking-tight text-3xl sm:text-5xl mb-5">Never miss a launch</h2>
+            <p class="text-slate-300 text-lg max-w-xl mx-auto mb-9">Join the waitlist and be first in line when One Stop Cleaner launches in your city.</p>
+            <form class="hero__lead max-w-xl mx-auto" data-source="waitlist" novalidate>
+              <div class="flex flex-col sm:flex-row items-center gap-2.5 p-2 rounded-full bg-white/10 border border-white/15 backdrop-blur focus-within:border-mint-400 transition-all">
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Enter your email"
+                  autocomplete="email"
+                  required
+                  class="flex-1 w-full px-4 py-3 rounded-full bg-transparent text-white placeholder-slate-400 outline-none"
+                  aria-label="Email address"
+                />
+                <button type="submit" class="w-full sm:w-auto btn btn--primary btn--lg rounded-full">
+                  Notify me
+                  <span class="btn__arrow" aria-hidden="true">→</span>
+                </button>
+              </div>
+              <p class="field-msg mt-4 text-sm" role="status"></p>
+            </form>
           </div>
         </div>
       </div>
     </section>
   </main>
 
-  <!-- Floating controls -->
-  <button id="backToTop" aria-label="Back to top" title="Back to top">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
-  </button>
-
-  <!-- FOOTER -->
+  <!-- ===================== FOOTER ===================== -->
   <footer class="bg-navy-950 text-slate-300">
     <div class="max-w-7xl mx-auto px-5 sm:px-8 py-16">
       <div class="grid grid-cols-2 md:grid-cols-5 gap-10 mb-12">
@@ -185,7 +202,11 @@
     </div>
   </footer>
 
+  <button id="backToTop" class="fixed bottom-6 right-6 w-12 h-12 grid place-items-center rounded-full bg-mint-500 text-white shadow-glow opacity-0 pointer-events-none transition-opacity duration-300 z-40" aria-label="Back to top">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+  </button>
+
   <script src="js/shared.js"></script>
-  <script src="js/blog.js"></script>
+  <script src="js/news.js"></script>
 </body>
 </html>

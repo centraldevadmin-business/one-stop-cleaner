@@ -15,24 +15,24 @@
   --color-navy-700: #242d47;
   --color-navy-600: #2f3a59;
 
-  --color-mint-50: #e6fbf7;
-  --color-mint-100: #bff3ea;
-  --color-mint-200: #8ce6d8;
-  --color-mint-300: #52d5c4;
-  --color-mint-400: #22c0ad;
-  --color-mint-500: #0ea394;
-  --color-mint-600: #0b8578;
-  --color-mint-700: #0a6b62;
-  --color-mint-800: #0a564f;
-  --color-mint-900: #094642;
+  --color-mint-50: #eff6ff;
+  --color-mint-100: #dbeafe;
+  --color-mint-200: #bfdbfe;
+  --color-mint-300: #93c5fd;
+  --color-mint-400: #60a5fa;
+  --color-mint-500: #3b82f6;
+  --color-mint-600: #2563eb;
+  --color-mint-700: #1d4ed8;
+  --color-mint-800: #1e40af;
+  --color-mint-900: #1e3a8a;
 
-  --color-brand: #0ea394;
-  --color-brand-hover: #0b8578;
-  --color-brand-light: #22c0ad;
+  --color-brand: #3b82f6;
+  --color-brand-hover: #2563eb;
+  --color-brand-light: #60a5fa;
 
   --shadow-soft: 0 4px 24px -8px rgba(17, 22, 39, 0.14);
   --shadow-xl: 0 20px 50px -20px rgba(17, 22, 39, 0.28);
-  --shadow-glow: 0 0 60px -12px rgba(14, 163, 148, 0.45);
+  --shadow-glow: 0 0 60px -12px rgba(59, 130, 246, 0.45);
 }
 
 /* --- Base --- */
@@ -72,7 +72,7 @@ body {
 }
 
 .grad-text {
-  background: linear-gradient(120deg, #0ea394 0%, #22c0ad 50%, #0f766e 100%);
+  background: linear-gradient(120deg, #ffffff 0%, #93c5fd 50%, #60a5fa 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -105,7 +105,7 @@ body {
   width: 100%;
   transform-origin: left center;
   transform: scaleX(0);
-  background: linear-gradient(90deg, #0ea394, #22c0ad);
+  background: linear-gradient(90deg, #3b82f6, #60a5fa);
   z-index: 100;
 }
 
@@ -127,7 +127,7 @@ body {
   bottom: -4px;
   height: 2px;
   width: 0;
-  background: var(--color-mint-500);
+  background: var(--color-mint-300);
   transition: width 0.3s ease;
 }
 .nav-link:hover::after,
@@ -147,7 +147,7 @@ body {
 .btn:active { transform: translateY(0) scale(0.99); }
 
 .btn--primary {
-  background: linear-gradient(120deg, #0ea394 0%, #22c0ad 50%, #0b8578 100%);
+  background: linear-gradient(120deg, #2563eb 0%, #3b82f6 50%, #60a5fa 100%);
   color: #fff; box-shadow: var(--shadow-soft);
 }
 .btn--primary:hover { box-shadow: var(--shadow-glow); }
@@ -233,7 +233,7 @@ body {
 .cta-field textarea:focus {
   outline: none;
   border-color: var(--color-mint-400);
-  box-shadow: 0 0 0 4px rgba(14, 163, 148, 0.14);
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.14);
   background: #fff;
 }
 .cta-modal__close {
@@ -259,7 +259,7 @@ body {
   margin-top: 12px;
   min-height: 20px;
 }
-.field-msg.field-msg--ok { color: #0b8578; }
+.field-msg.field-msg--ok { color: #2563eb; }
 .field-msg.field-msg--err { color: #dc2626; }
 
 /* --- Back to top --- */
@@ -343,6 +343,9 @@ body {
   overflow: hidden;
   transition: max-height 0.4s cubic-bezier(0.22, 1, 0.36, 1);
 }
+.faq-item.open .faq-a {
+  max-height: 400px;
+}
 .faq-a p {
   padding-bottom: 22px;
   color: #475569;
@@ -365,4 +368,55 @@ body {
 }
 .metric {
   animation: countUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* --- Contact: intent radio selector --- */
+.intent-option {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 14px 10px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 0.9rem;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: #475569;
+  user-select: none;
+}
+.intent-option:hover {
+  border-color: var(--color-mint-400);
+}
+.intent-radio {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.intent-option__label {
+  pointer-events: none;
+}
+.intent-radio:checked + .intent-option__label {
+  color: var(--color-mint-700);
+}
+.intent-radio:checked ~ .intent-option__label,
+.intent-option:has(.intent-radio:checked) .intent-option__label {
+  color: var(--color-mint-700);
+}
+.intent-option:has(.intent-radio:checked) {
+  border-color: var(--color-mint-500);
+  background: var(--color-mint-50);
+  box-shadow: 0 0 0 3px var(--color-mint-100);
+}
+
+/* --- Contact: dynamic fields --- */
+.dynamic-field {
+  display: none;
+}
+.dynamic-field.is-active {
+  display: block;
 }

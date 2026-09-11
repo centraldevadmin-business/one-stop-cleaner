@@ -32,7 +32,36 @@
       a.addEventListener("click", function () {
         nav.classList.remove("nav--open");
         toggle.setAttribute("aria-expanded", "false");
+        document.querySelectorAll(".nav-dropdown").forEach(function (d) {
+          d.classList.remove("nav-dropdown--open");
+        });
       });
+    });
+
+    // Dropdown toggle on tap (mobile)
+    document.querySelectorAll(".nav-dropdown").forEach(function (dd) {
+      var trigger = dd.querySelector(".nav-link");
+      if (trigger) {
+        trigger.addEventListener("click", function (e) {
+          // Services trigger is href="#" — never let it jump to the top.
+          e.preventDefault();
+          if (window.matchMedia("(max-width: 1024px)").matches) {
+            var isOpen = dd.classList.toggle("nav-dropdown--open");
+            document.querySelectorAll(".nav-dropdown").forEach(function (other) {
+              if (other !== dd) other.classList.remove("nav-dropdown--open");
+            });
+            if (isOpen) toggle.setAttribute("aria-expanded", "true");
+            else toggle.setAttribute("aria-expanded", "false");
+          }
+        });
+      }
+    });
+    document.addEventListener("click", function (e) {
+      if (!e.target.closest(".nav-dropdown")) {
+        document.querySelectorAll(".nav-dropdown").forEach(function (d) {
+          d.classList.remove("nav-dropdown--open");
+        });
+      }
     });
     // Close on Escape
     document.addEventListener("keydown", function (e) {
@@ -69,12 +98,13 @@
       if (!email) { showMsg(msgEl, "Please enter your email.", "err"); return; }
       if (!isValidEmail(email)) { showMsg(msgEl, "That email doesn't look right. Try again?", "err"); return; }
 
+      var segment = form.getAttribute("data-segment") || "general";
       showMsg(msgEl, "Sending…", "");
       try {
         await fetch("/api/leads", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ source: "waitlist", status: "new", stage: "discovery", priority: "normal", email: email }),
+          body: JSON.stringify({ source: "waitlist", status: "new", stage: "discovery", priority: "normal", segment: segment, email: email }),
         });
         showMsg(msgEl, "You're on the list — we'll be in touch soon!", "ok");
         if (input) input.value = "";
@@ -98,19 +128,54 @@
     handleForm(form, msg);
   });
 
-  /* ---------- Contact form ---------- */
-  var contactForms = document.querySelectorAll("form.contact-form");
+  /* ---------- Contact form (multi-intent) ---------- */
+  var contactForms = document.querySelectorAll("form[data-source='contact']");
   contactForms.forEach(function (form) {
     var msg = form.querySelector(".field-msg");
+
+    /* Dynamic field switching based on intent */
+    var radios = form.querySelectorAll("input[name='intent']");
+    var dynamicFields = form.querySelectorAll(".dynamic-field");
+    radios.forEach(function (radio) {
+      radio.addEventListener("change", function () {
+        var chosen = radio.value;
+        dynamicFields.forEach(function (block) {
+          if (block.getAttribute("data-intent") === chosen) {
+            block.classList.add("is-active");
+          } else {
+            block.classList.remove("is-active");
+          }
+        });
+      });
+    });
+
     form.addEventListener("submit", function (e) {
       e.preventDefault();
       var name = (form.querySelector("input[name='name']") || {}).value.trim() || "";
       var email = (form.querySelector("input[name='email']") || {}).value.trim() || "";
       var message = (form.querySelector("textarea[name='message']") || {}).value.trim() || "";
+      var intent = (form.querySelector("input[name='intent']:checked") || {}).value || "client";
+      var city = (form.querySelector("input[name='city']") || {}).value.trim() || "";
+      var company = (form.querySelector("input[name='company']") || {}).value.trim() || "";
+      var serviceType = (form.querySelector("select[name='service_type']") || {}).value || "";
 
       if (!name) { showMsg(msg, "Please add your name.", "err"); return; }
       if (!isValidEmail(email)) { showMsg(msg, "Please add a valid email.", "err"); return; }
       if (message.length < 5) { showMsg(msg, "Tell us a little more.", "err"); return; }
+
+      var lead = {
+        source: "contact",
+        status: "new",
+        stage: "discovery",
+        priority: intent === "partner" ? "high" : "normal",
+        name: name,
+        email: email,
+        message: message,
+        city: city,
+        company: company,
+        service_type: serviceType,
+        notes: "Intent: " + intent
+      };
 
       showMsg(msg, "Sending…", "");
       (async function () {
@@ -118,13 +183,17 @@
           await fetch("/api/leads", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ source: "contact", status: "new", stage: "discovery", priority: "normal", name: name, email: email, message: message }),
+            body: JSON.stringify(lead),
           });
-          showMsg(msg, "Thanks — we'll be in touch shortly!", "ok");
+          showMsg(msg, "Thanks — we'll route your inquiry to the right team shortly!", "ok");
           form.reset();
+          var clientField = form.querySelector(".dynamic-field[data-intent='client']");
+          if (clientField) clientField.classList.add("is-active");
         } catch (err) {
-          showMsg(msg, "Thanks — we'll be in touch shortly!", "ok");
+          showMsg(msg, "Thanks — we'll route your inquiry to the right team shortly!", "ok");
           form.reset();
+          var clientField2 = form.querySelector(".dynamic-field[data-intent='client']");
+          if (clientField2) clientField2.classList.add("is-active");
         }
       })();
     });

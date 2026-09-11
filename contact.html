@@ -25,12 +25,18 @@
     <div class="container nav__inner">
       <a href="index.html" class="brand" aria-label="One Stop Cleaner home">
         <span class="brand__mark" aria-hidden="true"></span>
-        <span class="brand__name">One Stop <span>Cleaner</span></span>
+        <span class="brand__name"><span class="brand__o">O</span>ne Stop <span>Cleaner</span></span>
       </a>
       <nav class="nav__links" id="navLinks" aria-label="Primary">
         <a href="index.html" class="nav-link">Home</a>
         <a href="about.html" class="nav-link">About</a>
-        <a href="services.html" class="nav-link">Services</a>
+        <div class="nav-dropdown">
+          <a href="services.html" class="nav-link">Services<span class="nav-dropdown__chevron" aria-hidden="true"></span></a>
+          <div class="nav-dropdown__menu" role="menu">
+            <a href="services.html#clients" class="nav-dropdown__item" role="menuitem">For clients</a>
+            <a href="services.html#providers" class="nav-dropdown__item" role="menuitem">For cleaners</a>
+          </div>
+        </div>
         <a href="contact.html" class="nav-link">Contact</a>
       </nav>
       <div class="nav__cta">

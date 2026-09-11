@@ -3,231 +3,468 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Professional Cleaning Services — One Stop Cleaner</title>
-  <meta name="description" content="Book verified cleaners and cleaning companies for home, office, and deep cleaning. Compare bids and reviews, pay securely, and shop professional cleaning products." />
-  <meta name="theme-color" content="#0a2540" />
-  <meta property="og:title" content="Professional Cleaning Services — One Stop Cleaner" />
-  <meta property="og:description" content="Verified cleaners. Secure bookings. Professional products. Book a cleaner today." />
+  <title>Cleaning Services — One Stop Cleaner</title>
+  <meta name="description" content="Book vetted, insured cleaners for home, office, and deep cleaning. Compare trusted bids, pay securely via escrow, and shop professional products. Coming soon to Australia." />
+  <meta name="theme-color" content="#0f172a" />
+
+  <meta property="og:title" content="Cleaning Services — One Stop Cleaner" />
+  <meta property="og:description" content="Vetted cleaners. Escrow-secured payments. Transparent bids. One marketplace." />
   <meta property="og:type" content="website" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
-<body class="page-services">
+<body>
   <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
-  <!-- NAV -->
-  <header class="nav" id="nav">
-    <div class="container nav__inner">
-      <a href="index.html" class="brand" aria-label="One Stop Cleaner home">
-        <span class="brand__mark" aria-hidden="true"></span>
-        <span class="brand__name">One Stop <span>Cleaner</span></span>
+
+  <!-- ===================== HEADER ===================== -->
+  <header class="nav fixed top-0 inset-x-0 z-50 transition-all duration-300" id="nav">
+    <div class="max-w-7xl mx-auto px-5 sm:px-8 flex items-center justify-between h-16 sm:h-20">
+      <a href="index.html" class="flex items-center gap-2.5 font-display font-extrabold text-lg sm:text-xl tracking-tight text-navy-950">
+        <span class="inline-grid place-items-center w-9 h-9 rounded-xl bg-gradient-to-br from-mint-400 to-mint-600 text-white shadow-glow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M3 12h18M12 3v18"/><path d="M8 7l-2 4 2 4M16 7l2 4-2 4M12 5l-1.5 3 1.5 3 1.5-3-1.5-3Z"/></svg>
+        </span>
+        <span>One Stop <span class="grad-text">Cleaner</span></span>
       </a>
-      <nav class="nav__links" id="navLinks" aria-label="Primary">
-        <a href="index.html" class="nav-link">Home</a>
-        <a href="services.html" class="nav-link">Services</a>
-        <a href="products.html" class="nav-link">Products</a>
-        <a href="about.html" class="nav-link">About</a>
-        <a href="contact.html#partner" class="nav-link">Partner with us</a>
-        <a href="contact.html" class="nav-link">Contact</a>
+
+      <nav class="hidden lg:flex items-center gap-8" aria-label="Primary">
+        <a href="index.html" class="nav-link text-sm font-semibold text-white hover:text-mint-300 transition-colors">Home</a>
+        <div class="nav-dropdown">
+          <a href="#" class="nav-link text-sm font-semibold text-white hover:text-mint-300 transition-colors flex items-center gap-1">Services<svg class="w-3 h-3 transition-transform dropdown-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></a>
+          <div class="nav-dropdown__menu">
+            <a href="clients.html" class="nav-dropdown__item">For Clients</a>
+            <a href="cleaners.html" class="nav-dropdown__item">For Cleaners</a>
+          </div>
+        </div>
+        <a href="products.html" class="nav-link text-sm font-semibold text-white hover:text-mint-300 transition-colors">Products</a>
+        <a href="about.html" class="nav-link text-sm font-semibold text-white hover:text-mint-300 transition-colors">About</a>
+        <a href="news.html" class="nav-link text-sm font-semibold text-white hover:text-mint-300 transition-colors">News</a>
       </nav>
-      <div class="nav__cta">
-        <a href="services.html" class="btn btn--ghost btn--lg">Book a cleaner</a>
-        <button class="navToggle" id="navToggle" aria-expanded="false" aria-controls="navLinks" aria-label="Toggle menu"><span></span></button>
+
+      <div class="flex items-center gap-3 sm:gap-4">
+        <a href="contact.html#partner" class="hidden sm:inline-flex text-sm font-semibold text-white hover:text-mint-300 transition-colors">Partner with us</a>
+        <button type="button" class="btn btn--primary btn--lg" data-cta="notify-me">Join Waitlist</button>
+        <button class="lg:hidden w-10 h-10 grid place-items-center rounded-lg text-white" id="navToggle" aria-expanded="false" aria-controls="navLinks" aria-label="Toggle menu">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="w-6 h-6"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
       </div>
     </div>
+    <nav class="lg:hidden hidden bg-navy-950/95 backdrop-blur-md border-t border-navy-800" id="navLinks">
+      <div class="max-w-7xl mx-auto px-5 py-4 grid gap-1">
+        <a href="index.html" class="px-3 py-2.5 rounded-lg text-base font-semibold text-white hover:bg-navy-800">Home</a>
+        <a href="clients.html" class="px-3 py-2.5 rounded-lg text-base font-semibold text-white hover:bg-navy-800">For Clients</a>
+        <a href="cleaners.html" class="px-3 py-2.5 rounded-lg text-base font-semibold text-white hover:bg-navy-800">For Cleaners</a>
+        <a href="products.html" class="px-3 py-2.5 rounded-lg text-base font-semibold text-white hover:bg-navy-800">Products</a>
+        <a href="about.html" class="px-3 py-2.5 rounded-lg text-base font-semibold text-white hover:bg-navy-800">About</a>
+        <a href="news.html" class="px-3 py-2.5 rounded-lg text-base font-semibold text-white hover:bg-navy-800">News</a>
+        <a href="contact.html#partner" class="px-3 py-2.5 rounded-lg text-base font-semibold text-mint-300">Partner with us</a>
+      </div>
+    </nav>
   </header>
 
   <main>
-    <!-- HERO -->
-    <section class="hero hero--bg hero--bg-dark" style="background-image:url('media/real-clean-home-exterior.jpg');">
-      <div class="container">
-        <div class="hero__grid hero__grid--centered">
-          <div class="hero__content hero__content--centered">
-            <p class="eyebrow reveal">Cleaning services &amp; verified cleaners</p>
-            <h1 class="hero__title reveal" data-delay="1">
-              Professional cleaning, <br /><span class="grad-text">booked in minutes.</span>
-            </h1>
-            <p class="hero__sub reveal" data-delay="2">
-              From a regular home clean to a deep clean or office service — match with
-              <strong>verified cleaners and companies</strong>, compare trusted bids and reviews, and book with confidence.
-            </p>
-            <div class="hero__actions hero__actions--centered reveal" data-delay="3">
-              <a href="#clients" class="btn btn--primary btn--lg">Book a cleaner <span class="btn__arrow" aria-hidden="true">→</span></a>
-              <a href="#providers" class="btn btn--light btn--lg">Grow your business</a>
-            </div>
-          </div>
+    <!-- ===================== HERO ===================== -->
+    <section class="relative pt-28 sm:pt-36 pb-28 sm:pb-40 overflow-hidden">
+      <!-- living room background -->
+      <div class="absolute inset-0 -z-10">
+        <img
+          src="media/real-clean-living-room.jpg"
+          alt="A bright, spotless modern living room"
+          class="w-full h-full object-cover"
+        />
+        <div class="absolute inset-0 bg-gradient-to-r from-navy-950/90 via-navy-950/60 to-navy-950/10"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-navy-950/80 via-transparent to-transparent"></div>
+      </div>
+
+      <div class="relative max-w-7xl mx-auto px-5 sm:px-8 text-center">
+        <span class="reveal inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/15 text-white text-sm font-semibold mb-8 backdrop-blur">
+          <span class="w-2 h-2 rounded-full bg-white/80 animate-pulse"></span>
+          Launching soon in Australia
+        </span>
+
+        <h1 class="reveal font-display font-extrabold tracking-tight text-5xl sm:text-6xl lg:text-7xl text-white mt-4" data-delay="1">
+          Professional cleaning, <br class="hidden sm:block" /><span class="grad-text">booked in minutes.</span>
+        </h1>
+
+        <p class="reveal max-w-2xl mx-auto mt-7 text-lg sm:text-xl text-white/90 leading-relaxed" data-delay="2">
+          From a regular home clean to a deep clean or office service — match with <strong>vetted cleaners and companies</strong>, compare trusted bids, and book with escrow-secured payments.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== ESCROW SECURITY MODEL ===================== -->
+    <section class="relative py-24 sm:py-32 bg-slate-50/70">
+      <div class="max-w-7xl mx-auto px-5 sm:px-8">
+        <div class="text-center max-w-3xl mx-auto mb-16 sm:mb-20">
+          <p class="reveal text-mint-600 font-semibold text-sm tracking-wide uppercase">The escrow advantage</p>
+          <h2 class="reveal font-display font-extrabold tracking-tight text-4xl sm:text-5xl text-navy-950 mt-4">Your money is safe until the job is done right.</h2>
+          <p class="reveal mt-6 text-lg text-slate-600 leading-relaxed max-w-2xl mx-auto">
+            Every payment flows through secure escrow. We hold your funds, never the cleaner — so there's no risk, no surprises, and full peace of mind.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+          <article class="reveal card group p-8 sm:p-10 bg-white border border-slate-100 shadow-soft hover:shadow-xl hover:-translate-y-1 transition-all duration-300" data-delay="0">
+            <span class="inline-grid place-items-center w-14 h-14 rounded-2xl bg-mint-50 text-mint-600 mb-6">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="w-7 h-7"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M3 10h18"/><path d="M8 4v4"/><path d="M16 4v4"/></svg>
+            </span>
+            <h3 class="font-display font-bold text-xl text-navy-950 mb-3">1. Pay into escrow</h3>
+            <p class="text-slate-600 leading-relaxed">Secure your booking with a held payment. Your card is charged, but the funds are locked safely — never handed over upfront.</p>
+          </article>
+          <article class="reveal card group p-8 sm:p-10 bg-white border border-slate-100 shadow-soft hover:shadow-xl hover:-translate-y-1 transition-all duration-300" data-delay="1">
+            <span class="inline-grid place-items-center w-14 h-14 rounded-2xl bg-mint-50 text-mint-600 mb-6">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="w-7 h-7"><path d="M12 22s8-4 8-10V5l-8-3-8 3v5c0 6 8 10 8 10Z"/></svg>
+            </span>
+            <h3 class="font-display font-bold text-xl text-navy-950 mb-3">2. Cleaner does the job</h3>
+            <p class="text-slate-600 leading-relaxed">A vetted, insured cleaner arrives on time and does the work. Track everything through your booking — no endless texting.</p>
+          </article>
+          <article class="reveal card group p-8 sm:p-10 bg-white border border-slate-100 shadow-soft hover:shadow-xl hover:-translate-y-1 transition-all duration-300" data-delay="2">
+            <span class="inline-grid place-items-center w-14 h-14 rounded-2xl bg-mint-50 text-mint-600 mb-6">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="w-7 h-7"><polyline points="20 6 9 17 4 12"/></svg>
+            </span>
+            <h3 class="font-display font-bold text-xl text-navy-950 mb-3">3. Approve &amp; release</h3>
+            <p class="text-slate-600 leading-relaxed">Only when you're satisfied do you release the funds. If anything's off, our 24/7 team resolves the dispute fairly.</p>
+          </article>
         </div>
       </div>
     </section>
 
-    <!-- FOR CLIENTS -->
-    <section class="section" style="background:var(--bg-soft);">
-      <div class="container">
-        <div class="section__head section__head--center reveal">
-          <p class="eyebrow">For clients</p>
-          <h2 class="section__title">Book trusted cleaning with confidence</h2>
-          <p class="section__lead section__lead--center">From a regular clean to a speciality care — find the right cleaning service, securely.</p>
-        </div>
-        <div class="cards">
-          <article class="card reveal">
-            <div class="card__icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5 12 3l9 6.5V20a1 1 0 0 1-1 1h-6v-6H9v6H4a1 1 0 0 1-1-1V9.5Z"/></svg>
-            </div>
-            <h3>Home clean</h3>
-            <p>Regular cleaning, tidying, and sanitising — matched to your home and schedule. Choose from verified cleaners near you.</p>
-          </article>
-          <article class="card reveal" data-delay="1">
-            <div class="card__icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3v4M15 3v4M3 9h18M3 15h18M7 3v4M17 3v4"/><path d="M5 5h14v14H5z"/></svg>
-            </div>
-            <h3>Deep clean</h3>
-            <p>A thorough top-to-bottom clean for kitchens, bathrooms, and every room. Ideal for move-in, move-out, or seasonal refreshes.</p>
-          </article>
-          <article class="card reveal" data-delay="2">
-            <div class="card__icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M6 6l2 2M16 16l2 2M18 6l-2 2M8 16l-2 2"/><circle cx="12" cy="12" r="3"/></svg>
-            </div>
-            <h3>Office &amp; commercial</h3>
-            <p>Reliable cleaning for offices, shops, and workspaces — on a schedule that fits your business.</p>
-          </article>
+    <!-- ===================== FOR CLIENTS ===================== -->
+    <section class="relative py-24 sm:py-32" id="clients">
+      <div class="max-w-7xl mx-auto px-5 sm:px-8 grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+        <div class="reveal lg:justify-self-start">
+          <p class="text-mint-600 font-semibold text-sm tracking-wide uppercase">For clients</p>
+          <h2 class="font-display font-extrabold tracking-tight text-4xl sm:text-5xl text-navy-950 mt-4 mb-6">Your home, perfectly maintained.</h2>
+          <p class="text-slate-600 leading-relaxed text-lg mb-8">
+            Be the first to access our network of elite, insured cleaning professionals in your area. Compare real bids, verified profiles, and transparent pricing — all in one place.
+          </p>
+          <ul class="grid gap-4 mb-9">
+            <li class="flex items-start gap-3">
+              <span class="mt-0.5 inline-grid place-items-center w-6 h-6 rounded-full bg-mint-100 text-mint-600 flex-shrink-0">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5"><polyline points="20 6 9 17 4 12"/></svg>
+              </span>
+              <span class="text-slate-700">Home, deep, office &amp; commercial cleaning</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="mt-0.5 inline-grid place-items-center w-6 h-6 rounded-full bg-mint-100 text-mint-600 flex-shrink-0">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5"><polyline points="20 6 9 17 4 12"/></svg>
+              </span>
+              <span class="text-slate-700">Vetting, background checks &amp; reference verification</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="mt-0.5 inline-grid place-items-center w-6 h-6 rounded-full bg-mint-100 text-mint-600 flex-shrink-0">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5"><polyline points="20 6 9 17 4 12"/></svg>
+              </span>
+              <span class="text-slate-700">Escrow protection &amp; fair dispute resolution</span>
+            </li>
+          </ul>
+          <button type="button" class="btn btn--primary btn--lg" data-cta="notify-me">
+            Join the client waitlist
+            <span class="btn__arrow" aria-hidden="true">→</span>
+          </button>
         </div>
 
-        <div class="grid-2" style="margin-top:88px; align-items:center;">
-          <div class="reveal">
-            <h2 class="section__title">How booking works</h2>
-            <div class="steps" style="grid-template-columns:1fr; gap:24px; margin-top:28px;">
-              <div class="step" style="display:flex; gap:20px; align-items:start;">
-                <span class="step__num" style="margin-bottom:0;">1</span>
-                <div><h3 style="font-size:1.08rem;">Tell us what to clean</h3><p style="font-size:0.95rem; color:var(--slate);">Tell us the rooms, quantity, date, and service.</p></div>
-              </div>
-              <div class="step" style="display:flex; gap:20px; align-items:start;">
-                <span class="step__num" style="margin-bottom:0;">2</span>
-                <div><h3 style="font-size:1.08rem;">Compare services</h3><p style="font-size:0.95rem; color:var(--slate);">Verified cleaning services near you bid with price, timeline, and ratings.</p></div>
-              </div>
-              <div class="step" style="display:flex; gap:20px; align-items:start;">
-                <span class="step__num" style="margin-bottom:0;">3</span>
-                <div><h3 style="font-size:1.08rem;">Book &amp; pay safely</h3><p style="font-size:0.95rem; color:var(--slate);">Book your cleaner and pay through secure escrow — release when you're happy.</p></div>
-              </div>
-            </div>
-          </div>
-          <div class="grid-2__visual reveal" data-delay="1">
-            <img src="media/real-cleaner-mopping.jpg" alt="A cleaner in action" class="section-image" />
-            <div class="float-badge float-badge--image float-badge--a">
+        <!-- App mockup: bidding -->
+        <div class="reveal lg:justify-self-end w-full max-w-sm" data-delay="1">
+          <div class="rounded-3xl bg-white border border-slate-100 shadow-xl overflow-hidden p-6">
+            <div class="flex items-center justify-between mb-5">
               <div>
-                <div class="float-badge__label">Verified cleaners</div>
-                <div class="float-badge__value">Home clean · From $89</div>
+                <div class="font-display font-bold text-navy-950">Your clean request</div>
+                <div class="text-sm text-slate-500">3-bed home · Sydney</div>
+              </div>
+              <span class="px-2.5 py-1 rounded-full bg-mint-50 text-mint-700 text-xs font-semibold">3 bids</span>
+            </div>
+            <div class="space-y-3">
+              <div class="rounded-2xl border-2 border-mint-400 bg-mint-50/40 p-4">
+                <div class="flex items-center gap-3 mb-3">
+                  <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-mint-400 to-mint-600 grid place-items-center text-white font-bold">MR</div>
+                  <div>
+                    <div class="font-semibold text-navy-950">SparkleClean Co.</div>
+                    <div class="text-xs text-slate-500">★★★★★ 4.9 · 212 jobs</div>
+                  </div>
+                  <span class="ml-auto text-xs font-semibold text-mint-700 bg-mint-100 px-2 py-1 rounded-full">Top rated</span>
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="text-sm text-slate-500">Home clean</span>
+                  <span class="font-display font-extrabold text-xl text-navy-950">$120</span>
+                </div>
+              </div>
+              <div class="rounded-2xl border border-slate-200 p-4">
+                <div class="flex items-center gap-3 mb-3">
+                  <div class="w-11 h-11 rounded-xl bg-slate-200 grid place-items-center text-slate-600 font-bold">JD</div>
+                  <div>
+                    <div class="font-semibold text-navy-950">Jane D.</div>
+                    <div class="text-xs text-slate-500">★★★★☆ 4.6 · 88 jobs</div>
+                  </div>
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="text-sm text-slate-500">Home clean</span>
+                  <span class="font-display font-extrabold text-xl text-navy-950">$95</span>
+                </div>
+              </div>
+              <div class="rounded-2xl border border-slate-200 p-4">
+                <div class="flex items-center gap-3 mb-3">
+                  <div class="w-11 h-11 rounded-xl bg-slate-200 grid place-items-center text-slate-600 font-bold">TC</div>
+                  <div>
+                    <div class="font-semibold text-navy-950">TidyHome</div>
+                    <div class="text-xs text-slate-500">★★★★★ 4.8 · 140 jobs</div>
+                  </div>
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="text-sm text-slate-500">Home clean</span>
+                  <span class="font-display font-extrabold text-xl text-navy-950">$110</span>
+                </div>
               </div>
             </div>
+            <button type="button" class="btn btn--primary btn--lg btn--block mt-5" data-cta="notify-me">Compare &amp; book</button>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- FOR CLEANERS -->
-    <section class="section section--bg section--bg-subtle" id="providers" style="background:linear-gradient(180deg, rgba(15,23,42,0.82), rgba(15,23,42,0.86));">
-      <div class="container">
-        <div class="section__head section__head--center reveal">
-          <p class="eyebrow">For cleaners &amp; companies</p>
-          <h2 class="section__title">Grow your cleaning business</h2>
-          <p class="section__lead section__lead--center">Whether you work alone or run a team — get found by clients ready to book.</p>
+    <!-- ===================== FOR CLEANERS (B2B) ===================== -->
+    <section class="relative py-24 sm:py-32 bg-navy-950 text-white overflow-hidden" id="providers">
+      <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(600px_300px_at_20%_0%,rgba(14,163,148,0.18),transparent_70%)]" aria-hidden="true"></div>
+      <div class="relative max-w-7xl mx-auto px-5 sm:px-8 grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+        <div class="reveal lg:justify-self-start">
+          <p class="text-mint-400 font-semibold text-sm tracking-wide uppercase">For cleaners &amp; companies</p>
+          <h2 class="font-display font-extrabold tracking-tight text-4xl sm:text-5xl mt-4 mb-6">Grow your cleaning business on autopilot.</h2>
+          <p class="text-slate-300 leading-relaxed text-lg mb-8">
+            We provide the clients, guarantee your payouts via escrow, and handle the support. You focus on the cleaning — we handle the rest.
+          </p>
+          <ul class="grid gap-4 mb-9">
+            <li class="flex items-start gap-3">
+              <span class="mt-0.5 inline-grid place-items-center w-6 h-6 rounded-full bg-mint-500/15 text-mint-300 flex-shrink-0">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5"><polyline points="20 6 9 17 4 12"/></svg>
+              </span>
+              <span class="text-slate-200">Get found by ready-to-book clients in your area</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="mt-0.5 inline-grid place-items-center w-6 h-6 rounded-full bg-mint-500/15 text-mint-300 flex-shrink-0">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5"><polyline points="20 6 9 17 4 12"/></svg>
+              </span>
+              <span class="text-slate-200">Set your own prices, hours, &amp; availability</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="mt-0.5 inline-grid place-items-center w-6 h-6 rounded-full bg-mint-500/15 text-mint-300 flex-shrink-0">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5"><polyline points="20 6 9 17 4 12"/></svg>
+              </span>
+              <span class="text-slate-200">Guaranteed, timely payouts via escrow</span>
+            </li>
+          </ul>
+          <button type="button" class="btn btn--light btn--lg" data-cta="grow-business">
+            Apply as a cleaner partner
+            <span class="btn__arrow" aria-hidden="true">→</span>
+          </button>
         </div>
-        <div class="cards">
-          <article class="card card--image reveal">
-            <img src="media/real-clean-bathroom.jpg" alt="Professional cleaning in action" class="card__image" />
-            <div class="card__body">
-              <h3>Get discovered</h3>
-              <p>Clients in your area find you based on location, ratings, and availability. Build a verified profile that stands out.</p>
+
+        <!-- App mockup: booking -->
+        <div class="reveal lg:justify-self-end w-full max-w-sm" data-delay="1">
+          <div class="rounded-3xl bg-white/5 border border-white/10 backdrop-blur shadow-xl overflow-hidden p-6">
+            <div class="flex items-center justify-between mb-5">
+              <span class="text-sm text-slate-300">Your dashboard</span>
+              <span class="px-2.5 py-1 rounded-full bg-mint-500/15 text-mint-300 text-xs font-semibold">LIVE</span>
             </div>
+            <div class="rounded-2xl bg-white/5 border border-white/10 p-5 mb-4">
+              <div class="text-sm text-slate-400">Estimated weekly earnings</div>
+              <div class="font-display font-extrabold text-4xl text-white mt-1">$1,240</div>
+              <div class="text-sm text-mint-400 font-medium mt-1">↑ 18% vs last week</div>
+            </div>
+            <div class="space-y-3">
+              <div class="flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/10">
+                <div>
+                  <div class="font-semibold">Deep clean · 4 bed</div>
+                  <div class="text-sm text-slate-400">Sydney · Today</div>
+                </div>
+                <span class="text-mint-400 font-semibold">Confirmed</span>
+              </div>
+              <div class="flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/10">
+                <div>
+                  <div class="font-semibold">Office clean · 120m²</div>
+                  <div class="text-sm text-slate-400">Brisbane · Mon</div>
+                </div>
+                <span class="text-mint-400 font-semibold">$240</span>
+              </div>
+            </div>
+            <button type="button" class="btn btn--light btn--lg btn--block mt-5" data-cta="grow-business">Start receiving jobs</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== VETTING & TRUST ===================== -->
+    <section class="relative py-24 sm:py-32">
+      <div class="max-w-7xl mx-auto px-5 sm:px-8">
+        <div class="text-center max-w-3xl mx-auto mb-16 sm:mb-20">
+          <p class="reveal text-mint-600 font-semibold text-sm tracking-wide uppercase">Trust &amp; safety</p>
+          <h2 class="reveal font-display font-extrabold tracking-tight text-4xl sm:text-5xl text-navy-950 mt-4">Vetted. Insured. Guaranteed.</h2>
+          <p class="reveal mt-6 text-lg text-slate-600 leading-relaxed max-w-2xl mx-auto">
+            Every cleaner on the platform goes through a strict verification process, and every booking is backed by insurance and 24/7 support.
+          </p>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <article class="reveal card p-7 bg-white border border-slate-100 shadow-soft hover:shadow-xl transition-all duration-300" data-delay="0">
+            <span class="inline-grid place-items-center w-12 h-12 rounded-xl bg-mint-50 text-mint-600 mb-5">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6"><path d="M12 22s8-4 8-10V5l-8-3-8 3v5c0 6 8 10 8 10Z"/><polyline points="9 12 11 14 15 10"/></svg>
+            </span>
+            <h3 class="font-display font-bold text-lg text-navy-950 mb-2">Background checks</h3>
+            <p class="text-slate-600 text-sm leading-relaxed">Identity verification, reference checks, and quality assessment before any cleaner joins.</p>
           </article>
-          <article class="card card--image reveal" data-delay="1">
-            <img src="media/real-clean-bedroom.jpg" alt="A clean modern home" class="card__image" />
-            <div class="card__body">
-              <h3>Set your terms</h3>
-              <p>You control your prices, availability, and service area. Book work that fits your schedule.</p>
-            </div>
+          <article class="reveal card p-7 bg-white border border-slate-100 shadow-soft hover:shadow-xl transition-all duration-300" data-delay="1">
+            <span class="inline-grid place-items-center w-12 h-12 rounded-xl bg-mint-50 text-mint-600 mb-5">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            </span>
+            <h3 class="font-display font-bold text-lg text-navy-950 mb-2">Insurance cover</h3>
+            <p class="text-slate-600 text-sm leading-relaxed">Every booking is insured against accidental damage, so your home is protected end to end.</p>
           </article>
-          <article class="card card--image reveal" data-delay="2">
-            <img src="media/real-cleaner-dusting.jpg" alt="Secure payment for cleaners" class="card__image" />
-            <div class="card__body">
-              <h3>Get paid securely</h3>
-              <p>Secure, timely payouts. Payment is held safely in escrow and released when the job is done right.</p>
-            </div>
+          <article class="reveal card p-7 bg-white border border-slate-100 shadow-soft hover:shadow-xl transition-all duration-300" data-delay="2">
+            <span class="inline-grid place-items-center w-12 h-12 rounded-xl bg-mint-50 text-mint-600 mb-5">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6"><path d="M4 4h16v12H5.2L4 18v-2Z"/><circle cx="8" cy="9" r="1"/><circle cx="12" cy="9" r="1"/><circle cx="16" cy="9" r="1"/></svg>
+            </span>
+            <h3 class="font-display font-bold text-lg text-navy-950 mb-2">24/7 support</h3>
+            <p class="text-slate-600 text-sm leading-relaxed">Our team is always on hand to resolve disputes, answer questions, and keep things smooth.</p>
+          </article>
+          <article class="reveal card p-7 bg-white border border-slate-100 shadow-soft hover:shadow-xl transition-all duration-300" data-delay="3">
+            <span class="inline-grid place-items-center w-12 h-12 rounded-xl bg-mint-50 text-mint-600 mb-5">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </span>
+            <h3 class="font-display font-bold text-lg text-navy-950 mb-2">On-time payouts</h3>
+            <p class="text-slate-600 text-sm leading-relaxed">Cleaners get paid fast and reliably — funds released the moment a job is approved.</p>
           </article>
         </div>
       </div>
     </section>
 
-    <!-- PRODUCTS -->
-    <section class="section section--bg section--bg-light" style="background:linear-gradient(180deg, rgba(255,255,255,0.94), rgba(255,255,255,0.9));;">
-      <div class="container">
-        <div class="grid-2" style="margin-bottom:24px;">
-          <div class="reveal">
-            <p class="eyebrow">Cleaning products</p>
-            <h2 class="section__title">Quality products, one click away</h2>
-            <p class="section__lead">Add professional-grade products to any booking — or shop on their own. Starter kits, refills, and consumables.</p>
-            <div style="margin-top:28px;"><a href="products.html" class="btn btn--primary btn--lg">Explore products <span class="btn__arrow" aria-hidden="true">→</span></a></div>
-          </div>
-          <div class="grid-2__visual grid-2__visual--b reveal" data-delay="1">
-            <img src="media/real-clean-window.jpg" alt="Professional cleaning products" class="section-image" />
-          </div>
+    <!-- ===================== PRODUCTS TEASER ===================== -->
+    <section class="relative py-24 sm:py-32 bg-slate-50/70">
+      <div class="max-w-7xl mx-auto px-5 sm:px-8 grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+        <div class="reveal lg:justify-self-end order-1 lg:order-1">
+          <p class="text-mint-600 font-semibold text-sm tracking-wide uppercase">Cleaning products</p>
+          <h2 class="font-display font-extrabold tracking-tight text-4xl sm:text-5xl text-navy-950 mt-4 mb-6">Quality products, one click away.</h2>
+          <p class="text-slate-600 leading-relaxed text-lg mb-8">
+            Add professional-grade products to any booking — or shop on their own. Starter kits, refills, and consumables, chosen to match the standards verified cleaners hold.
+          </p>
+          <ul class="grid gap-3 mb-9">
+            <li class="flex items-center gap-3 text-slate-700">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-mint-500"><polyline points="20 6 9 17 4 12"/></svg>
+              Professional-grade starter kits
+            </li>
+            <li class="flex items-center gap-3 text-slate-700">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-mint-500"><polyline points="20 6 9 17 4 12"/></svg>
+              Eco-friendly refills &amp; consumables
+            </li>
+            <li class="flex items-center gap-3 text-slate-700">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-mint-500"><polyline points="20 6 9 17 4 12"/></svg>
+              Delivered straight to your door
+            </li>
+          </ul>
+          <a href="products.html" class="btn btn--primary btn--lg">
+            Explore products
+            <span class="btn__arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
+        <div class="reveal lg:justify-self-start order-2 lg:order-2">
+          <img src="media/real-clean-supplies.jpg" alt="Professional cleaning supplies flatlay" class="rounded-3xl shadow-xl w-full h-auto object-cover aspect-[4/3]" />
         </div>
       </div>
     </section>
 
-    <!-- CTA -->
-    <section class="section section--bg section--bg-dark" style="background:linear-gradient(180deg, rgba(15,23,42,0.94), rgba(15,23,42,0.96));">
-      <div class="container">
-        <div class="cta-box reveal" style="background:var(--ink); border-radius:var(--radius-lg); padding:clamp(48px,7vw,72px); text-align:center;">
-          <h2 class="section__title section__title--light" style="color:#fff;">Ready to get started?</h2>
-          <p style="color:rgba(255,255,255,0.85); max-width:480px; margin:0 auto 30px; font-size:1.05rem;">Book a verified cleaner today, or grow your cleaning business with us.</p>
-          <div style="display:flex; gap:14px; justify-content:center; flex-wrap:wrap;">
-            <a href="#clients" class="btn btn--primary btn--lg">Book a cleaner <span class="btn__arrow" aria-hidden="true">→</span></a>
-            <a href="#providers" class="btn btn--ghost btn--lg" style="background:transparent; border-color:rgba(255,255,255,0.25); color:#fff;">Grow your business</a>
+    <!-- ===================== CTA ===================== -->
+    <section class="relative py-24 sm:py-32">
+      <div class="max-w-4xl mx-auto px-5 sm:px-8">
+        <div class="reveal relative rounded-3xl bg-navy-950 text-white overflow-hidden px-8 py-16 sm:px-16 sm:py-20 shadow-xl">
+          <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(500px_300px_at_50%_0%,rgba(14,163,148,0.28),transparent_70%)]" aria-hidden="true"></div>
+          <div class="relative text-center">
+            <h2 class="font-display font-extrabold tracking-tight text-3xl sm:text-5xl mb-5">Ready to get started?</h2>
+            <p class="text-slate-300 text-lg max-w-xl mx-auto mb-9">Book a verified cleaner today, or grow your cleaning business with us — before we launch in your city.</p>
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <button type="button" class="btn btn--primary btn--lg" data-cta="notify-me">Book a cleaner</button>
+              <button type="button" class="btn btn--light btn--lg" data-cta="grow-business">Grow your business</button>
+            </div>
           </div>
         </div>
       </div>
     </section>
   </main>
 
-  <!-- FOOTER -->
-  <footer class="footer">
-    <div class="container">
-      <div class="footer__top">
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="bg-navy-950 text-slate-300">
+    <div class="max-w-7xl mx-auto px-5 sm:px-8 py-16">
+      <div class="grid grid-cols-2 md:grid-cols-5 gap-10 mb-12">
+        <div class="col-span-2">
+          <a href="index.html" class="flex items-center gap-2.5 font-display font-extrabold text-lg text-white mb-4">
+            <span class="inline-grid place-items-center w-9 h-9 rounded-xl bg-gradient-to-br from-mint-400 to-mint-600 text-white">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M3 12h18M12 3v18"/><path d="M8 7l-2 4 2 4M16 7l2 4-2 4"/></svg>
+            </span>
+            <span>One Stop <span class="grad-text">Cleaner</span></span>
+          </a>
+          <p class="text-slate-400 text-sm leading-relaxed max-w-xs mb-6">Fresh cleaning and quality products, one stop away. Building the most trusted cleaning marketplace in Australia.</p>
+          <form class="max-w-xs" data-source="waitlist" novalidate>
+            <label class="sr-only" for="footer-email">Email address</label>
+            <div class="flex items-center gap-2 p-2 rounded-full bg-white/5 border border-white/10 focus-within:border-mint-400 transition-all">
+              <input type="email" id="footer-email" name="email" placeholder="your@email.com" autocomplete="email" required class="flex-1 px-3 py-2 bg-transparent text-white placeholder-slate-500 outline-none text-sm" />
+              <button type="submit" class="w-9 h-9 grid place-items-center rounded-full bg-mint-500 text-white hover:bg-mint-400 transition-colors flex-shrink-0" aria-label="Subscribe">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </button>
+            </div>
+            <p class="field-msg mt-3 text-xs" role="status"></p>
+          </form>
+        </div>
+
         <div>
-          <a href="index.html" class="footer__brand"><span class="brand__mark" aria-hidden="true"></span><span>One Stop <span>Cleaner</span></span></a>
-          <p class="footer__about">Professional cleaning services and verified cleaners, plus the products that keep everything shining — one stop away.</p>
+          <h4 class="font-semibold text-white mb-4 text-sm">Company</h4>
+          <ul class="space-y-3 text-sm">
+            <li><a href="about.html" class="hover:text-mint-400 transition-colors">About</a></li>
+            <li><a href="contact.html" class="hover:text-mint-400 transition-colors">Contact</a></li>
+            <li><a href="#" class="hover:text-mint-400 transition-colors">Press</a></li>
+            <li><a href="#" class="hover:text-mint-400 transition-colors">Careers</a></li>
+          </ul>
         </div>
-        <div class="footer__col">
-          <h4>Company</h4>
-          <a href="about.html">About</a>
-          <a href="services.html">Services</a>
-          <a href="contact.html">Contact</a>
+        <div>
+          <h4 class="font-semibold text-white mb-4 text-sm">Services</h4>
+          <ul class="space-y-3 text-sm">
+            <li><a href="clients.html" class="hover:text-mint-400 transition-colors">For clients</a></li>
+            <li><a href="cleaners.html" class="hover:text-mint-400 transition-colors">For cleaners</a></li>
+            <li><a href="products.html" class="hover:text-mint-400 transition-colors">Products</a></li>
+            <li><a href="index.html" class="hover:text-mint-400 transition-colors">How it works</a></li>
+          </ul>
         </div>
-        <div class="footer__col">
-          <h4>Services</h4>
-          <a href="services.html">For clients</a>
-          <a href="services.html">For cleaners</a>
-          <a href="products.html">Products</a>
-          <a href="services.html">How it works</a>
-        </div>
-        <div class="footer__col">
-          <h4>Connect</h4>
-          <a href="contact.html">Get help</a>
-          <a href="contact.html">Partner with us</a>
-          <a href="contact.html">Press</a>
+        <div>
+          <h4 class="font-semibold text-white mb-4 text-sm">Legal</h4>
+          <ul class="space-y-3 text-sm">
+            <li><a href="#" class="hover:text-mint-400 transition-colors">Privacy policy</a></li>
+            <li><a href="#" class="hover:text-mint-400 transition-colors">Terms of service</a></li>
+            <li><a href="#" class="hover:text-mint-400 transition-colors">Cookie policy</a></li>
+            <li><a href="contact.html#partner" class="hover:text-mint-400 transition-colors">Partnerships</a></li>
+          </ul>
         </div>
       </div>
-      <div class="footer__bottom">
-        <p>© <span id="year"></span> One Stop Cleaner. All rights reserved.</p>
-        <div class="footer__socials">
-          <a href="#" aria-label="Twitter"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 5.9c-.7.3-1.5.6-2.3.7.8-.5 1.5-1.3 1.8-2.3-.8.5-1.7.8-2.6 1a4 4 0 0 0-6.8 3.6A11.4 11.4 0 0 1 3.8 4.6a4 4 0 0 0 1.2 5.3c-.6 0-1.2-.2-1.8-.5v.1a4 4 0 0 0 3.2 3.9c-.6.2-1.2.2-1.8.1a4 4 0 0 0 3.7 2.8A8 8 0 0 1 2 18.1a11.3 11.3 0 0 0 6.1 1.8c7.4 0 11.4-6.1 11.4-11.4v-.5c.8-.6 1.5-1.3 2-2.1z"/></svg></a>
-          <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5ZM3 9h4v12H3V9Zm7 0h3.8v1.7h.05c.53-1 1.8-2 3.7-2 4 0 4.7 2.6 4.7 6V21h-4v-5.3c0-1.3 0-2.9-1.8-2.9s-2 1.4-2 2.8V21h-4V9z"/></svg></a>
-          <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+
+      <div class="border-t border-white/10 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <p class="text-sm text-slate-500">© <span id="year"></span> One Stop Cleaner. All rights reserved.</p>
+        <div class="flex items-center gap-3">
+          <a href="#" aria-label="Twitter" class="w-9 h-9 grid place-items-center rounded-full bg-white/5 hover:bg-mint-500/20 hover:text-mint-400 transition-colors">
+            <svg viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4"><path d="M22 5.9c-.7.3-1.5.6-2.3.7.8-.5 1.5-1.3 1.8-2.3-.8.5-1.7.8-2.6 1a4 4 0 0 0-6.8 3.6A11.4 11.4 0 0 1 3.8 4.6a4 4 0 0 0 1.2 5.3c-.6 0-1.2-.2-1.8-.5v.1a4 4 0 0 0 3.2 3.9c-.6.2-1.2.2-1.8.1a4 4 0 0 0 3.7 2.8A8 8 0 0 1 2 18.1a11.3 11.3 0 0 0 6.1 1.8c7.4 0 11.4-6.1 11.4-11.4v-.5c.8-.6 1.5-1.3 2-2.1z"/></svg>
+          </a>
+          <a href="#" aria-label="LinkedIn" class="w-9 h-9 grid place-items-center rounded-full bg-white/5 hover:bg-mint-500/20 hover:text-mint-400 transition-colors">
+            <svg viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4"><path d="M4.98 3.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5ZM3 9h4v12H3V9Zm7 0h3.8v1.7h.05c.53-1 1.8-2 3.7-2 4 0 4.7 2.6 4.7 6V21h-4v-5.3c0-1.3 0-2.9-1.8-2.9s-2 1.4-2 2.8V21h-4V9z"/></svg>
+          </a>
+          <a href="#" aria-label="Instagram" class="w-9 h-9 grid place-items-center rounded-full bg-white/5 hover:bg-mint-500/20 hover:text-mint-400 transition-colors">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+          </a>
         </div>
       </div>
     </div>
   </footer>
+
+  <!-- Back to top -->
+  <button id="backToTop" aria-label="Back to top" title="Back to top">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><polyline points="18 15 12 9 6 15"/></svg>
+  </button>
 
   <script src="js/shared.js"></script>
 </body>
