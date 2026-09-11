@@ -21,13 +21,13 @@
   <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
 
   <!-- ===================== HEADER ===================== -->
-  <header class="nav fixed top-0 inset-x-0 z-50 transition-all duration-300" id="nav">
+  <header class="nav fixed top-0 inset-x-0 z-50 transition-all duration-300 bg-navy-950 shadow-md" id="nav">
     <div class="max-w-7xl mx-auto px-5 sm:px-8 flex items-center justify-between h-16 sm:h-20">
       <a href="index.html" class="flex items-center gap-2.5 font-display font-extrabold text-lg sm:text-xl tracking-tight text-white">
         <span class="inline-grid place-items-center w-9 h-9 rounded-xl bg-gradient-to-br from-mint-400 to-mint-600 text-white shadow-glow">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M3 12h18M12 3v18"/><path d="M8 7l-2 4 2 4M16 7l2 4-2 4M12 5l-1.5 3 1.5 3 1.5-3-1.5-3Z"/></svg>
         </span>
-        <span>One Stop <span class="grad-text">Cleaner</span></span>
+        <span>One Stop <span class="text-mint-400">Cleaner</span></span>
       </a>
 
       <nav class="hidden lg:flex items-center gap-8" aria-label="Primary">
@@ -55,157 +55,178 @@
     <!-- Mobile menu -->
     <nav class="lg:hidden hidden bg-navy-950/95 backdrop-blur-md border-t border-navy-800" id="navLinks">
       <div class="max-w-7xl mx-auto px-5 py-4 grid gap-1">
-          <a href="index.html" class="px-3 py-2.5 rounded-lg text-base font-semibold text-white hover:bg-navy-800">Home</a>
+        <a href="index.html" class="px-3 py-2.5 rounded-lg text-base font-semibold text-white hover:bg-navy-800">Home</a>
         <a href="clients.html" class="px-3 py-2.5 rounded-lg text-base font-semibold text-white hover:bg-navy-800">For Clients</a>
         <a href="cleaners.html" class="px-3 py-2.5 rounded-lg text-base font-semibold text-white hover:bg-navy-800">For Cleaners</a>
-          <a href="products.html" class="px-3 py-2.5 rounded-lg text-base font-semibold text-white hover:bg-navy-800">Products</a>
-          <a href="about.html" class="px-3 py-2.5 rounded-lg text-base font-semibold text-white hover:bg-navy-800">About</a>
-          <a href="news.html" class="px-3 py-2.5 rounded-lg text-base font-semibold text-white hover:bg-navy-800">News</a>
+        <a href="products.html" class="px-3 py-2.5 rounded-lg text-base font-semibold text-white hover:bg-navy-800">Products</a>
+        <a href="about.html" class="px-3 py-2.5 rounded-lg text-base font-semibold text-white hover:bg-navy-800">About</a>
+        <a href="news.html" class="px-3 py-2.5 rounded-lg text-base font-semibold text-white hover:bg-navy-800">News</a>
         <a href="contact.html#partner" class="px-3 py-2.5 rounded-lg text-base font-semibold text-mint-300">Partner with us</a>
       </div>
     </nav>
   </header>
 
-  <main>
-    <!-- ===================== HERO ===================== -->
-    <section class="relative pt-32 sm:pt-40 pb-24 overflow-hidden">
-      <div class="absolute inset-0 -z-10">
-        <img
-          src="media/real-clean-home-exterior.jpg"
-          alt="A modern, spotless home exterior"
-          class="w-full h-full object-cover"
-        />
-        <div class="absolute inset-0 bg-gradient-to-r from-navy-950/92 via-navy-950/70 to-navy-950/30"></div>
-      </div>
-
-      <div class="relative max-w-7xl mx-auto px-5 sm:px-8">
-        <span class="reveal inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/15 text-white text-sm font-semibold mb-8 backdrop-blur">
-          <span class="w-2 h-2 rounded-full bg-white/80 animate-pulse"></span>
-          Our story
+  <main class="bg-white">
+    <!-- ===================== UNIFIED HERO ===================== -->
+    <section class="relative pt-32 sm:pt-48 px-5 sm:px-8 text-center bg-white">
+      <div class="max-w-4xl mx-auto">
+        <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-50 border border-slate-200 text-slate-600 text-sm font-semibold mb-8 shadow-sm reveal">
+          <span class="w-2 h-2 rounded-full bg-mint-500"></span>
+          Our Vision
         </span>
-
-        <h1 class="reveal font-display font-extrabold tracking-tight text-5xl sm:text-6xl lg:text-7xl text-white mt-4 max-w-3xl" data-delay="1">
-          Making cleaning <br class="hidden sm:block" /><span class="grad-text">safe, fair, and effortless.</span>
+        <h1 class="font-display font-extrabold tracking-tight text-5xl sm:text-7xl text-navy-950 leading-tight mb-8 reveal" data-delay="1">
+          Rewriting the rules of the cleaning industry.
         </h1>
-
-        <p class="reveal max-w-2xl mt-7 text-lg sm:text-xl text-white/90 leading-relaxed" data-delay="2">
-          One Stop Cleaner is one place where families book <strong>verified cleaners</strong>, cleaning professionals find steady work, and brands reach the homes that need them. We built it to feel effortless and safe from day one.
+        <p class="max-w-2xl mx-auto text-lg sm:text-xl text-slate-600 leading-relaxed mb-12 reveal" data-delay="2">
+          For too long, the home cleaning market has been plagued by unreliability, cash-in-hand insecurity, and poor working conditions. We're building the trusted ecosystem the industry deserves.
         </p>
       </div>
-    </section>
-
-    <!-- ===================== MISSION & VISION ===================== -->
-    <section class="py-24 sm:py-32 bg-slate-50">
-      <div class="max-w-7xl mx-auto px-5 sm:px-8">
-        <div class="grid md:grid-cols-2 gap-16">
-          <div class="reveal">
-            <span class="block text-mint-600 font-semibold text-sm uppercase tracking-wide mb-3">Our mission</span>
-            <h2 class="font-display font-extrabold tracking-tight text-4xl text-navy-950 mb-5">Connect people with reliable, verified cleaning.</h2>
-            <p class="text-slate-600 leading-relaxed text-lg">Transparent pricing, secure payments, and peace of mind on every booking. We match families with verified cleaners and give professionals the work they deserve.</p>
+      
+      <!-- Edge-to-edge Hero Image -->
+      <div class="relative max-w-7xl mx-auto h-[400px] sm:h-[600px] rounded-t-3xl sm:rounded-3xl overflow-hidden shadow-2xl reveal mt-12" data-delay="3">
+        <img src="media/about_hero.jpg" alt="Pristine luxury living room" class="w-full h-full object-cover" />
+        
+        <!-- Integrated Stats Overlay -->
+        <div class="absolute bottom-6 left-6 right-6 sm:bottom-10 sm:left-10 sm:right-10 glass rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-xl hidden sm:block">
+          <div class="grid grid-cols-3 gap-8 divide-x divide-slate-300 text-center">
+            <div>
+              <div class="font-display font-extrabold text-4xl text-navy-950 mb-1"><span class="counter">100</span>%</div>
+              <p class="text-sm text-slate-800 font-semibold tracking-wide uppercase">Escrow Secured</p>
+            </div>
+            <div>
+              <div class="font-display font-extrabold text-4xl text-navy-950 mb-1">360&deg;</div>
+              <p class="text-sm text-slate-800 font-semibold tracking-wide uppercase">Vetted Partners</p>
+            </div>
+            <div>
+              <div class="font-display font-extrabold text-4xl text-navy-950 mb-1"><span class="counter">24</span>/7</div>
+              <p class="text-sm text-slate-800 font-semibold tracking-wide uppercase">Priority Support</p>
+            </div>
           </div>
-          <div class="reveal" data-delay="1">
-            <span class="block text-mint-600 font-semibold text-sm uppercase tracking-wide mb-3">Our vision</span>
-            <h2 class="font-display font-extrabold tracking-tight text-4xl text-navy-950 mb-5">The most trusted marketplace — for every home and every cleaner.</h2>
-            <p class="text-slate-600 leading-relaxed text-lg">Cleaners connected, protected, and fairly rewarded. Families trusted. Brands reaching the right homes.</p>
+        </div>
+      </div>
+      
+      <!-- Mobile Stats (Below Image) -->
+      <div class="sm:hidden -mt-6 relative z-10 px-5">
+        <div class="bg-white rounded-2xl p-6 shadow-xl border border-slate-100 grid gap-6 text-center">
+          <div>
+            <div class="font-display font-extrabold text-4xl text-navy-950 mb-1">100%</div>
+            <p class="text-xs text-slate-500 font-semibold tracking-wide uppercase">Escrow Secured</p>
+          </div>
+          <div class="h-px bg-slate-100"></div>
+          <div>
+            <div class="font-display font-extrabold text-4xl text-navy-950 mb-1">360&deg;</div>
+            <p class="text-xs text-slate-500 font-semibold tracking-wide uppercase">Vetted Partners</p>
+          </div>
+          <div class="h-px bg-slate-100"></div>
+          <div>
+            <div class="font-display font-extrabold text-4xl text-navy-950 mb-1">24/7</div>
+            <p class="text-xs text-slate-500 font-semibold tracking-wide uppercase">Dedicated Support</p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ===================== VALUES ===================== -->
-    <section class="py-24 sm:py-32">
+    <!-- ===================== TYPOGRAPHY QUOTE ===================== -->
+    <section class="py-24 sm:py-32 px-5 sm:px-8 bg-white">
+      <div class="max-w-4xl mx-auto text-center reveal">
+        <svg class="w-12 h-12 text-mint-400 mx-auto mb-8 opacity-50" fill="currentColor" viewBox="0 0 32 32"><path d="M10 8c-4.4 0-8 3.6-8 8s3.6 8 8 8 8-3.6 8-8-3.6-8-8-8zm18 0c-4.4 0-8 3.6-8 8s3.6 8 8 8 8-3.6 8-8-3.6-8-8-8z"/></svg>
+        <h2 class="font-display font-extrabold tracking-tight text-3xl sm:text-5xl text-navy-950 leading-[1.3] mb-8">
+          "By introducing mandatory vetting and escrow-secured payments, we are replacing anxiety with absolute certainty."
+        </h2>
+        <p class="text-slate-500 font-semibold tracking-widest uppercase text-sm">The Founder's Promise</p>
+      </div>
+    </section>
+
+    <!-- ===================== CORE PILLARS ===================== -->
+    <section id="pillars" class="pb-32 sm:pb-40 bg-white">
       <div class="max-w-7xl mx-auto px-5 sm:px-8">
-        <div class="text-center max-w-2xl mx-auto mb-16 reveal">
-          <span class="block text-mint-600 font-semibold text-sm uppercase tracking-wide mb-3">What we stand for</span>
-          <h2 class="font-display font-extrabold tracking-tight text-4xl sm:text-5xl text-navy-950">Our values</h2>
+        <div class="text-center max-w-2xl mx-auto mb-20 reveal">
+          <span class="block text-mint-600 font-semibold text-sm uppercase tracking-wide mb-4">What we stand for</span>
+          <h2 class="font-display font-extrabold tracking-tight text-4xl sm:text-5xl text-navy-950">Our core pillars</h2>
         </div>
 
         <div class="grid md:grid-cols-3 gap-8">
-          <article class="card reveal p-8 hover:shadow-xl transition-all duration-300">
-            <div class="w-14 h-14 rounded-2xl bg-mint-50 grid place-items-center mb-6">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="w-7 h-7 text-mint-600"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/></svg>
+          <!-- Pillar 1 -->
+          <article class="reveal group bg-slate-50 rounded-3xl p-10 border border-slate-100 hover:border-mint-200 hover:shadow-xl transition-all duration-300">
+            <div class="w-16 h-16 rounded-2xl bg-white shadow-sm border border-slate-200 grid place-items-center mb-8 group-hover:scale-110 transition-transform duration-300">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="w-8 h-8 text-mint-600"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/></svg>
             </div>
-            <h3 class="font-display font-bold text-xl text-navy-950 mb-3">Trust first</h3>
-            <p class="text-slate-600 leading-relaxed">Every verification, payment, and review exists to make you feel safe.</p>
+            <h3 class="font-display font-extrabold text-2xl text-navy-950 mb-4">Uncompromising Trust</h3>
+            <p class="text-slate-600 leading-relaxed">Every cleaner on our platform passes rigorous identity and reference checks. We don't compromise on who enters your home.</p>
           </article>
 
-          <article class="card reveal p-8 hover:shadow-xl transition-all duration-300" data-delay="1">
-            <div class="w-14 h-14 rounded-2xl bg-mint-50 grid place-items-center mb-6">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="w-7 h-7 text-mint-600"><path d="M20 6 12 15 5 8"/></svg>
+          <!-- Pillar 2 -->
+          <article class="reveal group bg-slate-50 rounded-3xl p-10 border border-slate-100 hover:border-mint-200 hover:shadow-xl transition-all duration-300" data-delay="1">
+            <div class="w-16 h-16 rounded-2xl bg-white shadow-sm border border-slate-200 grid place-items-center mb-8 group-hover:scale-110 transition-transform duration-300">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="w-8 h-8 text-mint-600"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="V7a5 5 0 0 1 10 0"/></svg>
             </div>
-            <h3 class="font-display font-bold text-xl text-navy-950 mb-3">Fairness for all</h3>
-            <p class="text-slate-600 leading-relaxed">Cleaners get paid fairly and on time. Clients get honest pricing. We design for both sides, always.</p>
+            <h3 class="font-display font-extrabold text-2xl text-navy-950 mb-4">Escrow Security</h3>
+            <p class="text-slate-600 leading-relaxed">The end of cash disputes. Funds are held securely and only released when both parties are 100% satisfied.</p>
           </article>
 
-          <article class="card reveal p-8 hover:shadow-xl transition-all duration-300" data-delay="2">
-            <div class="w-14 h-14 rounded-2xl bg-mint-50 grid place-items-center mb-6">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="w-7 h-7 text-mint-600"><path d="M12 3 2 9l10 6 10-6-10-6Z"/><path d="m2 15 10 6 10-6"/><path d="m2 9 10 6 10-6"/></svg>
+          <!-- Pillar 3 -->
+          <article class="reveal group bg-slate-50 rounded-3xl p-10 border border-slate-100 hover:border-mint-200 hover:shadow-xl transition-all duration-300" data-delay="2">
+            <div class="w-16 h-16 rounded-2xl bg-white shadow-sm border border-slate-200 grid place-items-center mb-8 group-hover:scale-110 transition-transform duration-300">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="w-8 h-8 text-mint-600"><path d="M3 17l6-6 4 4 8-8"/><path d="M21 7v4h-4"/></svg>
             </div>
-            <h3 class="font-display font-bold text-xl text-navy-950 mb-3">Simple by design</h3>
-            <p class="text-slate-600 leading-relaxed">Complex problems deserve simple solutions. We strip away friction so cleaning feels effortless.</p>
+            <h3 class="font-display font-extrabold text-2xl text-navy-950 mb-4">Empowering Pros</h3>
+            <p class="text-slate-600 leading-relaxed">We give independent cleaners and small businesses the software, leads, and guaranteed payouts they need to scale.</p>
           </article>
         </div>
       </div>
     </section>
 
-    <!-- ===================== TIMELINE ===================== -->
-    <section class="py-24 sm:py-32 bg-slate-50">
-      <div class="max-w-7xl mx-auto px-5 sm:px-8">
-        <div class="text-center max-w-2xl mx-auto mb-16 reveal">
-          <span class="block text-mint-600 font-semibold text-sm uppercase tracking-wide mb-3">Our journey</span>
-          <h2 class="font-display font-extrabold tracking-tight text-4xl sm:text-5xl text-navy-950 mb-4">From idea to launch</h2>
-          <p class="text-slate-600 leading-relaxed text-lg">We're early, focused, and moving fast. Here's where we are — and where you can be part of it.</p>
+    <!-- ===================== CLEAN LEFT-ALIGNED TIMELINE ===================== -->
+    <section class="py-24 sm:py-32 px-5 sm:px-8 bg-slate-50">
+      <div class="max-w-3xl mx-auto">
+        <div class="mb-20 reveal">
+          <span class="block text-mint-600 font-semibold text-sm uppercase tracking-wide mb-4">Traction</span>
+          <h2 class="font-display font-extrabold tracking-tight text-4xl sm:text-5xl text-navy-950">Our Journey to Launch</h2>
         </div>
 
-        <div class="relative max-w-xl mx-auto" data-delay="1">
-          <div class="absolute left-5 top-2 bottom-2 w-0.5 bg-slate-300"></div>
+        <div class="relative pl-8 sm:pl-12">
+          <!-- Continuous Vertical Line -->
+          <div class="absolute left-0 top-2 bottom-0 w-1 bg-slate-200 rounded-full"></div>
 
-          <div class="relative flex gap-6 mb-10 reveal">
-            <span class="relative z-10 w-10 h-10 rounded-full bg-mint-500 flex-shrink-0 grid place-items-center"></span>
-            <div>
-              <span class="inline-block text-mint-600 font-semibold text-xs uppercase tracking-wide mb-1">Now</span>
-              <h3 class="font-display font-bold text-xl text-navy-950 mb-2">Foundation</h3>
-              <p class="text-slate-600 leading-relaxed">Defining the vision, validating the market, and designing an enterprise-grade marketplace platform.</p>
-            </div>
+          <!-- Milestone 1 -->
+          <div class="reveal relative mb-16 group">
+            <!-- Node -->
+            <div class="absolute -left-10 sm:-left-[54px] top-2 w-5 h-5 rounded-full bg-mint-500 border-4 border-slate-50 shadow-sm z-10 group-hover:scale-125 transition-transform"></div>
+            
+            <span class="inline-block px-3 py-1 bg-mint-100 text-mint-700 font-bold text-xs uppercase tracking-widest rounded-full mb-4">Q1 — Completed</span>
+            <h3 class="font-display font-extrabold text-2xl text-navy-950 mb-3">Platform Architecture & Escrow Integration</h3>
+            <p class="text-slate-600 leading-relaxed text-lg">Foundation of the marketplace, with escrow-secured payments and verification infrastructure built from the ground up.</p>
           </div>
 
-          <div class="relative flex gap-6 mb-10 reveal">
-            <span class="relative z-10 w-10 h-10 rounded-full bg-mint-500 flex-shrink-0 grid place-items-center"></span>
-            <div>
-              <span class="inline-block text-mint-600 font-semibold text-xs uppercase tracking-wide mb-1">Building</span>
-              <h3 class="font-display font-bold text-xl text-navy-950 mb-2">Product &amp; team</h3>
-              <p class="text-slate-600 leading-relaxed">Building the core marketplace, secure payments, and verification systems for our launch market.</p>
+          <!-- Milestone 2 -->
+          <div class="reveal relative mb-16 group">
+            <!-- Active Line -->
+            <div class="absolute -left-8 sm:-left-12 top-2 h-full w-1 bg-mint-500 rounded-full origin-top transform scale-y-0 group-hover:scale-y-100 transition-transform duration-700 ease-out z-0"></div>
+            
+            <!-- Node -->
+            <div class="absolute -left-10 sm:-left-[54px] top-2 w-5 h-5 rounded-full bg-mint-500 border-4 border-slate-50 shadow-sm z-10">
+              <div class="absolute inset-0 rounded-full border border-mint-500 animate-ping"></div>
             </div>
+            
+            <span class="inline-block px-3 py-1 bg-mint-500 text-white font-bold text-xs uppercase tracking-widest rounded-full mb-4 shadow-sm">Q2 — In Progress</span>
+            <h3 class="font-display font-extrabold text-2xl text-navy-950 mb-3">Cleaner Onboarding & Vetting</h3>
+            <p class="text-slate-600 leading-relaxed text-lg">Onboarding vetted cleaning professionals and validating demand across our launch market in Australia.</p>
           </div>
 
-          <div class="relative flex gap-6 reveal">
-            <span class="relative z-10 w-10 h-10 rounded-full bg-mint-500 flex-shrink-0 grid place-items-center"></span>
-            <div>
-              <span class="inline-block text-mint-600 font-semibold text-xs uppercase tracking-wide mb-1">Now</span>
-              <h3 class="font-display font-bold text-xl text-navy-950 mb-2">Launch</h3>
-              <p class="text-slate-600 leading-relaxed">Opening to our first cleaners, clients, and brand partners — one city at a time.</p>
-            </div>
+          <!-- Milestone 3 -->
+          <div class="reveal relative group">
+            <!-- Node -->
+            <div class="absolute -left-10 sm:-left-[54px] top-2 w-5 h-5 rounded-full bg-slate-300 border-4 border-slate-50 z-10 group-hover:scale-125 transition-transform"></div>
+            
+            <span class="inline-block px-3 py-1 bg-white text-slate-500 border border-slate-200 font-bold text-xs uppercase tracking-widest rounded-full mb-4">Q3 — Upcoming</span>
+            <h3 class="font-display font-extrabold text-2xl text-slate-400 mb-3">Public Launch & Client Matchmaking</h3>
+            <p class="text-slate-500 leading-relaxed text-lg">Opening the platform to the public and connecting families with verified cleaners, one city at a time.</p>
           </div>
-        </div>
-      </div>
-    </section>
 
-    <!-- ===================== CTA ===================== -->
-    <section class="py-24 sm:py-32">
-      <div class="max-w-4xl mx-auto px-5 sm:px-8">
-        <div class="reveal rounded-3xl bg-navy-950 px-8 py-16 text-center relative overflow-hidden" style="box-shadow: var(--shadow-xl);">
-          <div class="absolute inset-0 bg-gradient-to-br from-mint-600/20 to-transparent"></div>
-          <div class="relative">
-            <h2 class="font-display font-extrabold tracking-tight text-3xl sm:text-5xl text-white mb-5">Be part of the story</h2>
-            <p class="text-white/85 max-w-md mx-auto mb-9 text-lg leading-relaxed">Whether you want cleaning done, want to earn as a cleaner, or grow your product brand — we'd love to hear from you.</p>
-            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <a href="services.html" class="btn btn--light btn--lg rounded-full">Book a cleaner <span class="btn__arrow" aria-hidden="true">→</span></a>
-              <button type="button" class="btn btn--ghost btn--lg rounded-full" style="background:transparent; border-color:rgba(255,255,255,0.35); color:#fff;" data-cta="partner">Partner with us</button>
-            </div>
-          </div>
         </div>
       </div>
     </section>
+
   </main>
 
   <!-- ===================== FOOTER ===================== -->
@@ -220,16 +241,7 @@
             <span>One Stop <span class="grad-text">Cleaner</span></span>
           </a>
           <p class="text-slate-400 text-sm leading-relaxed max-w-xs mb-6">The most trusted cleaning marketplace — connecting families, verified cleaners, and professional products.</p>
-          <form class="max-w-xs" data-source="waitlist" novalidate>
-            <label class="sr-only" for="footer-email">Email address</label>
-            <div class="flex items-center gap-2 p-2 rounded-full bg-white/5 border border-white/10 focus-within:border-mint-400 transition-all">
-              <input type="email" id="footer-email" name="email" placeholder="your@email.com" autocomplete="email" required class="flex-1 px-3 py-2 bg-transparent text-white placeholder-slate-500 outline-none text-sm" />
-              <button type="submit" class="w-9 h-9 grid place-items-center rounded-full bg-mint-500 text-white hover:bg-mint-400 transition-colors flex-shrink-0" aria-label="Subscribe">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-              </button>
-            </div>
-            <p class="field-msg mt-3 text-xs" role="status"></p>
-          </form>
+          
         </div>
 
         <div>
@@ -253,8 +265,8 @@
         <div>
           <h4 class="font-semibold text-white mb-4 text-sm">Legal</h4>
           <ul class="space-y-3 text-sm">
-            <li><a href="#" class="hover:text-mint-400 transition-colors">Privacy policy</a></li>
-            <li><a href="#" class="hover:text-mint-400 transition-colors">Terms of service</a></li>
+            <li><a href="privacy.html" class="hover:text-mint-400 transition-colors">Privacy policy</a></li>
+            <li><a href="terms.html" class="hover:text-mint-400 transition-colors">Terms of service</a></li>
             <li><a href="#" class="hover:text-mint-400 transition-colors">Cookie policy</a></li>
             <li><a href="contact.html#partner" class="hover:text-mint-400 transition-colors">Partnerships</a></li>
           </ul>

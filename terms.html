@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Terms of Service — One Stop Cleaner</title>
+  <meta name="theme-color" content="#1a1712" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+  <!-- NAV -->
+  <header class="nav" id="nav">
+    <div class="container nav__inner">
+      <a href="index.html" class="brand" aria-label="One Stop Cleaner home">
+        <span class="brand__mark" aria-hidden="true"></span>
+        <span class="brand__name"><span class="brand__o">O</span>ne Stop <span>Cleaner</span></span>
+      </a>
+      <nav class="nav__links" id="navLinks" aria-label="Primary">
+        <a href="index.html" class="nav-link">Home</a>
+        <div class="nav-dropdown">
+          <a href="services.html" class="nav-link">Services<span class="nav-dropdown__chevron" aria-hidden="true"></span></a>
+          <div class="nav-dropdown__menu" role="menu">
+            <a href="services.html#clients" class="nav-dropdown__item" role="menuitem">For clients</a>
+            <a href="services.html#providers" class="nav-dropdown__item" role="menuitem">For cleaners</a>
+          </div>
+        </div>
+        <a href="products.html" class="nav-link">Products</a>
+        <a href="about.html" class="nav-link">About</a>
+        <a href="contact.html#partner" class="nav-link">Partner with us</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+      </nav>
+      <div class="nav__cta">
+        <button type="button" class="btn btn--ghost btn--lg" data-cta="notify-me">Join the waitlist</button>
+        <button class="navToggle" id="navToggle" aria-expanded="false" aria-controls="navLinks" aria-label="Toggle menu"><span></span></button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="section" style="padding-top:140px;">
+      <div class="container" style="max-width:800px;">
+        <h1 class="hero__title" style="margin-bottom:24px;">Terms of Service</h1>
+        <p class="section__lead" style="margin-bottom:48px;">Last updated: September 2026</p>
+        
+        <div class="legal-content" style="color:var(--slate); line-height:1.8; font-size:1.05rem;">
+          <h2 style="font-size:1.4rem; color:var(--ink); margin:32px 0 16px;">1. Introduction</h2>
+          <p style="margin-bottom:20px;">Welcome to One Stop Cleaner. By accessing our platform, you agree to these Terms of Service. These terms govern your use of our website, services, and any products purchased through our platform.</p>
+          
+          <h2 style="font-size:1.4rem; color:var(--ink); margin:32px 0 16px;">2. User Accounts</h2>
+          <p style="margin-bottom:20px;">You are responsible for maintaining the confidentiality of your account credentials. You agree to notify us immediately of any unauthorized use of your account.</p>
+          
+          <h2 style="font-size:1.4rem; color:var(--ink); margin:32px 0 16px;">3. Service Bookings</h2>
+          <p style="margin-bottom:20px;">One Stop Cleaner acts as a marketplace connecting clients with independent cleaning professionals. While we verify our professionals, the actual contract for service is directly between the client and the cleaner.</p>
+          
+          <h2 style="font-size:1.4rem; color:var(--ink); margin:32px 0 16px;">4. Payments and Escrow</h2>
+          <p style="margin-bottom:20px;">Payments are processed securely and held in escrow until the service is completed to your satisfaction, subject to our dispute resolution policy.</p>
+          
+          <h2 style="font-size:1.4rem; color:var(--ink); margin:32px 0 16px;">5. Limitation of Liability</h2>
+          <p style="margin-bottom:20px;">One Stop Cleaner is not liable for indirect, incidental, or consequential damages arising from the use of our services or products.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__top">
+        <div>
+          <a href="index.html" class="footer__brand"><span class="brand__mark" aria-hidden="true"></span><span>One Stop <span>Cleaner</span></span></a>
+          <p class="footer__about">Fresh cleaning and quality products, one stop away. Building the most trusted cleaning marketplace.</p>
+        </div>
+        <div class="footer__col">
+          <h4>Company</h4>
+          <a href="about.html">About</a>
+          <a href="services.html">Services</a>
+          <a href="contact.html">Contact</a>
+        </div>
+        <div class="footer__col">
+          <h4>Services</h4>
+          <a href="services.html">For clients</a>
+          <a href="services.html">For cleaners</a>
+          <a href="products.html">Products</a>
+          <a href="services.html">How it works</a>
+        </div>
+        <div class="footer__col">
+          <h4>Legal</h4>
+          <a href="terms.html">Terms of Service</a>
+          <a href="privacy.html">Privacy Policy</a>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p>© <span id="year"></span> One Stop Cleaner. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+  <script src="js/shared.js"></script>
+</body>
+</html>

@@ -22,13 +22,13 @@
   <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
 
   <!-- ===================== HEADER ===================== -->
-  <header class="nav fixed top-0 inset-x-0 z-50 transition-all duration-300" id="nav">
+  <header class="nav fixed top-0 inset-x-0 z-50 transition-all duration-300 bg-navy-950 shadow-md" id="nav">
     <div class="max-w-7xl mx-auto px-5 sm:px-8 flex items-center justify-between h-16 sm:h-20">
-      <a href="index.html" class="flex items-center gap-2.5 font-display font-extrabold text-lg sm:text-xl tracking-tight text-navy-950">
+      <a href="index.html" class="flex items-center gap-2.5 font-display font-extrabold text-lg sm:text-xl tracking-tight text-white">
         <span class="inline-grid place-items-center w-9 h-9 rounded-xl bg-gradient-to-br from-mint-400 to-mint-600 text-white shadow-glow">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M3 12h18M12 3v18"/><path d="M8 7l-2 4 2 4M16 7l2 4-2 4M12 5l-1.5 3 1.5 3 1.5-3-1.5-3Z"/></svg>
         </span>
-        <span>One Stop <span class="grad-text">Cleaner</span></span>
+        <span>One Stop <span class="text-mint-400">Cleaner</span></span>
       </a>
 
       <nav class="hidden lg:flex items-center gap-8" aria-label="Primary">
@@ -53,6 +53,7 @@
         </button>
       </div>
     </div>
+    <!-- Mobile menu -->
     <nav class="lg:hidden hidden bg-navy-950/95 backdrop-blur-md border-t border-navy-800" id="navLinks">
       <div class="max-w-7xl mx-auto px-5 py-4 grid gap-1">
         <a href="index.html" class="px-3 py-2.5 rounded-lg text-base font-semibold text-white hover:bg-navy-800">Home</a>
@@ -368,7 +369,7 @@
           </a>
         </div>
         <div class="reveal lg:justify-self-start order-2 lg:order-2">
-          <img src="media/real-clean-supplies.jpg" alt="Professional cleaning supplies flatlay" class="rounded-3xl shadow-xl w-full h-auto object-cover aspect-[4/3]" />
+          <img src="media/product_supplies.jpg" alt="Professional cleaning supplies flatlay" class="rounded-3xl shadow-xl w-full h-auto object-cover aspect-[4/3]" />
         </div>
       </div>
     </section>
@@ -382,7 +383,7 @@
             <h2 class="font-display font-extrabold tracking-tight text-3xl sm:text-5xl mb-5">Ready to get started?</h2>
             <p class="text-slate-300 text-lg max-w-xl mx-auto mb-9">Book a verified cleaner today, or grow your cleaning business with us — before we launch in your city.</p>
             <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <button type="button" class="btn btn--primary btn--lg" data-cta="notify-me">Book a cleaner</button>
+              <button type="button" class="btn btn--primary btn--lg" data-cta="notify-me">Join Waitlist</button>
               <button type="button" class="btn btn--light btn--lg" data-cta="grow-business">Grow your business</button>
             </div>
           </div>
@@ -403,16 +404,7 @@
             <span>One Stop <span class="grad-text">Cleaner</span></span>
           </a>
           <p class="text-slate-400 text-sm leading-relaxed max-w-xs mb-6">Fresh cleaning and quality products, one stop away. Building the most trusted cleaning marketplace in Australia.</p>
-          <form class="max-w-xs" data-source="waitlist" novalidate>
-            <label class="sr-only" for="footer-email">Email address</label>
-            <div class="flex items-center gap-2 p-2 rounded-full bg-white/5 border border-white/10 focus-within:border-mint-400 transition-all">
-              <input type="email" id="footer-email" name="email" placeholder="your@email.com" autocomplete="email" required class="flex-1 px-3 py-2 bg-transparent text-white placeholder-slate-500 outline-none text-sm" />
-              <button type="submit" class="w-9 h-9 grid place-items-center rounded-full bg-mint-500 text-white hover:bg-mint-400 transition-colors flex-shrink-0" aria-label="Subscribe">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-              </button>
-            </div>
-            <p class="field-msg mt-3 text-xs" role="status"></p>
-          </form>
+          
         </div>
 
         <div>
@@ -436,8 +428,8 @@
         <div>
           <h4 class="font-semibold text-white mb-4 text-sm">Legal</h4>
           <ul class="space-y-3 text-sm">
-            <li><a href="#" class="hover:text-mint-400 transition-colors">Privacy policy</a></li>
-            <li><a href="#" class="hover:text-mint-400 transition-colors">Terms of service</a></li>
+            <li><a href="privacy.html" class="hover:text-mint-400 transition-colors">Privacy policy</a></li>
+            <li><a href="terms.html" class="hover:text-mint-400 transition-colors">Terms of service</a></li>
             <li><a href="#" class="hover:text-mint-400 transition-colors">Cookie policy</a></li>
             <li><a href="contact.html#partner" class="hover:text-mint-400 transition-colors">Partnerships</a></li>
           </ul>

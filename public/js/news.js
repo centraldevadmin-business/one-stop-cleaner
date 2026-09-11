@@ -42,24 +42,24 @@
     if (md == null) return '';
     let html = escapeHtml(md);
     // Headings
-    html = html.replace(/^######\s+(.*)$/gm, '<h6 class="text-sm font-bold mt-8 mb-2">$1</h6>')
-      .replace(/^####\s+(.*)$/gm, '<h4 class="text-lg font-bold mt-8 mb-2">$1</h4>')
-      .replace(/^###\s+(.*)$/gm, '<h3 class="text-xl font-bold mt-8 mb-2">$1</h3>')
-      .replace(/^##\s+(.*)$/gm, '<h2 class="text-2xl font-bold mt-8 mb-3">$1</h2>');
+    html = html.replace(/^######\s+(.*)$/gm, '<h6 class="text-base font-bold text-navy-950 mt-8 mb-4">$1</h6>')
+      .replace(/^####\s+(.*)$/gm, '<h4 class="text-xl font-display font-bold text-navy-950 mt-10 mb-4">$1</h4>')
+      .replace(/^###\s+(.*)$/gm, '<h3 class="text-2xl font-display font-extrabold text-navy-950 mt-12 mb-5">$1</h3>')
+      .replace(/^##\s+(.*)$/gm, '<h2 class="text-3xl font-display font-extrabold text-navy-950 mt-14 mb-6">$1</h2>');
     // Bold / italic
-    html = html.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
-      .replace(/\*([^*]+)\*/g, '<em>$1</em>');
+    html = html.replace(/\*\*([^*]+)\*\*/g, '<strong class="font-bold text-navy-950">$1</strong>')
+      .replace(/\*([^*]+)\*/g, '<em class="italic">$1</em>');
     // Ordered lists
-    html = html.replace(/^\s*\d+\.\s+(.*)$/gm, '<li>$1</li>');
-    html = html.replace(/(<li>.*<\/li>\n?)+/g, (m) => '<ol class="list-decimal pl-6 space-y-1">' + m.trim() + '</ol>');
+    html = html.replace(/^\s*\d+\.\s+(.*)$/gm, '<li class="mb-2 pl-2 marker:text-mint-600">$1</li>');
+    html = html.replace(/(<li.*<\/li>\n?)+/g, (m) => '<ol class="list-decimal pl-6 my-6 space-y-2 text-slate-700 leading-relaxed">' + m.trim() + '</ol>');
     // Unordered lists
-    html = html.replace(/^\s*[-*]\s+(.*)$/gm, '<li>$1</li>');
-    html = html.replace(/(<li>.*<\/li>\n?)+/g, (m) => '<ul class="list-disc pl-6 space-y-1">' + m.trim() + '</ul>');
+    html = html.replace(/^\s*[-*]\s+(.*)$/gm, '<li class="mb-2 pl-2 marker:text-mint-500">$1</li>');
+    html = html.replace(/(<li.*<\/li>\n?)+/g, (m) => '<ul class="list-disc pl-6 my-6 space-y-2 text-slate-700 leading-relaxed">' + m.trim() + '</ul>');
     // Paragraphs
-    html = html.replace(/\n\n+/g, '</p><p>');
-    html = '<p>' + html + '</p>';
-    html = html.replace(/<p>\s*(<h[2346]|<ol|<ul)/g, '<p></p>$1')
-      .replace(/(<\/h[2346]>|<\/ol>|<\/ul>)\s*<\/p>/g, '$1</p>');
+    html = html.replace(/\n\n+/g, '</p><p class="mb-6 leading-relaxed text-slate-700 text-lg">');
+    html = '<p class="mb-6 leading-relaxed text-slate-700 text-lg">' + html + '</p>';
+    html = html.replace(/<p[^>]*>\s*(<h[2346]|<ol|<ul)/g, '$1')
+      .replace(/(<\/h[2346]>|<\/ol>|<\/ul>)\s*<\/p>/g, '$1');
     return html;
   }
 
@@ -106,52 +106,63 @@
 
   function renderPost(post) {
     const wrap = $('#news-post');
+    const hero = $('#news-hero');
     if (!wrap) return;
+    
+    // Hide the hero section for a single post view
+    if (hero) hero.style.display = 'none';
+
     if (!post) {
       wrap.innerHTML =
-        `<div class="max-w-3xl mx-auto px-5 sm:px-8 text-center py-16">
+        `<div class="max-w-3xl mx-auto px-5 sm:px-8 text-center py-16 mt-20">
           <h1 class="font-display font-extrabold tracking-tight text-3xl text-navy-950 mb-4">Article not found</h1>
           <a class="btn btn--primary" href="news.html">Back to news</a>
         </div>`;
       return;
     }
     const date = formatDate(post.published_at);
-    const cover = post.cover_url ? `<img src="${escapeHtml(post.cover_url)}" alt="" class="w-full h-64 sm:h-96 object-cover rounded-2xl" />` : '';
+    const cover = post.cover_url ? `<img src="${escapeHtml(post.cover_url)}" alt="" class="w-full h-[400px] sm:h-[500px] object-cover rounded-3xl shadow-xl mt-8 mb-12" />` : '';
     const related = relatedPosts(post.slug);
     const relatedHtml = related.length
-      ? `<div class="mt-24 pt-12 border-t border-slate-200">
-          <h3 class="font-display font-extrabold tracking-tight text-2xl text-navy-950 mb-6">More from the blog</h3>
-          <div class="grid gap-6 sm:grid-cols-3">
-            ${related.map(renderCard).join('')}
+      ? `<div class="mt-24 pt-16 border-t border-slate-200">
+          <h3 class="font-display font-extrabold tracking-tight text-3xl text-navy-950 mb-10">More from the blog</h3>
+          <div class="grid gap-8 sm:grid-cols-3" id="related-articles-container">
           </div>
         </div>`
       : '';
     wrap.innerHTML =
-      `<article class="py-10 sm:py-16">
-        <a href="news.html" class="inline-flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-mint-600 transition-colors mb-10">
-          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg> Back to news
+      `<article class="py-16 sm:py-24 mt-20">
+        <a href="news.html" class="inline-flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-mint-600 transition-colors mb-12">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg> Back to news
         </a>
         <header class="max-w-3xl mx-auto">
-          <div class="flex flex-wrap items-center gap-2 mb-5">${categoryPill(post.category)}${date ? `<span class="text-sm text-slate-500">${date}</span>` : ''}</div>
-          <h1 class="font-display font-extrabold tracking-tight text-4xl sm:text-5xl lg:text-6xl text-navy-950 mb-6">${escapeHtml(post.title)}</h1>
-          <p class="text-slate-600 text-lg sm:text-xl leading-relaxed mb-8">${escapeHtml(post.excerpt || '')}</p>
-          <div class="flex items-center gap-3 pb-8 border-b border-slate-200">
-            <span class="inline-grid place-items-center w-11 h-11 rounded-full bg-gradient-to-br from-mint-400 to-mint-600 text-white font-semibold">${escapeHtml((post.author || 'One Stop Cleaner').charAt(0).toUpperCase())}</span>
+          <div class="flex flex-wrap items-center gap-3 mb-6">${categoryPill(post.category)}${date ? `<span class="text-sm font-semibold text-slate-500">${date}</span>` : ''}</div>
+          <h1 class="font-display font-extrabold tracking-tight text-4xl sm:text-5xl lg:text-6xl text-navy-950 mb-8 leading-[1.1]">${escapeHtml(post.title)}</h1>
+          <p class="text-slate-600 text-xl sm:text-2xl leading-relaxed mb-10">${escapeHtml(post.excerpt || '')}</p>
+          <div class="flex items-center gap-4 pb-10 border-b border-slate-200">
+            <span class="inline-grid place-items-center w-12 h-12 rounded-full bg-gradient-to-br from-mint-400 to-mint-600 text-white font-semibold text-lg">${escapeHtml((post.author || 'One Stop Cleaner').charAt(0).toUpperCase())}</span>
             <div>
-              <p class="font-semibold text-navy-950">${escapeHtml(post.author || 'One Stop Cleaner')}</p>
-              <p class="text-sm text-slate-500">One Stop Cleaner</p>
+              <p class="font-bold text-navy-950">${escapeHtml(post.author || 'One Stop Cleaner')}</p>
+              <p class="text-sm font-medium text-slate-500">One Stop Cleaner</p>
             </div>
           </div>
         </header>
         ${cover}
         <div class="max-w-3xl mx-auto">
-          <div class="prose text-lg text-slate-700 leading-[1.9] pt-10 space-y-5">${markdownToHtml(post.body)}</div>
+          <div class="pt-6">${markdownToHtml(post.body)}</div>
         </div>
-        <div class="max-w-3xl mx-auto mt-14">
-          <a class="btn btn--primary btn--lg" href="services.html">Book a cleaner <span class="btn__arrow" aria-hidden="true">→</span></a>
+        <div class="max-w-3xl mx-auto mt-16 pt-10 border-t border-slate-200">
+          <button type="button" class="btn btn--primary btn--lg" data-cta="notify-me">Join Waitlist <span class="btn__arrow" aria-hidden="true">→</span></button>
         </div>
         ${relatedHtml}
       </article>`;
+
+    if (related.length) {
+      const container = wrap.querySelector('#related-articles-container');
+      if (container) {
+        related.forEach((p) => container.appendChild(renderCard(p)));
+      }
+    }
   }
 
   function init() {

@@ -66,7 +66,7 @@
 
 /* ---------- Reset ---------- */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; scroll-padding-top: 100px; }
 body {
   font-family: var(--font);
   color: var(--ink);
@@ -291,7 +291,7 @@ input, textarea, button, select { color: inherit; }
   position: absolute; top: calc(100% + 10px); left: 50%; transform: translateX(-50%) translateY(-6px);
   min-width: 200px; background: var(--surface);
   border: 1px solid var(--line); border-radius: var(--radius);
-  box-shadow: var(--shadow-lg); padding: 8px; opacity: 0; visibility: none;
+  box-shadow: var(--shadow-lg); padding: 8px; opacity: 0; visibility: hidden;
   pointer-events: none; transition: opacity 0.2s, transform 0.2s;
   z-index: 100;
 }
@@ -1046,3 +1046,36 @@ input, textarea, button, select { color: inherit; }
 @keyframes shimmer {
   to { background-position: 200% center; }
 }
+
+/* =========================================================================
+   CTA MODAL
+   ========================================================================= */
+.cta-modal-overlay {
+  position: fixed; inset: 0; z-index: 1000; display: flex; align-items: center; justify-content: center;
+  padding: 20px; background: rgba(10, 37, 64, 0.4); backdrop-filter: blur(8px);
+  opacity: 0; visibility: hidden; transition: opacity 0.3s var(--ease), visibility 0.3s var(--ease);
+}
+.cta-modal-overlay.cta-modal__open { opacity: 1; visibility: visible; }
+.cta-modal {
+  position: relative; width: 100%; max-width: 480px; background: var(--surface);
+  border-radius: var(--radius-lg); padding: 40px; box-shadow: var(--shadow-lg); border: 1px solid var(--line);
+  transform: translateY(20px) scale(0.98); transition: transform 0.4s var(--ease-out); max-height: 90vh; overflow-y: auto;
+}
+.cta-modal-overlay.cta-modal__open .cta-modal { transform: translateY(0) scale(1); }
+.cta-modal__close {
+  position: absolute; top: 16px; right: 16px; width: 36px; height: 36px;
+  display: grid; place-items: center; background: var(--bg-soft); border: none; border-radius: 50%;
+  font-size: 24px; color: var(--muted); cursor: pointer; transition: color 0.2s, background 0.2s;
+  line-height: 1;
+}
+.cta-modal__close:hover { color: var(--ink); background: var(--line); }
+.cta-modal__title { font-size: 2rem; margin-bottom: 12px; }
+.cta-modal__sub { color: var(--slate); font-size: 1.05rem; margin-bottom: 28px; line-height: 1.6; }
+.cta-field { margin-bottom: 16px; text-align: left; }
+.cta-field label { display: block; font-size: 13px; font-weight: 600; color: var(--ink); margin-bottom: 6px; }
+.cta-field input, .cta-field textarea {
+  width: 100%; padding: 14px 16px; border: 1px solid var(--line); border-radius: var(--radius-sm);
+  font-family: var(--font); font-size: 15px; color: var(--ink); background: #fff; transition: border-color 0.2s, box-shadow 0.2s;
+}
+.cta-field input:focus, .cta-field textarea:focus { border-color: var(--brand); outline: none; box-shadow: 0 0 0 4px var(--brand-soft); }
+.cta-modal__form .btn { margin-top: 10px; }

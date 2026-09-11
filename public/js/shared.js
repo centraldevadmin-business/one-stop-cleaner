@@ -330,4 +330,51 @@
       q.setAttribute('aria-expanded', String(open));
     });
   });
+
+  /* ---------- Global CTA Button Handler ---------- */
+  document.querySelectorAll('[data-cta="notify-me"]').forEach(function (btn) {
+    btn.addEventListener('click', function (e) {
+      e.preventDefault();
+      // Check if there is a waitlist form on the current page
+      var form = document.querySelector('form.waitlist-form') || document.querySelector('form[data-source="waitlist"]');
+      if (form) {
+        // Smooth scroll to the form and focus the email input
+        form.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        setTimeout(function() {
+          var input = form.querySelector('input[type="email"]');
+          if (input) input.focus();
+        }, 500);
+      } else {
+        // Redirect to index.html#waitlist
+        window.location.href = 'index.html#waitlist';
+      }
+    });
+  });
+
+  /* ---------- Placeholder Links Handler ---------- */
+  // Create a toast element
+  var toast = document.createElement('div');
+  toast.className = 'fixed bottom-6 left-1/2 -translate-x-1/2 bg-navy-950 text-white px-6 py-3 rounded-full shadow-2xl z-[100] font-semibold text-sm transition-all duration-300 opacity-0 pointer-events-none translate-y-4 flex items-center gap-2 border border-navy-800';
+  toast.innerHTML = '<span class="w-2 h-2 rounded-full bg-mint-500 animate-pulse"></span> Coming Soon: We are still getting things ready!';
+  document.body.appendChild(toast);
+
+  var toastTimeout;
+
+  document.querySelectorAll('a[href="#"]').forEach(function (link) {
+    link.addEventListener('click', function (e) {
+      // Allow Services dropdown to work
+      if (link.closest('.nav-dropdown')) return;
+      
+      e.preventDefault();
+      
+      // Show toast
+      clearTimeout(toastTimeout);
+      toast.classList.remove('opacity-0', 'translate-y-4');
+      
+      toastTimeout = setTimeout(function() {
+        toast.classList.add('opacity-0', 'translate-y-4');
+      }, 3000);
+    });
+  });
+
 })();
