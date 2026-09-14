@@ -302,15 +302,16 @@ function makeStmt(sql) {
     // returns the row directly. Unwrap to a single unified shape.
     get: async (...params) => {
       if (_d1) {
-        const r = await _d1.prepare(sql).get(...params);
-        return r ? r.row : undefined;
+        const stmt = params.length ? _d1.prepare(sql).bind(...params) : _d1.prepare(sql);
+        return await stmt.first();
       }
       const nodeDb = await ensureNodeDb();
       return nodeDb.prepare(sql).get(...params);
     },
     all: async (...params) => {
       if (_d1) {
-        const r = await _d1.prepare(sql).all(...params);
+        const stmt = params.length ? _d1.prepare(sql).bind(...params) : _d1.prepare(sql);
+        const r = await stmt.all();
         return r ? r.results : [];
       }
       const nodeDb = await ensureNodeDb();
@@ -318,8 +319,9 @@ function makeStmt(sql) {
     },
     run: async (...params) => {
       if (_d1) {
-        const r = await _d1.prepare(sql).run(...params);
-        return { lastInsertRowid: r.last_insert_rowid, changes: r.changed };
+        const stmt = params.length ? _d1.prepare(sql).bind(...params) : _d1.prepare(sql);
+        const r = await stmt.run();
+        return { lastInsertRowid: r.meta.last_row_id, changes: r.meta.changes };
       }
       const nodeDb = await ensureNodeDb();
       return nodeDb.prepare(sql).run(...params);

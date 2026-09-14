@@ -109,13 +109,25 @@
       background: #fff; border: 1px solid var(--line); border-radius: var(--radius-sm);
     }
 
-    /* Login */
-    .login-wrap { display: flex; align-items: center; justify-content: center; min-height: 100vh; background: var(--bg-soft); padding: 20px; width: 100vw; height: 100vh; position: fixed; top: 0; left: 0; z-index: 9999; }
-    .login-card { background: var(--surface); padding: 40px; border-radius: var(--radius-lg); width: 100%; max-width: 420px; box-shadow: var(--shadow-lg); border: 1px solid var(--line); }
-    .login-card .brand { margin-bottom: 28px; }
-    .login-msg { font-size: 13px; margin-top: 12px; min-height: 18px; }
-    .login-msg.err { color: #d94f4f; }
-    .login-msg.ok { color: #0f9d8c; }
+    /* Login Full Screen */
+    .login-wrap { display: flex; min-height: 100vh; width: 100vw; position: fixed; top: 0; left: 0; z-index: 9999; background: var(--bg); }
+    .login-visual { display: none; }
+    .login-form-container { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 40px; overflow-y: auto; }
+    .login-card { width: 100%; max-width: 420px; margin: 0 auto; }
+    .login-card .brand { margin-bottom: 32px; }
+    .login-msg { font-size: 14px; margin-top: 16px; min-height: 20px; }
+    .login-msg.err { color: #d94f4f; font-weight: 500; }
+    .login-msg.ok { color: #0f9d8c; font-weight: 500; }
+    
+    @media (min-width: 900px) {
+      .login-visual { display: block; flex: 1; position: relative; background: var(--ink); overflow: hidden; }
+      .login-visual img { width: 100%; height: 100%; object-fit: cover; opacity: 0.8; }
+      .login-visual::after { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(10,37,64,0.6) 0%, rgba(13,59,126,0.8) 100%); }
+      .login-visual-text { position: absolute; bottom: 60px; left: 60px; right: 60px; z-index: 2; color: #fff; }
+      .login-visual-text h1 { color: #fff; font-size: 2.5rem; margin-bottom: 16px; }
+      .login-visual-text p { color: rgba(255,255,255,0.8); font-size: 1.1rem; max-width: 400px; }
+      .login-form-container { flex: 0 0 480px; padding: 60px; box-shadow: -10px 0 30px rgba(0,0,0,0.05); z-index: 5; background: var(--surface); }
+    }
 
     /* Toast */
     .toast { position: fixed; bottom: 24px; right: 24px; background: var(--ink); color: #fff; padding: 14px 20px; border-radius: 12px; box-shadow: var(--shadow-lg); font-size: 14px; transform: translateY(120%); transition: transform 0.3s var(--ease-out); z-index: 500; }
@@ -177,27 +189,36 @@
 <body>
   <!-- LOGIN -->
   <div id="loginView" class="login-wrap">
-    <div class="login-card">
-      <a href="#" class="brand" style="display: flex; flex-direction: column; align-items: center; text-decoration: none; margin-bottom: 20px;">
-        <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#0d9488" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 12px;">
-          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
-        </svg>
-        <span style="font-size: 28px; font-weight: 800; color: var(--ink);">One Stop <span style="color: #0d9488;">Cleaner</span></span>
-      </a>
-      <h2 style="font-size:1.4rem;margin-bottom:6px;">Sign in</h2>
-      <p style="color:var(--slate);font-size:14px;margin-bottom:28px;">Access your admin dashboard.</p>
-      <form id="loginForm" novalidate>
-        <div class="field" style="margin-bottom:16px;">
-          <label for="login-email">Email</label>
-          <input type="email" id="login-email" name="email" placeholder="you@example.com" autocomplete="email" required />
-        </div>
-        <div class="field" style="margin-bottom:20px;">
-          <label for="login-password">Password</label>
-          <input type="password" id="login-password" name="password" placeholder="••••••••" autocomplete="current-password" required />
-        </div>
-        <button type="submit" class="btn btn--primary btn--block btn--lg">Sign in</button>
-        <p class="login-msg" id="loginMsg" role="status"></p>
-      </form>
+    <div class="login-visual">
+      <img src="images/hero-cleaners.jpg" alt="Professional Cleaners" />
+      <div class="login-visual-text">
+        <h1>Welcome Back</h1>
+        <p>Manage your leads, blog posts, and team members all from your central dashboard.</p>
+      </div>
+    </div>
+    <div class="login-form-container">
+      <div class="login-card">
+        <a href="#" class="brand" style="display: flex; align-items: center; text-decoration: none; margin-bottom: 32px;">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#0d9488" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 12px;">
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+          </svg>
+          <span style="font-size: 24px; font-weight: 800; color: var(--ink);">One Stop <span style="color: #0d9488;">Cleaner</span></span>
+        </a>
+        <h2 style="font-size:1.6rem;margin-bottom:8px;">Admin Portal</h2>
+        <p style="color:var(--slate);font-size:15px;margin-bottom:32px;">Please sign in to continue to your dashboard.</p>
+        <form id="loginForm" novalidate>
+          <div class="field" style="margin-bottom:20px;">
+            <label for="login-email" style="display:block;margin-bottom:8px;font-weight:600;font-size:14px;color:var(--ink);">Email address</label>
+            <input type="email" id="login-email" name="email" placeholder="you@example.com" autocomplete="email" required style="padding:14px 16px;" />
+          </div>
+          <div class="field" style="margin-bottom:28px;">
+            <label for="login-password" style="display:block;margin-bottom:8px;font-weight:600;font-size:14px;color:var(--ink);">Password</label>
+            <input type="password" id="login-password" name="password" placeholder="••••••••" autocomplete="current-password" required style="padding:14px 16px;" />
+          </div>
+          <button type="submit" class="btn btn--primary btn--block btn--lg" style="border-radius:12px;padding:16px;">Sign in</button>
+          <p class="login-msg" id="loginMsg" role="status"></p>
+        </form>
+      </div>
     </div>
   </div>
 

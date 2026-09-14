@@ -130,11 +130,11 @@ function makeResponse() {
     return res;
   };
   res.write = (chunk) => {
-    if (chunk) res._chunks.push(Buffer.from(chunk));
+    if (chunk) { console.log("WRITE", chunk.toString()); res._chunks.push(Buffer.from(chunk)); }
     return true;
   };
   res.end = (data) => {
-    if (data) res._chunks.push(Buffer.from(data));
+    if (data) { console.log("END", data.toString()); res._chunks.push(Buffer.from(data)); }
     res.headersSent = true;
     res.finished = true;
     res.writable = false;

@@ -13,8 +13,8 @@ router.post('/login', async (req, res) => {
   const user = await db.prepare('SELECT * FROM users WHERE email = ?').get(email);
   if (!user || !user.active) return res.status(401).json({ error: 'Invalid credentials.' });
 
-  const ok = await verifyPassword(password, user.password_hash);
-  if (!ok) return res.status(401).json({ error: 'Invalid credentials.' });
+  console.log("verifyPassword starting..."); const ok = await verifyPassword(password, user.password_hash);
+  console.log("verifyPassword finished: " + ok); if (!ok) return res.status(401).json({ error: 'Invalid credentials.' });
 
   res.json({
     token: signToken({ id: user.id, name: user.name, email: user.email, role: user.role }),
