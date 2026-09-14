@@ -17,7 +17,7 @@ router.post('/login', async (req, res) => {
   console.log("verifyPassword finished: " + ok); if (!ok) return res.status(401).json({ error: 'Invalid credentials.' });
 
   res.json({
-    token: signToken({ id: user.id, name: user.name, email: user.email, role: user.role }),
+    token: await signToken({ id: user.id, name: user.name, email: user.email, role: user.role }),
     user: { id: user.id, name: user.name, email: user.email, role: user.role }
   });
 });
