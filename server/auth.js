@@ -1,8 +1,8 @@
-import jwt from 'jsonwebtoken';
 import db from '../db/database.js';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret-change-me';
-const JWT_EXPIRES = '7d';
+// For simplicity in our custom implementation, we just store expiry directly in the payload
+const JWT_EXPIRES_MS = 7 * 24 * 60 * 60 * 1000; 
 
 // ---------------------------------------------------------------------------
 // Password hashing — Web Crypto (PBKDF2), works on BOTH Node and Cloudflare
@@ -10,7 +10,7 @@ const JWT_EXPIRES = '7d';
 // runtime, so we can't use it in production.
 // ---------------------------------------------------------------------------
 
-const PBKDF2_ROUNDS = 120000;
+const PBKDF2_ROUNDS = 10000;
 const KEY_LEN = 32;
 const SALT_LEN = 16;
 
@@ -67,20 +67,50 @@ async function verifyPassword(plain, stored) {
 
 export { hashPassword, verifyPassword };
 
-export function signToken(user) {
-  return jwt.sign(
-    { id: user.id, name: user.name, email: user.email, role: user.role },
-    JWT_SECRET,
-    { expiresIn: JWT_EXPIRES }
+// ---------------------------------------------------------------------------
+// Custom Lightweight Token implementation (Web Crypto API)
+// ---------------------------------------------------------------------------
+function toB64Url(u8) {
+  return btoa(String.fromCharCode(...u8)).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+}
+function fromB64Url(str) {
+  let s = str.replace(/-/g, '+').replace(/_/g, '/');
+  while (s.length % 4) s += '=';
+  return Uint8Array.from(atob(s), c => c.charCodeAt(0));
+}
+async function getHmacKey() {
+  return await crypto.subtle.importKey(
+    'raw', new TextEncoder().encode(JWT_SECRET),
+    { name: 'HMAC', hash: 'SHA-256' }, false, ['sign', 'verify']
   );
 }
 
-export function authRequired(req, res, next) {
+export async function signToken(user) {
+  const header = toB64Url(new TextEncoder().encode(JSON.stringify({ alg: 'HS256', typ: 'JWT' })));
+  const payloadData = { id: user.id, name: user.name, email: user.email, role: user.role, exp: Date.now() + JWT_EXPIRES_MS };
+  const payload = toB64Url(new TextEncoder().encode(JSON.stringify(payloadData)));
+  const data = header + '.' + payload;
+  const sigBuffer = await crypto.subtle.sign('HMAC', await getHmacKey(), new TextEncoder().encode(data));
+  return data + '.' + toB64Url(new Uint8Array(sigBuffer));
+}
+
+export async function verifyToken(token) {
+  const parts = token.split('.');
+  if (parts.length !== 3) throw new Error('Invalid token');
+  const data = parts[0] + '.' + parts[1];
+  const isValid = await crypto.subtle.verify('HMAC', await getHmacKey(), fromB64Url(parts[2]), new TextEncoder().encode(data));
+  if (!isValid) throw new Error('Invalid signature');
+  const payload = JSON.parse(new TextDecoder().decode(fromB64Url(parts[1])));
+  if (Date.now() > payload.exp) throw new Error('Token expired');
+  return payload;
+}
+
+export async function authRequired(req, res, next) {
   const header = req.headers.authorization || '';
   const token = header.startsWith('Bearer ') ? header.slice(7) : null;
   if (!token) return res.status(401).json({ error: 'Missing authentication token.' });
   try {
-    req.user = jwt.verify(token, JWT_SECRET);
+    req.user = await verifyToken(token);
     next();
   } catch {
     return res.status(401).json({ error: 'Invalid or expired token.' });
