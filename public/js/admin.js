@@ -41,7 +41,7 @@
   }
 
   function setView(view) {
-    els.loginView.style.display = view === 'login' ? 'grid' : 'none';
+    els.loginView.style.display = view === 'login' ? 'flex' : 'none';
     els.dashView.style.display = view === 'dash' ? 'flex' : 'none';
 
     if (view === 'dash') {
