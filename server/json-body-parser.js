@@ -7,8 +7,13 @@
 
 export function jsonBodyParser() {
   return (req, res, next) => {
-    // Skip if there's no body to read.
+    // Skip if there's no body to read, or if the request is multipart
+    // (e.g. image uploads handled by multer). Multipart bodies are not JSON.
     if (req.method === 'GET' || req.method === 'HEAD' || req._body) {
+      return next();
+    }
+    const contentType = req.headers['content-type'] || '';
+    if (contentType.includes('multipart/form-data')) {
       return next();
     }
 

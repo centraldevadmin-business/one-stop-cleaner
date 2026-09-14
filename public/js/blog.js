@@ -80,6 +80,24 @@
           </div>
         </div>
       </article>`;
+    // Dynamic SEO meta tags for the single-post view.
+    setSeo(post);
+  }
+
+  function setSeo(post) {
+    const title = escapeHtml(post.meta_title || post.title) + ' — One Stop Cleaner';
+    const desc = escapeHtml(post.meta_description || post.excerpt || 'Tips, guides, and news about professional cleaning.');
+    document.title = title;
+    const setMeta = (name, content, attr) => {
+      let tag = document.querySelector(`meta[${attr}="${name}"]`);
+      if (!tag) { tag = document.createElement('meta'); tag.setAttribute(attr, name); document.head.appendChild(tag); }
+      tag.setAttribute('content', content);
+    };
+    setMeta('description', desc);
+    setMeta('og:title', post.meta_title || post.title, 'property');
+    setMeta('og:description', desc, 'property');
+    if (post.cover_url) setMeta('og:image', post.cover_url, 'property');
+    setMeta('twitter:card', 'summary_large_image');
   }
 
   function escapeHtml(s) {
@@ -96,7 +114,10 @@
         .catch(() => renderPost(null));
     } else {
       api('/api/blog/public')
-        .then(renderList)
+        .then(posts => renderList((posts || []).filter(p => {
+          const c = p.category?.toLowerCase();
+          return c !== 'news' && c !== 'launch';
+        })))
         .catch(() => renderList([]));
     }
   }

@@ -1,0 +1,1305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>One Stop Cleaner — Admin</title>
+
+  <!-- ============================================================= -->
+  <!-- EXTERNAL DEPENDENCIES (CDN)                                    -->
+  <!-- ============================================================= -->
+  <!-- Tailwind CSS (utility classes via CDN) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Chart.js (infographics) -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <!-- Inter font for all UI typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    /* Global font family — Inter for everything */
+    html, body { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+
+    /* Custom scrollbar for a cleaner, minimalist look */
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 999px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+
+    /* Blurred backdrop for modals */
+    .modal-backdrop { backdrop-filter: blur(4px); }
+
+    /* Toast slide-in / slide-out animations (bottom-right) */
+    .toast-enter { animation: toast-in 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    .toast-exit  { animation: toast-out 0.4s cubic-bezier(0.4, 0, 1, 1) forwards; }
+    @keyframes toast-in {
+      from { opacity: 0; transform: translateY(16px) scale(0.96); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    @keyframes toast-out {
+      from { opacity: 1; transform: translateY(0) scale(1); }
+      to   { opacity: 0; transform: translateY(16px) scale(0.96); }
+    }
+
+    /* CRM tab button active state */
+    .tab-active { background-color: #2563eb; color: #fff; box-shadow: 0 1px 2px rgba(37,99,235,0.3); }
+    .tab-inactive { background-color: #fff; color: #475569; border: 1px solid #e2e8f0; }
+    .tab-inactive:hover { background-color: #f8fafc; }
+
+    /* Sidebar nav item active state */
+    .nav-active { background-color: #1e3a8a; color: #fff; }
+
+    /* Branding area — keep it clearly visible and free of stray tooltips.
+       A dedicated stacking context with a high z-index keeps the brand above
+       any stray overlay/tooltips, and a neutral hover state prevents any
+       title/hover element from rendering over the brand text. */
+    #sidebar .brand {
+      position: relative;
+      z-index: 2;
+      cursor: default;
+    }
+    #sidebar .brand:hover::after { display: none !important; }
+  </style>
+</head>
+
+<body class="bg-slate-50 text-slate-800 antialiased">
+
+  <!-- ============================================================= -->
+  <!-- APP SHELL: sidebar + main column                               -->
+  <!-- ============================================================= -->
+  <div class="flex min-h-screen">
+
+    <!-- ============================================================= -->
+    <!-- SIDEBAR (Deep Navy Blue, fixed)                                -->
+    <!-- ============================================================= -->
+    <aside id="sidebar" class="sidebar fixed inset-y-0 left-0 z-40 w-64 -translate-x-full bg-slate-900 text-slate-300 md:translate-x-0 md:static md:shrink-0 flex flex-col">
+
+      <!-- Brand logo -->
+      <div class="brand flex items-center gap-3 px-6 h-16 border-b border-slate-800">
+        <div class="h-9 w-9 rounded-lg bg-blue-600 grid place-items-center shrink-0">
+          <svg class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+          </svg>
+        </div>
+        <div class="min-w-0">
+          <p class="text-white font-semibold leading-tight truncate">One Stop Cleaner</p>
+          <p class="text-xs text-slate-400 truncate">Admin Panel</p>
+        </div>
+      </div>
+
+      <!-- Navigation grouped by category -->
+      <nav class="flex-1 overflow-y-auto px-3 py-4 text-sm flex flex-col gap-5">
+
+        <!-- Dashboard -->
+        <div class="space-y-1.5">
+          <p class="px-3 mt-3 mb-1.5 text-xs font-semibold tracking-wider text-slate-500 uppercase">Overview</p>
+          <ul class="space-y-1">
+            <li><button data-panel="dashboard" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-300 hover:text-white hover:bg-slate-800"><svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>Dashboard</button></li>
+          </ul>
+        </div>
+
+        <!-- CRM -->
+        <div class="space-y-1.5">
+          <p class="px-3 mt-3 mb-1.5 text-xs font-semibold tracking-wider text-slate-500 uppercase">CRM</p>
+          <ul class="space-y-1">
+            <li><button data-panel="crm-clients" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-300 hover:text-white hover:bg-slate-800"><svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Clients</button></li>
+            <li><button data-panel="crm-cleaners" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-300 hover:text-white hover:bg-slate-800"><svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>Cleaners</button></li>
+            <li><button data-panel="crm-investors" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-300 hover:text-white hover:bg-slate-800"><svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 18V6"/></svg>Investors</button></li>
+          </ul>
+        </div>
+
+        <!-- CMS -->
+        <div class="space-y-1.5">
+          <p class="px-3 mt-3 mb-1.5 text-xs font-semibold tracking-wider text-slate-500 uppercase">CMS</p>
+          <ul class="space-y-1">
+            <li><button data-panel="cms-announcements" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-300 hover:text-white hover:bg-slate-800"><svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path d="M11 5H6a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-5"/><rect x="11" y="14" width="9" height="7" rx="2"/><path d="M18 2v4h4"/><path d="M22 8l-6 6"/></svg>Announcements</button></li>
+            <li><button data-panel="cms-legal" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-300 hover:text-white hover:bg-slate-800"><svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/></svg>Legal Pages</button></li>            <li><button data-panel="cms-blog" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-300 hover:text-white hover:bg-slate-800"><svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg>Blog</button></li>          </ul>
+        </div>
+
+        <!-- Settings -->
+        <div class="space-y-1.5">
+          <p class="px-3 mt-3 mb-1.5 text-xs font-semibold tracking-wider text-slate-500 uppercase">Settings</p>
+          <ul class="space-y-1">
+            <li><button data-panel="settings-users" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-300 hover:text-white hover:bg-slate-800"><svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Admin Users</button></li>
+          </ul>
+        </div>
+      </nav>
+
+      <!-- User profile / logout at the bottom -->
+      <div class="p-4 border-t border-slate-800">
+        <div class="flex items-center gap-3">
+          <div class="profile-avatar h-9 w-9 rounded-full bg-blue-600 grid place-items-center text-white font-semibold shrink-0">A</div>
+          <div class="min-w-0 flex-1">
+            <p class="profile-name text-sm font-medium text-white truncate">Admin User</p>
+            <p class="profile-email text-xs text-slate-400 truncate">admin@onestopcleaner.com</p>
+          </div>
+          <button id="logoutBtn" class="p-2 rounded-lg text-slate-500 hover:text-white hover:bg-slate-800" title="Sign out" aria-label="Sign out">
+            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/></svg>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Mobile backdrop -->
+    <div id="sidebarBackdrop" class="fixed inset-0 z-30 bg-black/50 hidden"></div>
+
+    <!-- ============================================================= -->
+    <!-- LOGIN OVERLAY (shown when no valid session)                   -->
+    <!-- ============================================================= -->
+    <div id="loginOverlay" class="fixed inset-0 z-[70] hidden items-center justify-center bg-slate-900 p-4">
+      <div class="w-full max-w-sm bg-white rounded-2xl shadow-xl border border-slate-100 p-8">
+        <div class="flex items-center gap-3 mb-6">
+          <div class="h-10 w-10 rounded-lg bg-blue-600 grid place-items-center">
+            <svg class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+            </svg>
+          </div>
+          <div>
+            <p class="text-white font-semibold leading-tight text-slate-800">One Stop Cleaner</p>
+            <p class="text-xs text-slate-500">Admin Panel</p>
+          </div>
+        </div>
+        <form id="loginForm" class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1">Email</label>
+            <input name="email" type="email" autocomplete="username" required
+              class="w-full px-3 py-2 text-sm rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1">Password</label>
+            <input name="password" type="password" autocomplete="current-password" required
+              class="w-full px-3 py-2 text-sm rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600" />
+          </div>
+          <p id="loginError" class="text-sm text-rose-600 min-h-[18px] hidden"></p>
+          <button type="submit"
+            class="w-full px-4 py-2 rounded-lg text-sm font-medium text-white bg-blue-600 hover:bg-blue-700">
+            Sign in
+          </button>
+        </form>
+        <p class="text-xs text-slate-400 text-center mt-4">
+          Superadmin: admin@onestopcleaner.com / admin123
+        </p>
+      </div>
+    </div>
+
+    <!-- ============================================================= -->
+    <!-- MAIN COLUMN                                                    -->
+    <!-- ============================================================= -->
+    <div class="flex-1 min-w-0 flex flex-col">
+
+      <!-- Top header: search + profile -->
+      <header class="sticky top-0 z-20 h-16 bg-white border-b border-slate-200 flex items-center gap-4 px-4 sm:px-6">
+        <button id="menuBtn" class="md:hidden p-2 rounded-lg text-slate-500 hover:bg-slate-100" aria-label="Open menu">
+          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+
+        <!-- Page title (updated by router) -->
+        <div class="min-w-1">
+          <h1 id="viewTitle" class="text-lg font-semibold text-slate-800 truncate">Dashboard</h1>
+          <p id="viewSubtitle" class="text-xs text-slate-500 truncate">Welcome back — here's your startup at a glance.</p>
+        </div>
+
+        <!-- Spacer + search + profile -->
+        <div class="flex-1"></div>
+        <div class="relative hidden sm:block">
+          <svg class="h-4 w-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" placeholder="Search…" class="w-44 lg:w-64 pl-9 pr-3 py-2 text-sm rounded-lg border border-slate-200 bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600" />
+        </div>
+      </header>
+
+      <!-- Dynamic view container (panels swap here) -->
+      <main id="view" class="flex-1 overflow-y-auto p-4 sm:p-6"></main>
+    </div>
+  </div>
+
+  <!-- ============================================================= -->
+  <!-- CENTRALIZED MODAL (blurred backdrop)                           -->
+  <!-- ============================================================= -->
+  <div id="modalOverlay" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-900/40 modal-backdrop">
+    <div class="w-full max-w-lg bg-white rounded-2xl shadow-xl border border-slate-100 max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between px-6 py-4 border-b border-slate-100">
+        <h2 id="modalTitle" class="text-lg font-semibold text-slate-800">Create</h2>
+        <button id="modalClose" class="p-1.5 rounded-lg text-slate-400 hover:bg-slate-100 hover:text-slate-600" aria-label="Close">
+          <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <form id="modalForm" class="px-6 py-5 space-y-4"></form>
+      <div class="flex justify-end gap-3 px-6 py-4 border-t border-slate-100">
+        <button id="modalCancel" type="button" class="px-4 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-100">Cancel</button>
+        <button id="modalSubmit" type="submit" form="modalForm" class="px-4 py-2 rounded-lg text-sm font-medium text-white bg-blue-600 hover:bg-blue-700">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================= -->
+  <!-- TOAST NOTIFICATION (bottom-right)                              -->
+  <!-- ============================================================= -->
+  <div id="toast" class="fixed bottom-6 right-6 z-[60] hidden items-center gap-3 max-w-sm bg-blue-600 text-white px-5 py-4 rounded-xl shadow-2xl">
+    <svg class="h-5 w-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+    <p id="toastMsg" class="text-sm font-medium">Saved successfully</p>
+  </div>
+
+  <!-- ============================================================= -->
+  <!-- APPLICATION SCRIPT                                             -->
+  <!-- ============================================================= -->
+  <script>
+    /* ================================================================
+       HELPER: lightweight DOM builder
+       el(tag, attrs, children) -> HTMLElement
+       Recursively flattens nested arrays so callers can pass rows of
+       cells (array-of-arrays) without worrying about nesting depth.
+       ================================================================ */
+    const el = (tag, attrs = {}, children = []) => {
+      const node = document.createElement(tag);
+      for (const [k, v] of Object.entries(attrs)) {
+        if (k === 'class') node.className = v;
+        else if (k === 'html') node.innerHTML = v;
+        else if (v !== null && v !== undefined) node.setAttribute(k, v);
+      }
+      const walk = (items) => {
+        for (const c of items) {
+          if (c == null) continue;
+          if (Array.isArray(c)) { walk(c); continue; }
+          node.appendChild(typeof c === 'string' ? document.createTextNode(c) : c);
+        }
+      };
+      walk(children);
+      return node;
+    };
+
+    /* Tiny query selector shortcut */
+    const $ = (sel, root = document) => root.querySelector(sel);
+
+    /* ================================================================
+       API LAYER — wired to the admin backend (admin-server.js)
+       Same-origin when served by the admin server; otherwise the dev
+       server at http://localhost:4001 (used when opened via file://).
+       ================================================================ */
+    const API_BASE = location.protocol === 'file:'
+      ? (localStorage.getItem('osc_api_base') || 'http://localhost:4001')
+      : '';
+    const TOKEN_KEY = 'osc_token';
+    let modalMode = null;
+    let blogEditId = null;
+
+    async function apiFetch(path, opts = {}) {
+      const headers = { ...(opts.headers || {}) };
+      const token = localStorage.getItem(TOKEN_KEY);
+      if (token) headers['Authorization'] = 'Bearer ' + token;
+      if (opts.body) headers['Content-Type'] = 'application/json';
+      const url = /^https?:\/\//.test(path) ? path : API_BASE + path;
+      const res = await fetch(url, {
+        ...opts,
+        headers,
+        body: opts.body ? JSON.stringify(opts.body) : undefined,
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        if ((res.status === 401 || res.status === 403) && opts.method !== 'GET') showLoginModal();
+        throw new Error(data.error || 'Request failed');
+      }
+      return data;
+    }
+
+    /* Parse SVG markup in the correct SVG namespace (via <template>)
+       so <path>/<circle>/<line> render as siblings, not nested HTML. */
+    function svgIcon(markup, cls = 'h-5 w-5 text-blue-600') {
+      const tpl = document.createElement('template');
+      tpl.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg">' + markup + '</svg>';
+      const svg = tpl.content.firstChild;
+      svg.setAttribute('class', cls);
+      svg.setAttribute('fill', 'none');
+      svg.setAttribute('viewBox', '0 0 24 24');
+      svg.setAttribute('stroke', 'currentColor');
+      svg.setAttribute('stroke-width', '1.8');
+      return svg;
+    }
+
+    /* ================================================================
+       STATUS PILLS (colored badges)
+       ================================================================ */
+    const pill = (label, cls) =>
+      el('span', { class: `inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${cls}` }, [label]);
+
+    // Client lead status
+    const clientStatus = {
+      Contacted: 'bg-blue-100 text-blue-700',
+      New: 'bg-slate-100 text-slate-700',
+    };
+    // Cleaner application status
+    const cleanerStatus = {
+      'Under Review': 'bg-amber-100 text-amber-700',
+      Approved: 'bg-blue-100 text-blue-700',
+      Rejected: 'bg-rose-100 text-rose-700',
+    };
+    // Investor interest level
+    const interest = {
+      High: 'bg-rose-100 text-rose-700',
+      Medium: 'bg-amber-100 text-amber-700',
+      Low: 'bg-slate-100 text-slate-600',
+    };
+    // Admin role
+    const rolePill = {
+      'Super Admin': 'bg-rose-100 text-rose-700',
+      'Editor': 'bg-blue-100 text-blue-700',
+    };
+
+    /* ================================================================
+       MOCK DATA (3-4 realistic records per table)
+       ================================================================ */
+    const clients = [
+      { name: 'Sarah Johnson', email: 'sarah.j@example.com', city: 'Austin, TX', date: '2026-09-10', status: 'New' },
+      { name: 'Marcus Lee', email: 'marcus.lee@example.com', city: 'Round Rock, TX', date: '2026-09-09', status: 'Contacted' },
+      { name: 'Priya Nair', email: 'priya.nair@example.com', city: 'Pflugerville, TX', date: '2026-09-08', status: 'New' },
+      { name: 'David Okafor', email: 'david.ok@example.com', city: 'Cedar Park, TX', date: '2026-09-07', status: 'Contacted' },
+    ];
+
+    const cleaners = [
+      { name: 'James Wilson', email: 'james@wilsoncleaning.com', service: 'Deep Cleaning', status: 'Approved' },
+      { name: 'Elena Rodriguez', email: 'elena@solo.com', service: 'Standard Cleaning', status: 'Under Review' },
+      { name: 'Tom Nguyen', email: 'tom@nguyensons.com', service: 'Office Cleaning', status: 'Under Review' },
+      { name: 'Aisha Khan', email: 'aisha@solo.com', service: 'Carpet Cleaning', status: 'Rejected' },
+    ];
+
+    const investors = [
+      { name: 'GreenLeaf Capital', email: 'partners@greenleaf.vc', org: 'GreenLeaf Capital', interest: 'High' },
+      { name: 'Austin Ventures', email: 'deal@austinvc.com', org: 'Austin Ventures', interest: 'Medium' },
+      { name: 'Sarah Mitchell', email: 'sarah.m@angel.io', org: 'Independent', interest: 'Low' },
+      { name: 'BlueOcean Fund', email: 'fund@blueocean.capital', org: 'BlueOcean Fund', interest: 'High' },
+    ];
+
+    // Note: `announcements`, `legalContent`, and `adminUsers` are populated
+    // live from the backend (see renderAnnouncements / renderLegal / renderUsers).
+
+    /* ================================================================
+       VIEW METADATA (title + subtitle per panel)
+       ================================================================ */
+    const views = {
+      dashboard:        { title: 'Dashboard',        subtitle: 'Welcome back — here\'s your startup at a glance.' },
+      'crm-clients':    { title: 'Clients',          subtitle: 'Manage incoming waitlist signups and service requests.' },
+      'crm-cleaners':   { title: 'Cleaners',         subtitle: 'Review service provider applications.' },
+      'crm-investors':  { title: 'Investors',        subtitle: 'Partners interested in growing One Stop Cleaner.' },
+      'cms-announcements': { title: 'Announcements', subtitle: 'Manage homepage banners and popups.' },
+      'cms-legal':      { title: 'Legal Pages',      subtitle: 'Edit Terms & Conditions and Privacy Policy.' },
+      'cms-blog':       { title: 'Blog',             subtitle: 'Create and manage blog posts.' },
+      'settings-users': { title: 'Admin Users',      subtitle: 'Manage admin accounts and role-based access.' },
+    };
+
+    /* ================================================================
+       ROUTER: swaps the main view panel based on sidebar clicks
+       ================================================================ */
+    const renderView = (name) => {
+      const meta = views[name];
+      if (!meta) return;
+      $('#viewTitle').textContent = meta.title;
+      $('#viewSubtitle').textContent = meta.subtitle;
+
+      // Highlight active sidebar item
+      document.querySelectorAll('.nav-item').forEach((b) => {
+        b.classList.toggle('nav-active', b.dataset.panel === name);
+      });
+
+      // Map panel name -> render function, then render into #view
+      const renderers = {
+        'dashboard': renderDashboard,
+        'crm-clients': renderClients,
+        'crm-cleaners': renderCleaners,
+        'crm-investors': renderInvestors,
+        'cms-announcements': renderAnnouncements,
+        'cms-legal': renderLegal,
+        'cms-blog': renderBlog,
+        'settings-users': renderUsers,
+      };
+      renderers[name]();
+
+      // Close mobile sidebar after navigation
+      closeSidebar();
+    };
+
+    /* ================================================================
+       VIEW: DASHBOARD (traction metrics + line chart)
+       Strict rule: NO financial data, no revenue, no active jobs.
+       Data is pulled live from /api/analytics/dashboard.
+       ================================================================ */
+    let chartsInitialized = false;
+    async function renderDashboard() {
+      const view = $('#view');
+      view.innerHTML = '';
+
+      // Traction KPI cards (no financial metrics)
+      const kpis = [
+        { label: 'Total Client Waitlist', value: '—', delta: 'loading', icon: '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>' },
+        { label: 'Total Cleaner Inquiries', value: '—', delta: 'loading', icon: '<path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/>' },
+        { label: 'Total Investor Leads', value: '—', delta: 'loading', icon: '<circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 18V6"/>' },
+        { label: 'Open Tickets', value: '—', delta: 'pending', icon: '<path d="M11 5H6a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-5"/><rect x="11" y="14" width="9" height="7" rx="2"/><path d="M18 2v4h4"/><path d="M22 8l-6 6"/>' },
+      ];
+      const grid = el('div', { class: 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-6' });
+      for (const k of kpis) {
+        grid.appendChild(el('div', { class: 'bg-white rounded-xl shadow-sm border border-slate-100 p-5' }, [
+          el('div', { class: 'flex items-center justify-between mb-3' }, [
+            el('div', { class: 'h-10 w-10 rounded-lg bg-blue-100 grid place-items-center' }, [svgIcon(k.icon)]),
+            el('span', { class: 'text-xs font-medium text-teal-600' }, [k.delta]),
+          ]),
+          el('p', { class: 'text-3xl font-bold text-slate-800' }, [k.value]),
+          el('p', { class: 'text-sm text-slate-500 mt-1' }, [k.label]),
+        ]));
+      }
+      view.appendChild(grid);
+
+      // Infographic: Waitlist Signups over the last 30 days (monochromatic blue)
+      const chartCard = el('div', { class: 'bg-white rounded-xl shadow-sm border border-slate-100 p-6' });
+      chartCard.appendChild(el('div', { class: 'mb-4' }, [
+        el('h2', { class: 'text-base font-semibold text-slate-800' }, ['Waitlist Signups']),
+        el('p', { class: 'text-xs text-slate-400' }, ['Last 30 days']),
+      ]));
+      chartCard.appendChild(el('div', { class: 'h-64' }, [el('canvas', { id: 'waitlistChart' })]));
+      view.appendChild(chartCard);
+
+      // Load live stats
+      try {
+        const stats = await apiFetch('/api/analytics/dashboard');
+        const waitlist = (stats.bySource || []).find((s) => s.source === 'waitlist');
+        const cleanerInq = (stats.bySource || []).find((s) => s.source === 'cleaner');
+        const investor = (stats.bySource || []).find((s) => s.source === 'investor');
+        const cells = grid.querySelectorAll('p.text-3xl');
+        const spans = grid.querySelectorAll('span.text-xs');
+        if (cells[0]) cells[0].textContent = stats.leads || '—';
+        if (spans[0]) spans[0].textContent = 'active leads';
+        if (cells[1]) cells[1].textContent = cleanerInq ? cleanerInq.c : '—';
+        if (cells[2]) cells[2].textContent = investor ? investor.c : '—';
+        if (cells[3]) cells[3].textContent = stats.openTickets ?? '—';
+        if (spans[1]) spans[1].textContent = 'new leads';
+        if (spans[2]) spans[2].textContent = 'investor leads';
+        if (spans[3]) spans[3].textContent = 'needs attention';
+      } catch (e) {
+        // Keep the placeholder values; show a subtle note.
+        console.warn('[Dashboard] stats load failed:', e.message);
+      }
+
+      // Initialize the Chart.js line chart once
+      if (!chartsInitialized) {
+        initWaitlistChart();
+        chartsInitialized = true;
+      }
+    }
+
+    /* Build the monochromatic blue line chart */
+    function initWaitlistChart() {
+      const ctx = document.getElementById('waitlistChart').getContext('2d');
+      // Gradient fill for a polished look
+      const gradient = ctx.createLinearGradient(0, 0, 0, 260);
+      gradient.addColorStop(0, 'rgba(37, 99, 235, 0.25)');
+      gradient.addColorStop(1, 'rgba(37, 99, 235, 0.01)');
+
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: ['D1', 'D4', 'D7', 'D10', 'D13', 'D16', 'D19', 'D22', 'D25', 'D28', 'D30'],
+          datasets: [{
+            label: 'Signups',
+            data: [42, 58, 51, 74, 68, 92, 85, 108, 96, 124, 142],
+            borderColor: '#2563eb',
+            backgroundColor: gradient,
+            borderWidth: 2.5,
+            pointBackgroundColor: '#2563eb',
+            pointBorderColor: '#fff',
+            pointBorderWidth: 2,
+            pointRadius: 3,
+            pointHoverRadius: 5,
+            fill: true,
+            tension: 0.35,
+          }],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false }, tooltip: { mode: 'index', intersect: false } },
+          scales: {
+            x: { grid: { display: false }, ticks: { color: '#94a3b8', font: { size: 11 } } },
+            y: { grid: { color: '#f1f5f9' }, ticks: { color: '#94a3b8', font: { size: 11 } }, beginAtZero: true },
+          },
+          interaction: { mode: 'nearest', axis: 'x', intersect: false },
+        },
+      });
+    }
+
+    /* ================================================================
+       GENERIC TABLE BUILDER
+       renderTable({ columns, rows }) -> card containing a <table>
+       columns: array of header strings
+       rows: array of arrays of DOM nodes (one array per row)
+       ================================================================ */
+    function renderTable({ columns, rows }) {
+      const card = el('div', { class: 'bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden' });
+      const table = el('table', { class: 'w-full text-sm' }, [
+        el('thead', {}, [el('tr', { class: 'text-xs uppercase tracking-wider text-slate-500 bg-slate-50' }, columns.map((c) => el('th', { class: 'px-6 py-3 text-left font-semibold' }, [c])))]),
+        el('tbody', { class: 'divide-y divide-slate-100' }, rows),
+      ]);
+      card.appendChild(table);
+      return card;
+    }
+
+    /* ================================================================
+       CRM LEAD LOADING — fetch leads from /api/leads and render the
+       appropriate table for each CRM panel.
+       ================================================================ */
+    async function loadClients() {
+      const view = $('#view');
+      view.innerHTML = '';
+      try {
+        const leads = await apiFetch('/api/leads?source=waitlist');
+        view.appendChild(renderTable({
+          columns: ['Client', 'Email', 'City', 'Signup Date', 'Status'],
+          rows: leads.map((l) => [
+            el('td', { class: 'px-6 py-4 font-medium text-slate-800' }, [l.name || '—']),
+            el('td', { class: 'px-6 py-4 text-slate-500' }, [l.email || '—']),
+            el('td', { class: 'px-6 py-4 text-slate-700' }, [l.city || '—']),
+            el('td', { class: 'px-6 py-4 text-slate-500' }, [l.created_at ? new Date(l.created_at).toLocaleDateString() : '—']),
+            el('td', { class: 'px-6 py-4' }, [pill(l.status, clientStatus[l.status] || clientStatus.New)]),
+          ]),
+        }));
+      } catch (e) {
+        view.appendChild(errorCard(e));
+      }
+    }
+
+    async function loadCleaners() {
+      const view = $('#view');
+      view.innerHTML = '';
+      try {
+        const leads = await apiFetch('/api/leads?source=cleaner');
+        view.appendChild(renderTable({
+          columns: ['Company / Name', 'Email', 'Service Type', 'Status'],
+          rows: leads.map((l) => [
+            el('td', { class: 'px-6 py-4 font-medium text-slate-800' }, [l.name || l.company || '—']),
+            el('td', { class: 'px-6 py-4 text-slate-500' }, [l.email || '—']),
+            el('td', { class: 'px-6 py-4 text-slate-700' }, [l.service_type || '—']),
+            el('td', { class: 'px-6 py-4' }, [pill(l.status, cleanerStatus[l.status] || cleanerStatus['Under Review'])]),
+          ]),
+        }));
+      } catch (e) {
+        view.appendChild(errorCard(e));
+      }
+    }
+
+    async function loadInvestors() {
+      const view = $('#view');
+      view.innerHTML = '';
+      try {
+        const leads = await apiFetch('/api/leads?source=investor');
+        view.appendChild(renderTable({
+          columns: ['Name', 'Organization', 'Email', 'Interest Level'],
+          rows: leads.map((l) => [
+            el('td', { class: 'px-6 py-4 font-medium text-slate-800' }, [l.name || '—']),
+            el('td', { class: 'px-6 py-4 text-slate-700' }, [l.company || '—']),
+            el('td', { class: 'px-6 py-4 text-slate-500' }, [l.email || '—']),
+            el('td', { class: 'px-6 py-4' }, [pill(l.priority, interest[l.priority] || interest.Low)]),
+          ]),
+        }));
+      } catch (e) {
+        view.appendChild(errorCard(e));
+      }
+    }
+
+    /* Generic error card for failed data loads */
+    function errorCard(e) {
+      return el('div', { class: 'bg-white rounded-xl shadow-sm border border-slate-100 p-8 text-center text-sm text-slate-500' }, [
+        el('p', { class: 'font-medium' }, [e.message]),
+      ]);
+    }
+
+    /* ================================================================
+       VIEW: CRM — CLIENTS (waitlist signups)
+       ================================================================ */
+    function renderClients() { loadClients(); }
+
+    /* ================================================================
+       VIEW: CRM — CLEANERS (service providers)
+       ================================================================ */
+    function renderCleaners() { loadCleaners(); }
+
+    /* ================================================================
+       VIEW: CRM — INVESTORS (partner with us)
+       ================================================================ */
+    function renderInvestors() { loadInvestors(); }
+
+    /* ================================================================
+       VIEW: CMS — ANNOUNCEMENTS
+       Manage homepage banners / popups with an active toggle.
+       Data loaded from /api/cms/announcements.
+       ================================================================ */
+    let announcements = [];
+    async function renderAnnouncements() {
+      const view = $('#view');
+      view.innerHTML = '';
+
+      // "New Announcement" create button
+      const header = el('div', { class: 'flex items-center justify-between mb-6' }, [
+        el('h2', { class: 'text-base font-semibold text-slate-800' }, ['Homepage Announcements']),
+        el('button', { 'data-create': 'announcement', class: 'inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium text-white bg-blue-600 hover:bg-blue-700' }, [
+          svgIcon('<line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>', 'h-4 w-4'),
+          'New Announcement',
+        ]),
+      ]);
+      view.appendChild(header);
+
+      // Announcement cards
+      const grid = el('div', { class: 'grid grid-cols-1 lg:grid-cols-2 gap-4' });
+      try {
+        announcements = await apiFetch('/api/cms/announcements');
+        if (!announcements.length) {
+          grid.appendChild(el('div', { class: 'col-span-2 text-center text-sm text-slate-400 py-8' }, ['No announcements yet.']));
+        }
+        for (const a of announcements) {
+          grid.appendChild(renderAnnouncementCard(a));
+        }
+      } catch (e) {
+        grid.appendChild(errorCard(e));
+      }
+      view.appendChild(grid);
+    }
+
+    function renderAnnouncementCard(a) {
+      const active = !!a.active;
+      return el('div', { class: 'bg-white rounded-xl shadow-sm border border-slate-100 p-5' }, [
+        el('div', { class: 'flex items-start justify-between mb-2' }, [
+          el('div', {}, [
+            el('p', { class: 'font-semibold text-slate-800' }, [a.title]),
+            el('p', { class: 'text-xs text-slate-400 mt-0.5' }, [a.style || 'Banner']),
+          ]),
+          pill(active ? 'Active' : 'Inactive', active ? 'bg-blue-100 text-blue-700' : 'bg-slate-100 text-slate-600'),
+        ]),
+        el('p', { class: 'text-sm text-slate-600 my-3' }, [a.body]),
+        el('div', { class: 'flex items-center gap-3' }, [
+          el('button', { 'data-preview': String(a.id), class: 'text-sm font-medium text-blue-600 hover:text-blue-700' }, ['Preview']),
+          el('button', { 'data-edit': String(a.id), class: 'text-sm font-medium text-slate-500 hover:text-slate-700' }, ['Edit']),
+        ]),
+      ]);
+    }
+
+    /* ================================================================
+       VIEW: CMS — LEGAL PAGES
+       Simple text editor interface with a Publish button.
+       Data loaded from /api/cms/legal, saved via PUT.
+       ================================================================ */
+    let legalContent = {};
+    async function renderLegal() {
+      const view = $('#view');
+      view.innerHTML = '';
+      const card = el('div', { class: 'space-y-6' });
+
+      try {
+        const pages = await apiFetch('/api/cms/legal');
+        legalContent = {};
+        for (const page of pages) {
+          legalContent[page.key] = page.body;
+          card.appendChild(buildLegalBlock(page));
+        }
+        if (!pages.length) {
+          card.appendChild(el('div', { class: 'bg-white rounded-xl shadow-sm border border-slate-100 p-8 text-center text-sm text-slate-400' }, ['No legal pages yet.']));
+        }
+      } catch (e) {
+        card.appendChild(errorCard(e));
+      }
+      view.appendChild(card);
+
+      // Wire up publish buttons
+      card.querySelectorAll('[data-legal]').forEach((b) => b.addEventListener('click', () => publishLegal(b)));
+    }
+
+    function buildLegalBlock(page) {
+      const block = el('div', { class: 'bg-white rounded-xl shadow-sm border border-slate-100' });
+      block.appendChild(el('div', { class: 'px-6 py-4 border-b border-slate-100 flex items-center justify-between' }, [
+        el('h2', { class: 'text-base font-semibold text-slate-800' }, [page.title || page.key]),
+        el('button', { class: 'px-3 py-2 rounded-lg text-sm font-medium text-white bg-blue-600 hover:bg-blue-700', 'data-legal': page.key }, ['Publish Changes']),
+      ]));
+
+      const editor = el('div', { class: 'px-6 py-4' });
+      editor.appendChild(el('textarea', {
+        class: 'w-full h-56 px-4 py-3 text-sm rounded-lg border border-slate-200 bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 resize-none',
+        'data-legal-body': page.key,
+      }, [page.body]));
+      block.appendChild(editor);
+      return block;
+    }
+
+    async function publishLegal(btn) {
+      const key = btn.dataset.legal;
+      const textarea = $(`[data-legal-body="${key}"]`);
+      if (!textarea) return;
+      const body = textarea.value;
+      try {
+        await apiFetch(`/api/cms/legal/${encodeURIComponent(key)}`, { method: 'PUT', body: { body } });
+        toast(`${key} published successfully`);
+      } catch (e) {
+        toast(e.message);
+      }
+    }
+
+    /* ================================================================
+       VIEW: CMS — BLOG (wired to backend /api/blog)
+       ================================================================ */
+    let blogPosts = [];
+    let blogFilter = 'all';
+    let blogCard = null;
+
+    function statusPill(status) {
+      const map = { published: 'bg-emerald-100 text-emerald-700', draft: 'bg-slate-100 text-slate-600' };
+      return pill(status, map[status] || 'bg-slate-100 text-slate-600');
+    }
+
+    async function renderBlog() {
+      const view = $('#view');
+      view.innerHTML = '';
+
+      const header = el('div', { class: 'flex flex-wrap items-center justify-between gap-3 mb-6' }, [
+        el('h2', { class: 'text-base font-semibold text-slate-800' }, ['Blog Posts']),
+        el('button', { 'data-create': 'blog', class: 'inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium text-white bg-blue-600 hover:bg-blue-700' }, [
+          svgIcon('<line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>', 'h-4 w-4'),
+          'New Post',
+        ]),
+      ]);
+      view.appendChild(header);
+
+      const filterBar = el('div', { class: 'flex flex-wrap items-center gap-2 mb-4' });
+      for (const f of ['all', 'published', 'draft']) {
+        filterBar.appendChild(el('button', {
+          'data-filter': f,
+          class: `px-3 py-1.5 rounded-lg text-sm font-medium ${blogFilter === f ? 'tab-active' : 'tab-inactive'}`,
+        }, [f.charAt(0).toUpperCase() + f.slice(1)]));
+      }
+      filterBar.querySelectorAll('[data-filter]').forEach((b) => b.addEventListener('click', () => {
+        blogFilter = b.dataset.filter;
+        if (blogCard) renderBlogTable(blogCard);
+      }));
+      view.appendChild(filterBar);
+
+      blogCard = el('div', { class: 'bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden' });
+      view.appendChild(blogCard);
+
+      await loadBlog(blogCard);
+    }
+
+    async function loadBlog(card) {
+      card.innerHTML = '';
+      card.appendChild(el('div', { class: 'p-8 text-center text-sm text-slate-400' }, ['Loading posts…']));
+      try {
+        blogPosts = await apiFetch('/api/blog');
+      } catch (e) {
+        card.innerHTML = '';
+        card.appendChild(el('div', { class: 'p-8 text-center text-sm text-slate-500' }, [
+          el('p', { class: 'font-medium' }, [e.message]),
+          el('button', { id: 'blogSignInBtn', class: 'mt-3 inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium text-white bg-blue-600 hover:bg-blue-700' }, ['Sign in']),
+          el('p', { class: 'text-xs text-slate-400 mt-2' }, ['Manage blog posts requires an admin account.']),
+        ]));
+        const sb = document.getElementById('blogSignInBtn');
+        if (sb) sb.addEventListener('click', showLoginModal);
+        return;
+      }
+      renderBlogTable(card);
+    }
+
+    function renderBlogTable(card) {
+      card.innerHTML = '';
+      const rows = blogPosts
+        .filter((p) => blogFilter === 'all' || p.status === blogFilter)
+        .map((p) => [
+          el('td', { class: 'px-6 py-4 font-medium text-slate-800' }, [p.title]),
+          el('td', { class: 'px-6 py-4 text-slate-500' }, [p.author || '—']),
+          el('td', { class: 'px-6 py-4 text-slate-500' }, [p.category || 'news']),
+          el('td', { class: 'px-6 py-4' }, [statusPill(p.status)]),
+          el('td', { class: 'px-6 py-4 text-slate-500 whitespace-nowrap' }, [p.created_at ? new Date(p.created_at).toLocaleDateString() : '—']),
+          el('td', { class: 'px-6 py-4 text-right whitespace-nowrap' }, [
+            el('button', { 'data-edit-blog': p.id, class: 'text-sm font-medium text-blue-600 hover:text-blue-700 mr-3' }, ['Edit']),
+            el('button', { 'data-delete-blog': p.id, class: 'text-sm font-medium text-rose-600 hover:text-rose-700' }, ['Delete']),
+          ]),
+        ]);
+      card.appendChild(el('table', { class: 'w-full text-sm' }, [
+        el('thead', {}, [el('tr', { class: 'text-xs uppercase tracking-wider text-slate-500 bg-slate-50' }, [
+          el('th', { class: 'px-6 py-3 text-left font-semibold' }, ['Title']),
+          el('th', { class: 'px-6 py-3 text-left font-semibold' }, ['Author']),
+          el('th', { class: 'px-6 py-3 text-left font-semibold' }, ['Category']),
+          el('th', { class: 'px-6 py-3 text-left font-semibold' }, ['Status']),
+          el('th', { class: 'px-6 py-3 text-left font-semibold' }, ['Created']),
+          el('th', { class: 'px-6 py-3 text-right font-semibold' }, ['']),
+        ])]),
+        el('tbody', { class: 'divide-y divide-slate-100' }, rows.length ? rows : [
+          [el('td', { class: 'px-6 py-8 text-center text-slate-400 col-span-6' }, ['No blog posts yet.'])],
+        ]),
+      ]));
+      card.querySelectorAll('[data-delete-blog]').forEach((b) => b.addEventListener('click', () => deleteBlogPost(Number(b.dataset.deleteBlog))));
+      card.querySelectorAll('[data-edit-blog]').forEach((b) => b.addEventListener('click', () => openBlogModal(Number(b.dataset.editBlog))));
+    }
+
+    async function deleteBlogPost(id) {
+      if (!confirm('Delete this blog post? This cannot be undone.')) return;
+      try {
+        await apiFetch(`/api/blog/${id}`, { method: 'DELETE' });
+        toast('Post deleted');
+        if (blogCard) await loadBlog(blogCard);
+      } catch (e) { toast(e.message); }
+    }
+
+    function openBlogModal(id) {
+      blogEditId = id;
+      modalMode = 'blog';
+      const post = id ? blogPosts.find((p) => p.id === id) : null;
+      const overlay = $('#modalOverlay');
+      $('#modalTitle').textContent = post ? 'Edit Post' : 'New Blog Post';
+      const form = $('#modalForm');
+      form.innerHTML = '';
+      $('#modalSubmit').textContent = post ? 'Save changes' : 'Create post';
+
+      const fields = [
+        { name: 'title', label: 'Title', type: 'text', required: true },
+        { name: 'slug', label: 'Slug (optional)', type: 'text' },
+        { name: 'author', label: 'Author', type: 'text' },
+        { name: 'category', label: 'Category', type: 'select', options: ['Launch', 'Guide', 'News'] },
+        { name: 'cover_url', label: 'Cover image URL', type: 'text' },
+        { name: 'excerpt', label: 'Excerpt', type: 'textarea' },
+        { name: 'body', label: 'Body', type: 'textarea', rows: 6 },
+        { name: 'status', label: 'Status', type: 'select', options: ['draft', 'published'] },
+      ];
+      for (const f of fields) {
+        const label = el('label', { class: 'block text-sm font-medium text-slate-700 mb-1' }, [f.label]);
+        let input;
+        if (f.type === 'textarea') {
+          input = el('textarea', { name: f.name, rows: String(f.rows || 4), class: 'w-full px-3 py-2 text-sm rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 resize-none' }, [post ? (post[f.name] || '') : '']);
+        } else if (f.type === 'select') {
+          input = el('select', { name: f.name, class: 'w-full px-3 py-2 text-sm rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600' }, f.options.map((o) => el('option', { value: o }, [o])));
+          if (post && post[f.name] !== undefined) input.value = post[f.name];
+        } else if (f.name === 'cover_url') {
+          // Cover image field with an upload button.
+          const wrap = el('div', { class: 'space-y-1' });
+          input = el('input', { name: f.name, type: f.type, class: 'w-full px-3 py-2 text-sm rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600', placeholder: 'https://… or upload a photo below' });
+          if (post) input.value = post.cover_url || '';
+          const row = el('div', { class: 'flex gap-2' });
+          const uploadBtn = el('button', { type: 'button', class: 'inline-flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-slate-700 bg-slate-100 hover:bg-slate-200 whitespace-nowrap' }, [
+            svgIcon('<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>', 'h-4 w-4'),
+            'Upload photo',
+          ]);
+          uploadBtn.addEventListener('click', async () => {
+            const picker = document.createElement('input');
+            picker.type = 'file';
+            picker.accept = 'image/*';
+            picker.addEventListener('change', async () => {
+              const file = picker.files && picker.files[0];
+              if (!file) return;
+              const fd = new FormData();
+              fd.append('image', file);
+              try {
+                const res = await apiFetch('/api/blog/upload', { method: 'POST', body: fd });
+                if (res && res.url) {
+                  input.value = res.url;
+                  toast('Image uploaded');
+                }
+              } catch (e) { toast(e.message); }
+            });
+            picker.click();
+          });
+          row.appendChild(input);
+          row.appendChild(uploadBtn);
+          wrap.appendChild(row);
+          form.appendChild(wrap);
+          continue;
+        } else {
+          input = el('input', { name: f.name, type: f.type, class: 'w-full px-3 py-2 text-sm rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600' });
+          if (post) input.value = post[f.name] || '';
+        }
+        form.appendChild(el('div', {}, [label, input]));
+      }
+      overlay.classList.remove('hidden');
+      overlay.classList.add('flex');
+    }
+
+    async function submitBlog(data, id) {
+      try {
+        if (id) await apiFetch(`/api/blog/${id}`, { method: 'PUT', body: data });
+        else await apiFetch('/api/blog', { method: 'POST', body: data });
+        toast(id ? 'Post updated' : 'Post created');
+        closeModal();
+        if (blogCard) await loadBlog(blogCard);
+      } catch (e) { toast(e.message); }
+    }
+
+    /* ---- Auth: sign-in modal ---- */
+    function showLoginModal() {
+      modalMode = 'login';
+      const overlay = $('#modalOverlay');
+      $('#modalTitle').textContent = 'Sign in';
+      const form = $('#modalForm');
+      form.innerHTML = '';
+      $('#modalSubmit').textContent = 'Sign in';
+
+      const email = el('input', { name: 'email', type: 'email', placeholder: 'you@example.com', class: 'w-full px-3 py-2 text-sm rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600' });
+      const password = el('input', { name: 'password', type: 'password', placeholder: '••••••••', class: 'w-full px-3 py-2 text-sm rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600' });
+      form.appendChild(el('div', { class: 'space-y-1 mb-4' }, [el('label', { class: 'block text-sm font-medium text-slate-700' }, ['Email']), email]));
+      form.appendChild(el('div', { class: 'space-y-1 mb-4' }, [el('label', { class: 'block text-sm font-medium text-slate-700' }, ['Password']), password]));
+      overlay.classList.remove('hidden');
+      overlay.classList.add('flex');
+    }
+
+    async function doLogin(data) {
+      try {
+        const res = await apiFetch('/api/auth/login', { method: 'POST', body: { email: data.email, password: data.password } });
+        localStorage.setItem(TOKEN_KEY, res.token);
+        closeModal();
+        toast('Signed in');
+        if ($('#viewTitle').textContent === 'Blog') await renderBlog();
+      } catch (e) { toast(e.message); }
+    }
+
+    /* ================================================================
+       VIEW: SETTINGS — ADMIN USERS (RBAC)
+       Data loaded from /api/auth, deletes via DELETE /api/auth/:id.
+       ================================================================ */
+    let adminUsers = [];
+    async function renderUsers() {
+      const view = $('#view');
+      view.innerHTML = '';
+
+      // Invite button
+      const header = el('div', { class: 'flex items-center justify-between mb-6' }, [
+        el('h2', { class: 'text-base font-semibold text-slate-800' }, ['Admin Users']),
+        el('button', { 'data-create': 'user', class: 'inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium text-white bg-blue-600 hover:bg-blue-700' }, [
+          svgIcon('<line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>', 'h-4 w-4'),
+          'Invite New Admin',
+        ]),
+      ]);
+      view.appendChild(header);
+
+      try {
+        adminUsers = await apiFetch('/api/auth');
+        view.appendChild(renderUsersTable(adminUsers));
+      } catch (e) {
+        view.appendChild(errorCard(e));
+      }
+    }
+
+    function renderUsersTable(users) {
+      return renderTable({
+        columns: ['User', 'Email', 'Role', 'Last Login', ''],
+        rows: users.map((u) => [
+          el('td', { class: 'px-6 py-4' }, [
+            el('span', { class: 'inline-flex items-center gap-3' }, [
+              el('span', { class: 'h-8 w-8 rounded-full bg-blue-600 grid place-items-center text-white text-xs font-semibold' }, [u.name ? u.name[0] : 'U']),
+              el('span', { class: 'font-medium text-slate-800' }, [u.name || '—']),
+            ]),
+          ]),
+          el('td', { class: 'px-6 py-4 text-slate-500' }, [u.email || '—']),
+          el('td', { class: 'px-6 py-4' }, [pill(u.role, rolePill[u.role] || 'bg-slate-100 text-slate-600')]),
+          el('td', { class: 'px-6 py-4 text-slate-500' }, [u.created_at ? new Date(u.created_at).toLocaleDateString() : '—']),
+          el('td', { class: 'px-6 py-4 text-right' }, [
+            u.role !== 'superadmin'
+              ? el('button', { 'data-delete-user': u.id, class: 'text-sm font-medium text-rose-600 hover:text-rose-700' }, ['Remove'])
+              : null,
+          ]),
+        ]),
+      });
+    }
+
+    /* ================================================================
+       MODAL SYSTEM (centralized, blurred backdrop)
+       ================================================================ */
+    const formSchemas = {
+      // New announcement form (fields map to the /api/cms/announcements schema)
+      announcement: {
+        title: 'New Announcement',
+        fields: [
+          { name: 'title', label: 'Title', type: 'text', required: true },
+          { name: 'body', label: 'Message', type: 'textarea', required: true },
+          { name: 'style', label: 'Style', type: 'select', options: ['Banner', 'Modal Popup', 'Info'] },
+        ],
+      },
+      // New admin user form
+      user: {
+        title: 'Invite New Admin',
+        fields: [
+          { name: 'name', label: 'Full Name', type: 'text', required: true },
+          { name: 'email', label: 'Email', type: 'email', required: true },
+          { name: 'password', label: 'Temporary Password', type: 'text', required: true },
+          { name: 'role', label: 'Role', type: 'select', options: ['Super Admin', 'Editor'] },
+        ],
+      },
+    };
+
+    // Open a modal from a schema. Optional `prefill` fills existing values and
+    // `mode` sets the submit dispatch target (defaults to a generic update).
+    function openModal(schema, prefill = {}, mode = 'update') {
+      const overlay = $('#modalOverlay');
+      $('#modalTitle').textContent = schema.title;
+      const form = $('#modalForm');
+      form.innerHTML = '';
+      modalMode = mode;
+
+      for (const f of schema.fields) {
+        const label = el('label', { class: 'block text-sm font-medium text-slate-700 mb-1' }, [f.label]);
+        let input;
+        if (f.type === 'textarea') {
+          input = el('textarea', { name: f.name, rows: '4', class: 'w-full px-3 py-2 text-sm rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 resize-none', required: f.required ? '' : null }, [prefill[f.name] || '']);
+        } else {
+          input = el('input', { name: f.name, type: f.type, class: 'w-full px-3 py-2 text-sm rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600', required: f.required ? '' : null });
+          input.value = prefill[f.name] || '';
+        }
+        form.appendChild(el('div', {}, [label, input]));
+      }
+
+      overlay.classList.remove('hidden');
+      overlay.classList.add('flex');
+    }
+
+    // Close the modal
+    function closeModal() {
+      const overlay = $('#modalOverlay');
+      overlay.classList.add('hidden');
+      overlay.classList.remove('flex');
+      $('#modalForm').reset();
+      modalMode = null;
+      blogEditId = null;
+      announcementEditId = null;
+    }
+
+    /* ================================================================
+       TOAST NOTIFICATION (bottom-right, blue box)
+       ================================================================ */
+    let toastTimer = null;
+    function toast(message) {
+      const toastEl = $('#toast');
+      $('#toastMsg').textContent = message;
+      toastEl.classList.remove('hidden');
+      toastEl.classList.remove('toast-exit');
+      toastEl.classList.add('flex', 'toast-enter');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        toastEl.classList.remove('toast-enter');
+        toastEl.classList.add('toast-exit');
+        setTimeout(() => { toastEl.classList.add('hidden'); toastEl.classList.remove('flex', 'toast-exit'); }, 400);
+      }, 3000);
+    }
+
+    /* ================================================================
+       SIDEBAR (mobile) helpers
+       ================================================================ */
+    const sidebar = $('#sidebar');
+    const backdrop = $('#sidebarBackdrop');
+    function openSidebar() { sidebar.classList.remove('-translate-x-full'); backdrop.classList.remove('hidden'); }
+    function closeSidebar() { sidebar.classList.add('-translate-x-full'); backdrop.classList.add('hidden'); }
+
+    /* ================================================================
+       EVENT WIRING
+       ================================================================ */
+    // Sidebar navigation
+    document.querySelectorAll('.nav-item').forEach((btn) => btn.addEventListener('click', () => renderView(btn.dataset.panel)));
+
+    // Delegated "create" buttons (in-view buttons)
+    document.addEventListener('click', (e) => {
+      const createBtn = e.target.closest('[data-create]');
+      if (createBtn) {
+        const key = createBtn.dataset.create;
+        if (key === 'blog') { openBlogModal(null); }
+        else if (key === 'announcement') {
+          announcementEditId = null;
+          openModal(formSchemas.announcement, {}, 'announcement');
+          setTimeout(() => {
+            const submitBtn = $('#modalSubmit');
+            if (submitBtn) submitBtn.textContent = 'Create announcement';
+          }, 0);
+        }
+        else if (formSchemas[key]) openModal(formSchemas[key]);
+      }
+    });
+
+    // Preview buttons (show announcement details in a modal)
+    document.addEventListener('click', (e) => {
+      const previewBtn = e.target.closest('[data-preview]');
+      if (previewBtn) {
+        const id = Number(previewBtn.dataset.preview);
+        const a = announcements.find((x) => x.id === id);
+        if (a) {
+          $('#modalTitle').textContent = `Preview: ${a.title}`;
+          const form = $('#modalForm');
+          form.innerHTML = '';
+          form.appendChild(el('div', { class: 'space-y-2 text-sm text-slate-700' }, [
+            el('p', {}, [a.body]),
+            el('p', { class: 'text-xs text-slate-400' }, [`Style: ${a.style} · Status: ${a.active ? 'Active' : 'Inactive'}`]),
+          ]));
+          $('#modalOverlay').classList.remove('hidden');
+          $('#modalOverlay').classList.add('flex');
+        }
+      }
+    });
+
+    // Edit announcement — open the create modal pre-filled, then save via PUT.
+    let announcementEditId = null;
+    document.addEventListener('click', (e) => {
+      const editBtn = e.target.closest('[data-edit]');
+      if (editBtn && editBtn.dataset.edit !== undefined && !editBtn.dataset.editBlog) {
+        const id = Number(editBtn.dataset.edit);
+        const a = announcements.find((x) => x.id === id);
+        if (!a) return;
+        announcementEditId = id;
+        const schema = formSchemas.announcement;
+        openModal(schema, {
+          title: a.title,
+          body: a.body,
+          style: a.style,
+        });
+        // Rename the submit button while in edit mode.
+        const overlay = $('#modalOverlay');
+        setTimeout(() => {
+          const submitBtn = $('#modalSubmit');
+          if (submitBtn) submitBtn.textContent = 'Save changes';
+        }, 0);
+      }
+    });
+
+    // Modal form submit — dispatches based on which modal is open
+    $('#modalForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const data = {};
+      $('#modalForm').querySelectorAll('input, select, textarea').forEach((inp) => { if (inp.name) data[inp.name] = inp.value; });
+      if (modalMode === 'blog') { await submitBlog(data, blogEditId); return; }
+      if (modalMode === 'login') { await doLogin(data); return; }
+      if (modalMode === 'user') {
+        try {
+          await apiFetch('/api/auth/admins', { method: 'POST', body: data });
+          toast('Admin invited');
+          announcementEditId = null;
+          closeModal();
+          if ($('#viewTitle').textContent === 'Admin Users') await renderUsers();
+        } catch (err) { toast(err.message); }
+        return;
+      }
+      if (modalMode === 'announcement') {
+        try {
+          if (announcementEditId) {
+            await apiFetch(`/api/cms/announcements/${announcementEditId}`, { method: 'PUT', body: data });
+            toast('Announcement updated');
+          } else {
+            await apiFetch('/api/cms/announcements', { method: 'POST', body: data });
+            toast('Announcement created');
+          }
+          announcementEditId = null;
+          closeModal();
+          if ($('#viewTitle').textContent === 'Announcements') await renderAnnouncements();
+        } catch (err) { toast(err.message); }
+        return;
+      }
+      closeModal();
+      toast('Updated successfully');
+    });
+
+    // Modal controls
+    $('#modalClose').addEventListener('click', closeModal);
+    $('#modalCancel').addEventListener('click', closeModal);
+    $('#modalOverlay').addEventListener('click', (e) => { if (e.target === $('#modalOverlay')) closeModal(); });
+
+    // Delete admin user
+    document.addEventListener('click', (e) => {
+      const delBtn = e.target.closest('[data-delete-user]');
+      if (delBtn) deleteUser(Number(delBtn.dataset.deleteUser));
+    });
+
+    async function deleteUser(id) {
+      if (!confirm('Remove this admin user? This cannot be undone.')) return;
+      try {
+        await apiFetch(`/api/auth/${id}`, { method: 'DELETE' });
+        toast('User removed');
+        if ($('#viewTitle').textContent === 'Admin Users') await renderUsers();
+      } catch (err) { toast(err.message); }
+    }
+
+    // Mobile sidebar
+    $('#menuBtn').addEventListener('click', openSidebar);
+    backdrop.addEventListener('click', closeSidebar);
+
+    // Logout — clear the session and return to the login overlay.
+    function logout() {
+      localStorage.removeItem(TOKEN_KEY);
+      // Also clear any stored API base so a fresh origin is used next time.
+      localStorage.removeItem('osc_api_base');
+      const overlay = $('#loginOverlay');
+      overlay.classList.add('hidden');
+      overlay.classList.remove('flex');
+      $('#loginForm').reset();
+      const err = $('#loginError');
+      if (err) err.classList.add('hidden');
+      renderView('dashboard');
+    }
+    $('#logoutBtn').addEventListener('click', logout);
+
+    /* ================================================================
+       LOGIN FLOW — authenticate against /api/auth/login
+       ================================================================ */
+    const loginForm = $('#loginForm');
+    const loginOverlay = $('#loginOverlay');
+    const loginError = $('#loginError');
+
+    function showLoginError(message) {
+      if (!loginError) return;
+      loginError.textContent = message || 'Invalid email or password.';
+      loginError.classList.remove('hidden');
+    }
+    function hideLoginError() {
+      if (loginError) loginError.classList.add('hidden');
+    }
+
+    if (loginForm) {
+      loginForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        hideLoginError();
+        const email = loginForm.querySelector('[name="email"]').value.trim();
+        const password = loginForm.querySelector('[name="password"]').value;
+        try {
+          const res = await apiFetch('/api/auth/login', {
+            method: 'POST',
+            body: { email, password },
+          });
+          localStorage.setItem(TOKEN_KEY, res.token);
+          hideLoginError();
+          hideLogin();
+          renderView('dashboard');
+        } catch (e) {
+          showLoginError(e.message);
+        }
+      });
+    }
+
+    /* ================================================================
+       PROFILE SECTION — populate from the authenticated user
+       ================================================================ */
+    function renderProfile(user) {
+      const avatar = sidebar.querySelector('.profile-avatar');
+      const nameEl = sidebar.querySelector('.profile-name');
+      const emailEl = sidebar.querySelector('.profile-email');
+      if (avatar) {
+        avatar.textContent = (user.name && user.name[0] || 'U').toUpperCase();
+      }
+      if (nameEl) nameEl.textContent = user.name || 'Admin User';
+      if (emailEl) emailEl.textContent = user.email || '';
+    }
+
+    /* ================================================================
+       AUTH GATE — verify the session before showing the app.
+       ================================================================ */
+    function showLogin() { loginOverlay.classList.remove('hidden'); loginOverlay.classList.add('flex'); }
+    function hideLogin() { loginOverlay.classList.add('hidden'); loginOverlay.classList.remove('flex'); }
+
+    async function boot() {
+      const token = localStorage.getItem(TOKEN_KEY);
+      if (!token) { showLogin(); return; }
+      try {
+        const user = await apiFetch('/api/auth/me');
+        renderProfile(user);
+        hideLogin();
+        renderView('dashboard');
+      } catch (e) {
+        localStorage.removeItem(TOKEN_KEY);
+        showLogin();
+      }
+    }
+
+    boot();
+  </script>
+</body>
+</html>

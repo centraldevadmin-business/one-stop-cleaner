@@ -72,8 +72,7 @@ export async function runSchema(nodeDb, d1) {
       source TEXT NOT NULL DEFAULT 'contact',
       status TEXT NOT NULL DEFAULT 'new',
       stage TEXT NOT NULL DEFAULT 'discovery',
-      priority TEXT NOT NULL DEFAULT 'normal',
-      name TEXT,
+      priority TEXT NOT NULL DEFAULT 'normal',      segment TEXT NOT NULL DEFAULT 'general',      name TEXT,
       email TEXT,
       phone TEXT,
       company TEXT,
@@ -237,6 +236,33 @@ export async function runSchema(nodeDb, d1) {
       detail TEXT,
       created_at TEXT NOT NULL DEFAULT (datetime('now'))
     )`,
+
+    `CREATE TABLE IF NOT EXISTS legal_pages (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      key TEXT NOT NULL UNIQUE,
+      title TEXT NOT NULL,
+      slug TEXT NOT NULL UNIQUE,
+      body TEXT NOT NULL DEFAULT '',
+      updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+    )`,
+
+    `CREATE TABLE IF NOT EXISTS settings (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      key TEXT NOT NULL UNIQUE,
+      value TEXT,
+      updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+    )`,
+
+    `CREATE TABLE IF NOT EXISTS announcements (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      title TEXT NOT NULL,
+      body TEXT NOT NULL DEFAULT '',
+      link TEXT,
+      style TEXT NOT NULL DEFAULT 'info',
+      active INTEGER NOT NULL DEFAULT 1,
+      position INTEGER NOT NULL DEFAULT 0,
+      created_at TEXT NOT NULL DEFAULT (datetime('now'))
+    )`,
   ];
 
   if (d1) {
@@ -340,6 +366,19 @@ export function initDb() {
   _nodeDb.pragma('journal_mode = WAL');
   _nodeDb.pragma('foreign_keys = ON');
   runSchema(_nodeDb, null);
+  // Migrate: add columns that may be missing from pre-existing databases.
+  const cols = _nodeDb.prepare('PRAGMA table_info(leads)').all().map((c) => c.name);
+  if (!cols.includes('segment')) {
+    _nodeDb.exec('ALTER TABLE leads ADD COLUMN segment TEXT NOT NULL DEFAULT \'general\'');
+  }
+  // Migrate: add SEO columns that may be missing from pre-existing databases.
+  const blogCols = _nodeDb.prepare('PRAGMA table_info(blog_posts)').all().map((c) => c.name);
+  if (!blogCols.includes('meta_title')) {
+    _nodeDb.exec("ALTER TABLE blog_posts ADD COLUMN meta_title TEXT");
+  }
+  if (!blogCols.includes('meta_description')) {
+    _nodeDb.exec("ALTER TABLE blog_posts ADD COLUMN meta_description TEXT");
+  }
   return _nodeDb;
 }
 

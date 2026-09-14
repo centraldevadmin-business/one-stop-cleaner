@@ -19,7 +19,7 @@
   };
 
   // Permission gate — hide panels the user's role cannot access.
-  const ALL_PANELS = ['dashboard', 'leads', 'campaigns', 'cms', 'products', 'contacts', 'tickets', 'blog', 'users', 'roles', 'audit', 'media'];
+  const ALL_PANELS = ['dashboard', 'analytics', 'leads', 'campaigns', 'cms', 'products', 'contacts', 'tickets', 'blog', 'users', 'roles', 'audit', 'media'];
 
   function api(path, opts = {}) {
     const headers = { ...(opts.headers || {}) };
@@ -67,6 +67,7 @@
     $$('.admin__nav a').forEach((a) => a.classList.toggle('active', a.dataset.panel === panel));
     $$('.admin__panel').forEach((p) => p.classList.toggle('active', p.id === 'panel-' + panel));
     if (panel === 'dashboard') loadDashboard();
+    if (panel === 'analytics') loadAnalytics();
     if (panel === 'leads') loadLeads();
     if (panel === 'campaigns') { loadCampaigns(); }
     if (panel === 'cms') loadCms();
@@ -105,30 +106,308 @@
   // ---------- Dashboard ----------
   async function loadDashboard() {
     const grid = $('#statGrid');
-    const stageBody = $('#stageTable tbody');
     try {
       const d = await api('/api/analytics/dashboard');
-      const stats = [
-        { label: 'Total leads', value: d.leads, sub: `${d.newLeads} new` },
-        { label: 'Contacts', value: d.contacts || 0, sub: 'CRM entries' },
-        { label: 'Open tickets', value: d.openTickets || 0, sub: 'awaiting reply' },
-        { label: 'Campaigns', value: d.campaigns, sub: `${d.running} running` },
-        { label: 'Products', value: d.products, sub: 'active' },
-        { label: 'Blog posts', value: d.posts || 0, sub: 'all statuses' },
-        { label: 'Emails sent', value: d.sent, sub: 'delivered' },
-        { label: 'Opened', value: d.opened, sub: `${d.sent ? Math.round((d.opened / (d.sent || 1)) * 100) : 0}% rate` },
-        { label: 'Clicked', value: d.clicked, sub: `${d.sent ? Math.round((d.clicked / (d.sent || 1)) * 100) : 0}% rate` },
+      const iconStats = [
+        { icon: 'leads', label: 'Total leads', value: d.leads, sub: `${d.newLeads} new` },
+        { icon: 'contacts', label: 'Contacts', value: d.contacts || 0, sub: 'CRM entries' },
+        { icon: 'tickets', label: 'Open tickets', value: d.openTickets || 0, sub: 'awaiting reply' },
+        { icon: 'campaigns', label: 'Campaigns', value: d.campaigns, sub: `${d.running} running` },
+        { icon: 'products', label: 'Products', value: d.products, sub: 'active' },
+        { icon: 'posts', label: 'Blog posts', value: d.posts || 0, sub: 'all statuses' },
+        { icon: 'sent', label: 'Emails sent', value: d.sent, sub: 'delivered' },
+        { icon: 'opened', label: 'Opened', value: d.opened, sub: `${d.sent ? Math.round((d.opened / (d.sent || 1)) * 100) : 0}% rate` },
       ];
-      grid.innerHTML = stats.map((s) => `
-        <div class="stat-card">
-          <div class="stat-label">${s.label}</div>
+      grid.innerHTML = iconStats.map((s) => `
+        <div class="stat-card--grad">
+          <div class="stat-icon">${STAT_ICONS[s.icon]}</div>
           <div class="stat-value">${s.value}</div>
+          <div class="stat-label">${s.label}</div>
           <div class="stat-sub">${s.sub}</div>
         </div>`).join('');
-      stageBody.innerHTML = (d.byStage || []).map((r) => `<tr><td>${r.stage}</td><td>${r.c}</td></tr>`).join('') || '<tr><td colspan="2">No data yet.</td></tr>';
+
+      renderSourceDonut(d.bySource || []);
+      renderStatusDonut(d.byStatus || []);
+      renderLineChart(d.series || []);
+      renderSourceBars(d.bySource || []);
+      renderActivity(d);
     } catch (e) {
       grid.innerHTML = `<p style="color:var(--slate)">Could not load dashboard: ${e.message}</p>`;
     }
+  }
+
+  // ---------- Stat icons (inline SVG) ----------
+  const STAT_ICONS = {
+    leads: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/></svg>',
+    contacts: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>',
+    tickets: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>',
+    campaigns: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>',
+    products: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><path d="M3.27 6.96L12 12.01l8.73-5.05M12 22.08V12"/></svg>',
+    posts: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>',
+    sent: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M22 6l-10 7L2 6"/></svg>',
+    opened: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>',
+  };
+
+  // ---------- Donut chart ----------
+  const DONUT_COLORS = ['#0f172a', '#1e3a8a', '#1d4ed8', '#2563eb', '#3b82f6', '#60a5fa', '#93c5fd', '#bfdbfe'];
+
+  function arcPath(cx, cy, r, startAngle, endAngle) {
+    const start = polarToCartesian(cx, cy, r, endAngle);
+    const end = polarToCartesian(cx, cy, r, startAngle);
+    const largeArcFlag = endAngle - startAngle <= 180 ? '0' : '1';
+    return ['M', cx, cy, 'L', start.x, start.y, 'A', r, r, 0, largeArcFlag, 0, end.x, end.y, 'Z'].join(' ');
+  }
+  function polarToCartesian(cx, cy, r, angleDeg) {
+    const rad = ((angleDeg - 90) * Math.PI) / 180;
+    return { x: cx + r * Math.cos(rad), y: cy + r * Math.sin(rad) };
+  }
+
+  function renderDonut(containerId, valueId, detailsId, data) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    const total = data.reduce((a, b) => a + (b.c || b.count || 0), 0) || 0;
+    const cx = 60, cy = 60, r = 46, stroke = 26;
+    const svg = container.querySelector('svg');
+    svg.innerHTML = '';
+    let offset = 0;
+    const circ = 2 * Math.PI * r;
+    data.forEach((item, i) => {
+      const val = item.c || item.count || 0;
+      if (val <= 0) return;
+      const frac = val / total;
+      const dash = frac * circ;
+      const gap = circ - dash;
+      const seg = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      seg.setAttribute('cx', cx); seg.setAttribute('cy', cy); seg.setAttribute('r', r);
+      seg.setAttribute('fill', 'none');
+      seg.setAttribute('stroke', DONUT_COLORS[i % DONUT_COLORS.length]);
+      seg.setAttribute('stroke-width', stroke);
+      seg.setAttribute('stroke-dasharray', `${dash} ${gap}`);
+      seg.setAttribute('stroke-dashoffset', -offset);
+      seg.setAttribute('transform', `rotate(-90 ${cx} ${cy})`);
+      svg.appendChild(seg);
+      offset += dash;
+    });
+    document.getElementById(valueId).textContent = total;
+    const details = document.getElementById(detailsId);
+    details.innerHTML = data.map((item, i) => {
+      const val = item.c || item.count || 0;
+      const pct = total ? Math.round((val / total) * 100) : 0;
+      const name = item.stage || item.status || item.source || item.label || item.name || `#${i + 1}`;
+      return `<div class="donut-detail"><span class="dd-name"><span class="dd-dot" style="background:${DONUT_COLORS[i % DONUT_COLORS.length]}"></span>${escapeHtml(name)}</span><span class="dd-val">${val} <em style="color:var(--muted);font-weight:500">(${pct}%)</em></span></div>`;
+    }).join('');
+  }
+
+  function renderSourceDonut(data) { renderDonut('sourceDonut', 'sourceDonutValue', 'sourceDonutDetails', data); }
+  function renderStatusDonut(data) { renderDonut('statusDonut', 'statusDonutValue', 'statusDonutDetails', data); }
+
+  // ---------- Line / area chart ----------
+  function renderLineChart(series) {
+    const chart = document.getElementById('dashLineChart');
+    if (!chart) return;
+    if (!series.length) { chart.innerHTML = '<div class="empty-soft">No traffic data yet.</div>'; return; }
+    const W = chart.clientWidth || 700, H = 220, pad = 40;
+    const max = Math.max(...series.map((s) => s.events), 1);
+    const n = series.length;
+    const x = (i) => pad + (i / Math.max(1, n - 1)) * (W - pad * 2);
+    const y = (v) => H - pad - (v / max) * (H - pad * 2);
+    let gridLines = '';
+    for (let g = 0; g <= 4; g++) {
+      const gy = pad + (g / 4) * (H - pad * 2);
+      const gv = Math.round(max - (g / 4) * max);
+      gridLines += `<line class="grid-line" x1="0" y1="${gy}" x2="${W}" y2="${gy}"/><text x="6" y="${gy - 4}" class="dot-label">${gv}</text>`;
+    }
+    const pathPts = series.map((s, i) => `${x(i)},${y(s.events)}`);
+    const pathD = pathPts.map((p, i) => (i === 0 ? 'M' : 'L') + p).join(' ');
+    const areaD = pathD + ` L${x(n - 1)},${H - pad} L${x(0)},${H - pad} Z`;
+    let dots = '';
+    series.forEach((s, i) => {
+      dots += `<circle class="dot" cx="${x(i)}" cy="${y(s.events)}" r="3.5"/><text class="dot-val" x="${x(i)}" y="${y(s.events) - 10}">${s.events}</text><text class="dot-label" x="${x(i)}" y="${H - 12}">${s.day}</text>`;
+    });
+    chart.innerHTML = `
+      <svg viewBox="0 0 ${W} ${H}">
+        <defs><linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#2563eb" stop-opacity="0.5"/>
+          <stop offset="100%" stop-color="#2563eb" stop-opacity="0.02"/>
+        </linearGradient></defs>
+        ${gridLines}
+        <path class="line-area" d="${areaD}"/>
+        <path class="line-path" d="${pathD}"/>
+        ${dots}
+      </svg>`;
+  }
+
+  // ---------- Horizontal bars ----------
+  function renderSourceBars(data) {
+    const el = document.getElementById('sourceBars');
+    if (!el) return;
+    if (!data.length) { el.innerHTML = '<div class="empty-soft">No data yet.</div>'; return; }
+    const max = Math.max(...data.map((d) => d.c || d.count || 0), 1);
+    el.innerHTML = data.map((item, i) => {
+      const val = item.c || item.count || 0;
+      const pct = Math.round((val / max) * 100);
+      const name = item.source || item.stage || item.status || item.label || `#${i + 1}`;
+      return `<div class="hbar-row"><div class="hbar-top"><span class="hbar-name">${escapeHtml(name)}</span><span class="hbar-val">${val}</span></div><div class="hbar-track"><div class="hbar-fill ${i % 2 ? 'alt' : ''}" style="width:${pct}%"></div></div></div>`;
+    }).join('');
+  }
+
+  // ---------- Recent activity ----------
+  function renderActivity(d) {
+    const el = document.getElementById('recentActivity');
+    if (!el) return;
+    const items = [
+      { icon: 'leads', text: `<strong>${d.newLeads || 0}</strong> new leads this week`, time: 'This week' },
+      { icon: 'tickets', text: `<strong>${d.openTickets || 0}</strong> tickets awaiting reply`, time: 'Active' },
+      { icon: 'campaigns', text: `<strong>${d.running || 0}</strong> campaigns currently running`, time: 'Active' },
+      { icon: 'opened', text: `<strong>${d.sent ? Math.round((d.opened / (d.sent || 1)) * 100) : 0}%</strong> email open rate`, time: 'Last campaign' },
+      { icon: 'contacts', text: `<strong>${d.contacts || 0}</strong> contacts in CRM`, time: 'Total' },
+    ];
+    el.innerHTML = items.map((it) => `
+      <div class="activity-item">
+        <div class="activity-icon">${STAT_ICONS[it.icon]}</div>
+        <div class="activity-body"><div class="activity-text">${it.text}</div><div class="activity-time">${it.time}</div></div>
+      </div>`).join('');
+  }
+
+  function escapeHtml(s) {
+    return String(s == null ? '' : s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  }
+
+  // ---------- Analytics ----------
+  async function loadAnalytics() {
+    const range = $('#analytics-range') ? Number($('#analytics-range').value) : 30;
+    try {
+      const [dash, insights] = await Promise.all([
+        api('/api/analytics/dashboard'),
+        api('/api/analytics/insights'),
+      ]);
+
+      renderKpis(dash, insights);
+      renderInsights(insights);
+      renderTrafficChart(dash.series || []);
+      renderTopPages(dash.topPages || []);
+      renderFunnel(dash.funnel || []);
+      renderCampaignMetrics(dash);
+      renderSupportMetrics(dash);
+    } catch (e) {
+      $('#kpis').innerHTML = `<p style="color:var(--slate)">Could not load analytics: ${e.message}</p>`;
+    }
+  }
+
+  function deltaHtml(growth) {
+    if (growth == null || isNaN(growth)) return `<span class="kpi-delta neutral">—</span>`;
+    const cls = growth > 0 ? 'up' : growth < 0 ? 'down' : 'neutral';
+    const arrow = growth > 0 ? '▲' : growth < 0 ? '▼' : '▪';
+    return `<span class="kpi-delta ${cls}">${arrow} ${Math.abs(growth)}%</span>`;
+  }
+
+  function renderKpis(d, insights) {
+    const visits = d.visits || 0;
+    const signups = d.signups || 0;
+    const kpis = [
+      { label: 'Total visits', value: visits, delta: insights.growth, sub: 'tracked page views' },
+      { label: 'Waitlist signups', value: signups, delta: insights.growth, sub: `${d.partners || 0} via partners` },
+      { label: 'Conversion rate', value: `${d.conversionRate || 0}%`, sub: 'signup / visit' },
+      { label: 'Total leads', value: d.leads, sub: `${d.newLeads} new` },
+      { label: 'Contacts', value: d.contacts || 0, sub: 'CRM entries' },
+      { label: 'Open tickets', value: d.openTickets || 0, sub: 'awaiting reply' },
+    ];
+    $('#kpis').innerHTML = kpis.map((k) => `
+      <div class="kpi-card">
+        <div class="kpi-label">${k.label}</div>
+        <div class="kpi-value">${k.value}</div>
+        ${k.delta != null ? deltaHtml(k.delta) : ''}
+        <div class="kpi-sub">${k.sub}</div>
+      </div>`).join('');
+  }
+
+  function renderInsights(i) {
+    $('#insights').innerHTML = [
+      { label: 'Most active event', value: i.topEvent, sub: `${i.topEventCount} events` },
+      { label: 'Peak hour', value: i.peakHour, sub: 'daily traffic' },
+      { label: 'Weekly events', value: i.weekEvents, sub: deltaHtml(i.growth) },
+      { label: 'Engagement trend', value: i.growth != null ? `${i.growth > 0 ? '+' : ''}${i.growth}%` : '—', sub: 'vs prior week' },
+    ].map((t) => `
+      <div class="insight-tile">
+        <div class="it-label">${t.label}</div>
+        <div class="it-value">${t.value}</div>
+        <div class="kpi-sub">${t.sub}</div>
+      </div>`).join('') || '<div class="empty-soft">No events tracked yet.</div>';
+  }
+
+  function renderTrafficChart(series) {
+    const chart = $('#trafficChart');
+    if (!series.length) { chart.innerHTML = '<div class="empty-soft">No traffic data yet.</div>'; return; }
+    const max = Math.max(...series.map((s) => s.events), 1);
+    chart.innerHTML = series.map((s) => {
+      const h = Math.max(6, (s.events / max) * 100);
+      return `
+        <div class="bar-col">
+          <div class="bar-track"><div class="bar" style="height:${h}%"><span class="bar-val">${s.events}</span></div></div>
+          <div class="bar-label">${s.day}</div>
+        </div>`;
+    }).join('');
+  }
+
+  function renderTopPages(pages) {
+    const el = $('#topPages');
+    if (!pages.length) { el.innerHTML = '<div class="empty-soft">No page data yet.</div>'; return; }
+    const max = Math.max(...pages.map((p) => p.c), 1);
+    el.innerHTML = pages.map((p) => `
+      <div class="dl-row">
+        <div class="dl-name">${escapeHtml(p.page)}</div>
+        <div class="dl-bar"><span style="width:${Math.round((p.c / max) * 100)}%"></span></div>
+        <div class="dl-val">${p.c}</div>
+      </div>`).join('');
+  }
+
+  function renderFunnel(funnel) {
+    const el = $('#funnel');
+    const active = funnel.filter((f) => f.stage !== 'lost');
+    const total = active.reduce((a, f) => a + f.count, 0) || 1;
+    el.innerHTML = funnel.map((f) => {
+      const pct = Math.round((f.count / total) * 100);
+      const isLost = f.stage === 'lost';
+      return `
+        <div class="funnel-row">
+          <div class="funnel-name">${f.stage}</div>
+          <div class="funnel-track"><div class="funnel-fill" style="width:${Math.max(pct, 8)}%; background: ${isLost ? '#d94f4f' : 'var(--grad)'}">${f.count}</div></div>
+          <div class="funnel-pct">${pct}%</div>
+        </div>`;
+    }).join('') || '<div class="empty-soft">No lead data yet.</div>';
+  }
+
+  function renderCampaignMetrics(d) {
+    const el = $('#campaignMetrics');
+    const sent = d.sent || 0;
+    const opened = d.opened || 0;
+    const clicked = d.clicked || 0;
+    const rows = [
+      { label: 'Emails sent', value: sent },
+      { label: 'Opened', value: opened, sub: sent ? `${Math.round((opened / (sent || 1)) * 100)}% open rate` : '' },
+      { label: 'Clicked', value: clicked, sub: sent ? `${Math.round((clicked / (sent || 1)) * 100)}% click rate` : '' },
+    ];
+    const max = Math.max(sent, opened, clicked, 1);
+    el.innerHTML = rows.map((r) => `
+      <div class="dl-row">
+        <div class="dl-name">${r.label}</div>
+        <div class="dl-bar"><span style="width:${Math.round((r.value / max) * 100)}%"></span></div>
+        <div class="dl-val">${r.value}</div>
+      </div>`).join('') || '<div class="empty-soft">No campaigns yet.</div>';
+  }
+
+  function renderSupportMetrics(d) {
+    $('#supportMetrics').innerHTML = [
+      { label: 'Open tickets', value: d.openTickets || 0, sub: 'needs attention' },
+      { label: 'Resolved tickets', value: d.resolvedTickets || 0, sub: 'lifetime' },
+      { label: 'Avg response', value: (d.ticketResponseHours || 0) > 0 ? `${d.ticketResponseHours}h` : '—', sub: 'to first reply' },
+      { label: 'High-priority contacts', value: d.highPriorityContacts || 0, sub: 'not yet lost' },
+    ].map((t) => `
+      <div class="insight-tile">
+        <div class="it-label">${t.label}</div>
+        <div class="it-value">${t.value}</div>
+        <div class="kpi-sub">${t.sub}</div>
+      </div>`).join('');
   }
 
   // ---------- Leads ----------
@@ -647,7 +926,7 @@
     $('#ticket-refresh').addEventListener('click', loadTickets);
     $('#ticket-status').addEventListener('change', loadTickets);
     $('#tm-close').addEventListener('click', closeTicket);
-    $('[close-ticket]').addEventListener('click', closeTicket);
+    $('[data-close-ticket]').addEventListener('click', closeTicket);
     $('#tm-message-form').addEventListener('submit', async (e) => {
       e.preventDefault();
       if (!currentTicketId) return;
@@ -689,6 +968,10 @@
     // Audit filter
     $('#audit-refresh').addEventListener('click', loadAudit);
     $('#audit-q').addEventListener('input', loadAudit);
+
+    // Analytics
+    $('#analytics-refresh').addEventListener('click', loadAnalytics);
+    $('#analytics-range').addEventListener('change', loadAnalytics);
 
     // ---------- Admin theme toggle ----------
     const THEME_KEY = 'osc_admin_theme';

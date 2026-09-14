@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>One Stop Cleaner — Admin</title>
+  <meta name="description" content="One Stop Cleaner marketplace admin panel." />
+
+  <!-- ===================== TAILWIND CSS (CDN) ===================== -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- ===================== CHART.JS (CDN) ===================== -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+  <!-- ===================== FONTS: Inter + Fraunces ===================== -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    /* Brand typography: Fraunces for page titles, Inter for everything else */
+    body { font-family: 'Inter', system-ui, sans-serif; }
+    .font-brand { font-family: 'Fraunces', Georgia, serif; }
+
+    /* Toast slide-in/out animation */
+    .toast-enter { animation: toastIn .4s cubic-bezier(.16,1,.3,1); }
+    .toast-exit { animation: toastOut .4s cubic-bezier(.6,.02,.7,1) forwards; }
+    @keyframes toastIn { from { transform: translateX(120%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+    @keyframes toastOut { from { transform: translateX(0); opacity: 1; } to { transform: translateX(120%); opacity: 0; } }
+
+    /* Modal backdrop + panel transitions */
+    .modal-overlay { transition: opacity .25s ease; }
+    .modal-panel { transition: transform .25s cubic-bezier(.16,1,.3,1), opacity .25s ease; }
+
+    /* Sidebar slide on mobile */
+    .sidebar { transition: transform .3s cubic-bezier(.16,1,.3,1); }
+
+    /* WYSIWYG toolbar button states */
+    .fmt-btn:active, .fmt-btn.active { background: #292524; color: #fff; }
+
+    /* Custom scrollbar for a cleaner look */
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-thumb { background: #d6d3d1; border-radius: 999px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+  </style>
+</head>
+
+<body class="bg-stone-50 text-stone-800 antialiased">
+
+  <div class="flex min-h-screen">
+
+    <!-- ============================================================= -->
+    <!-- SIDEBAR (Warm Ink, fixed)                                     -->
+    <!-- ============================================================= -->
+    <aside id="sidebar" class="sidebar fixed inset-y-0 left-0 z-40 w-64 -translate-x-full bg-stone-900 text-stone-300 md:translate-x-0 md:static md:shrink-0 flex flex-col">
+
+      <!-- Brand logo -->
+      <div class="flex items-center gap-3 px-6 h-16 border-b border-stone-800">
+        <div class="h-9 w-9 rounded-lg bg-teal-600 grid place-items-center">
+          <svg class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+          </svg>
+        </div>
+        <div>
+          <p class="text-white font-semibold leading-tight">One Stop Cleaner</p>
+          <p class="text-xs text-stone-500">Marketplace Admin</p>
+        </div>
+      </div>
+
+      <!-- Navigation grouped by category -->
+      <nav class="flex-1 overflow-y-auto px-3 py-5 space-y-6 text-sm">
+
+        <!-- Dashboard -->
+        <div>
+          <p class="px-3 mb-2 text-xs font-semibold tracking-wider text-stone-500 uppercase">Overview</p>
+          <ul class="space-y-1">
+            <li><button data-panel="dashboard" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-stone-300 hover:text-white hover:bg-stone-800"><svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>Dashboard</button></li>
+          </ul>
+        </div>
+
+        <!-- CRM -->
+        <div>
+          <p class="px-3 mb-2 text-xs font-semibold tracking-wider text-stone-500 uppercase">CRM</p>
+          <ul class="space-y-1">
+            <li><button data-panel="crm-clients" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-stone-300 hover:text-white hover:bg-stone-800"><svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Clients</button></li>
+            <li><button data-panel="crm-cleaners" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-stone-300 hover:text-white hover:bg-stone-800"><svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>Cleaners</button></li>
+            <li><button data-panel="crm-investors" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-stone-300 hover:text-white hover:bg-stone-800"><svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 18V6"/></svg>Investors</button></li>
+          </ul>
+        </div>
+
+        <!-- CMS -->
+        <div>
+          <p class="px-3 mb-2 text-xs font-semibold tracking-wider text-stone-500 uppercase">CMS</p>
+          <ul class="space-y-1">
+            <li><button data-panel="cms-announcements" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-stone-300 hover:text-white hover:bg-stone-800"><svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path d="M11 5H6a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-5"/><rect x="11" y="14" width="9" height="7" rx="2"/><path d="M18 2v4h4"/><path d="M22 8l-6 6"/></svg>Announcements</button></li>
+            <li><button data-panel="cms-legal" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-stone-300 hover:text-white hover:bg-stone-800"><svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/></svg>Legal Pages</button></li>
+          </ul>
+        </div>
+
+        <!-- Settings -->
+        <div>
+          <p class="px-3 mb-2 text-xs font-semibold tracking-wider text-stone-500 uppercase">Settings</p>
+          <ul class="space-y-1">
+            <li><button data-panel="settings-users" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-stone-300 hover:text-white hover:bg-stone-800"><svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Users &amp; Roles</button></li>
+          </ul>
+        </div>
+      </nav>
+
+      <!-- User profile / logout at the bottom -->
+      <div class="p-4 border-t border-stone-800">
+        <div class="flex items-center gap-3">
+          <div class="h-9 w-9 rounded-full bg-teal-600 grid place-items-center text-white font-semibold">A</div>
+          <div class="min-w-0 flex-1">
+            <p class="text-sm font-medium text-white truncate">Admin User</p>
+            <p class="text-xs text-stone-500 truncate">admin@onestopcleaner.com</p>
+          </div>
+          <button id="logoutBtn" class="p-2 rounded-lg text-stone-500 hover:text-stone-200 hover:bg-stone-800" title="Sign out" aria-label="Sign out">
+            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/></svg>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Mobile backdrop -->
+    <div id="sidebarBackdrop" class="fixed inset-0 z-30 bg-black/50 hidden"></div>
+
+    <!-- ============================================================= -->
+    <!-- MAIN COLUMN                                                   -->
+    <!-- ============================================================= -->
+    <div class="flex-1 min-w-0 flex flex-col">
+
+      <!-- Top header: search, bell, quick action -->
+      <header class="sticky top-0 z-20 h-16 bg-white border-b border-stone-200 flex items-center gap-4 px-4 sm:px-6">
+        <button id="menuBtn" class="md:hidden p-2 rounded-lg text-stone-500 hover:bg-stone-100" aria-label="Open menu">
+          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+
+        <!-- Page title (updated by router) -->
+        <div class="min-w-0">
+          <h1 id="viewTitle" class="font-brand text-xl font-semibold text-stone-800 truncate">Dashboard</h1>
+          <p id="viewSubtitle" class="text-xs text-stone-500 truncate">Welcome back — here's your marketplace at a glance.</p>
+        </div>
+
+        <!-- Search bar -->
+        <div class="hidden sm:flex items-center flex-1 max-w-md">
+          <div class="relative w-full">
+            <svg class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-stone-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" placeholder="Search leads, cleaners, orders…" class="w-full pl-9 pr-3 py-2 text-sm rounded-lg border border-stone-200 bg-stone-50 focus:outline-none focus:ring-2 focus:ring-teal-600 focus:border-teal-600" />
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 sm:gap-3 ml-auto">
+          <!-- Notification bell -->
+          <button class="relative p-2 rounded-lg text-stone-500 hover:bg-stone-100" aria-label="Notifications">
+            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+            <span class="absolute top-1.5 right-1.5 h-2 w-2 rounded-full bg-teal-600"></span>
+          </button>
+
+          <!-- Quick Action dropdown -->
+          <div class="relative" id="quickActionWrap">
+            <button id="quickActionBtn" class="inline-flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-white bg-teal-600 hover:bg-teal-700">
+              <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              <span class="hidden sm:inline">Quick Action</span>
+              <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <!-- Dropdown -->
+            <div id="quickActionMenu" class="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-stone-200 py-1 hidden">
+              <button data-create="client" class="w-full flex items-center gap-2 px-4 py-2 text-sm text-left text-stone-700 hover:bg-stone-50">New Client</button>
+              <button data-create="cleaner" class="w-full flex items-center gap-2 px-4 py-2 text-sm text-left text-stone-700 hover:bg-stone-50">Add Cleaner</button>
+              <button data-create="announcement" class="w-full flex items-center gap-2 px-4 py-2 text-sm text-left text-stone-700 hover:bg-stone-50">New Announcement</button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Dynamic view container -->
+      <main id="view" class="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8"></main>
+    </div>
+  </div>
+
+  <!-- ============================================================= -->
+  <!-- CENTRALIZED MODAL                                             -->
+  <!-- ============================================================= -->
+  <div id="modalOverlay" class="modal-overlay fixed inset-0 z-50 bg-stone-900/50 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="modal-panel bg-white rounded-2xl shadow-xl w-full max-w-lg max-h-[90vh] overflow-y flex flex-col">
+      <div class="flex items-center justify-between px-6 py-4 border-b border-stone-200">
+        <h2 id="modalTitle" class="text-lg font-semibold text-stone-800">Create</h2>
+        <button id="modalClose" class="p-2 rounded-lg text-stone-400 hover:bg-stone-100 hover:text-stone-600" aria-label="Close">
+          <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <form id="modalForm" class="px-6 py-5 space-y-4" novalidate></form>
+      <div class="flex justify-end gap-3 px-6 py-4 border-t border-stone-200">
+        <button type="button" id="modalCancel" class="px-4 py-2 rounded-lg text-sm font-medium text-stone-600 hover:bg-stone-100">Cancel</button>
+        <button type="submit" form="modalForm" class="px-4 py-2 rounded-lg text-sm font-medium text-white bg-teal-600 hover:bg-teal-700">Save Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================= -->
+  <!-- TOAST (bottom right)                                          -->
+  <!-- ============================================================= -->
+  <div id="toast" class="fixed bottom-6 right-6 z-[60] hidden items-center gap-3 bg-teal-600 text-white px-5 py-4 rounded-xl shadow-lg max-w-sm">
+    <svg class="h-5 w-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
+    <span id="toastMsg" class="text-sm font-medium">Action completed successfully</span>
+  </div>
+
+  <!-- ============================================================= -->
+  <!-- APPLICATION SCRIPT                                            -->
+  <!-- ============================================================= -->
+  <script>
+  /* ================================================================
+     One Stop Cleaner — Marketplace Admin SPA
+     Vanilla JS + Tailwind (CDN) + Chart.js (CDN)
+     ================================================================ */
+
+  /* ---------- DOM helpers ---------------------------------------- */
+  const $ = (sel, root = document) => root.querySelector(sel);
+  const el = (tag, attrs = {}, children = []) => {
+    const node = document.createElement(tag);
+    for (const [k, v] of Object.entries(attrs)) {
+      if (k === 'class') node.className = v;
+      else if (k === 'html') node.innerHTML = v;
+      else if (v !== null && v !== undefined) node.setAttribute(k, v);
+    }
+    // Recursively flatten nested arrays so renderTable can pass rows of cells
+    const walk = (items) => {
+      for (const c of items) {
+        if (c == null) continue;
+        if (Array.isArray(c)) { walk(c); continue; }
+        node.appendChild(typeof c === 'string' ? document.createTextNode(c) : c);
+      }
+    };
+    walk(children);
+    return node;
+  };
+
+  /* ---------- Badge / pill helpers ------------------------------- */
+  const pill = (label, cls) =>
+    el('span', { class: `inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${cls}` }, [label]);
+
+  /* Status pills for Clients */
+  const clientStatus = {
+    Pending: 'bg-amber-100 text-amber-700',
+    Matched: 'bg-blue-100 text-blue-700',
+    Completed: 'bg-teal-100 text-teal-700',
+  };
+  /* Background-check pills for Cleaners */
+  const checkStatus = {
+    Verified: 'bg-teal-100 text-teal-700',
+    Pending: 'bg-amber-100 text-amber-700',
+    Failed: 'bg-rose-100 text-rose-700',
+  };
+  /* Interest pills for Investors */
+  const interest = {
+    High: 'bg-rose-100 text-rose-700',
+    Medium: 'bg-amber-100 text-amber-700',
+    Low: 'bg-stone-200 text-stone-600',
+  };
+  /* Role pills for Users */
+  const rolePill = {
+    'Super Admin': 'bg-rose-100 text-rose-700',
+    'Content Editor': 'bg-blue-100 text-blue-700',
+    'Support Agent': 'bg-teal-100 text-teal-700',
+  };
+
+  /* ================================================================
+     MOCK DATA  (3-5 realistic objects per table)
+     ================================================================ */
+
+  const clients = [
+    { name: 'Sarah Johnson', email: 'sarah.j@example.com', service: 'Deep Clean', city: 'Austin, TX', status: 'Matched' },
+    { name: 'Marcus Lee', email: 'marcus.lee@example.com', service: 'Standard Cleaning', city: 'Round Rock, TX', status: 'Pending' },
+    { name: 'Priya Nair', email: 'priya.nair@example.com', service: 'Post-Construction', city: 'Pflugerville, TX', status: 'Completed' },
+    { name: 'David Okafor', email: 'david.ok@example.com', service: 'Office Cleaning', city: 'Cedar Park, TX', status: 'Pending' },
+  ];
+
+  const cleaners = [
+    { name: 'James Wilson', company: 'Wilson Cleaning Co.', area: 'Austin North', check: 'Verified', rating: 4.9 },
+    { name: 'Elena Rodriguez', company: 'Solo', area: 'Round Rock', check: 'Pending', rating: 4.6 },
+    { name: 'Tom Nguyen', company: 'Nguyen & Sons', area: 'Pflugerville', check: 'Verified', rating: 4.8 },
+    { name: 'Aisha Khan', company: 'Solo', area: 'Leander', check: 'Failed', rating: 3.9 },
+  ];
+
+  const investors = [
+    { company: 'GreenLeaf Capital', contact: 'Rita Patel', email: 'rita@greenleaf.capital', interest: 'High', notes: 'Interested in escrow model' },
+    { company: 'Austin Ventures', contact: 'Ben Carter', email: 'ben@austinvc.com', interest: 'Medium', notes: 'Wants demo next quarter' },
+    { company: 'CleanFunds LLC', contact: 'Mona Haddad', email: 'mona@cleanfunds.io', interest: 'Low', notes: 'Passive, follow up later' },
+  ];
+
+  const announcements = [
+    { id: 1, title: 'Fall Refresh Promo', message: 'Get 20% off your first deep clean. Use code FALL20.', type: 'Banner', active: true },
+    { id: 2, title: 'Scheduled Maintenance', message: 'The platform will be down for maintenance on Sunday 2AM.', type: 'Modal Popup', active: false },
+    { id: 3, title: 'Refer a Friend', message: 'Refer a friend and both get $25 credit.', type: 'Banner', active: true },
+  ];
+
+  const legalContent = {
+    'Terms & Conditions': 'These terms govern the use of the One Stop Cleaner marketplace. Providers agree to maintain insurance and pass background checks. Clients agree to provide accurate service addresses and payment details. [mock rich text body]',
+    'Privacy Policy': 'We collect minimal personal data required to match clients with cleaners. Data is never sold to third parties. Users may request deletion at any time. [mock rich text body]',
+  };
+
+  const users = [
+    { name: 'Admin User', email: 'admin@onestopcleaner.com', role: 'Super Admin', lastLogin: '2026-09-12 09:14' },
+    { name: 'Jane Agent', email: 'jane@onestopcleaner.com', role: 'Support Agent', lastLogin: '2026-09-11 16:42' },
+    { name: 'Mark Editor', email: 'mark@onestopcleaner.com', role: 'Content Editor', lastLogin: '2026-09-10 11:03' },
+  ];
+
+  const activityFeed = [
+    { icon: 'M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2', color: 'bg-teal-100 text-teal-600', text: 'New client <b>Sarah Johnson</b> matched with a cleaner', time: '2 min ago' },
+    { icon: 'M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z', color: 'bg-blue-100 text-blue-600', text: 'Cleaner <b>Elena Rodriguez</b> submitted for approval', time: '18 min ago' },
+    { icon: 'M12 19l7-7 3 3-7 7-3-3z', color: 'bg-amber-100 text-amber-600', text: 'Campaign <b>Fall Refresh</b> published', time: '1 hour ago' },
+    { icon: 'M12 8v4l3 3', color: 'bg-rose-100 text-rose-600', text: 'Payment of <b>$340</b> released from escrow', time: '3 hours ago' },
+    { icon: 'M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2', color: 'bg-purple-100 text-purple-600', text: 'New investor <b>GreenLeaf Capital</b> signed up', time: '5 hours ago' },
+  ];
+
+  /* ================================================================
+     VIEW METADATA (titles + subtitles)
+     ================================================================ */
+  const views = {
+    dashboard: { title: 'Dashboard', subtitle: "Welcome back — here's your marketplace at a glance." },
+    'crm-clients': { title: 'Clients', subtitle: 'Manage incoming client leads and service requests.' },
+    'crm-cleaners': { title: 'Cleaners', subtitle: 'Review applications, background checks, and ratings.' },
+    'crm-investors': { title: 'Investors & Partners', subtitle: 'Track partnership interest and outreach notes.' },
+    'cms-announcements': { title: 'Announcements', subtitle: 'Manage homepage banners and popups.' },
+    'cms-legal': { title: 'Legal Pages', subtitle: 'Edit Terms & Conditions and Privacy Policy.' },
+    'settings-users': { title: 'Users & Roles', subtitle: 'Manage admin accounts and role-based access.' },
+  };
+
+  /* ================================================================
+     ROUTER — SPA panel switching
+     ================================================================ */
+  const view = $('#view');
+  const viewTitle = $('#viewTitle');
+  const viewSubtitle = $('#viewSubtitle');
+
+  function renderView(name) {
+    const meta = views[name] || views.dashboard;
+    viewTitle.textContent = meta.title;
+    viewSubtitle.textContent = meta.subtitle;
+
+    // Active sidebar state
+    document.querySelectorAll('.nav-item').forEach((n) => {
+      const active = n.dataset.panel === name;
+      n.classList.toggle('bg-stone-800', active);
+      n.classList.toggle('text-white', active);
+      n.classList.toggle('text-stone-300', !active);
+    });
+
+    view.innerHTML = '';
+    ({
+      dashboard: renderDashboard,
+      'crm-clients': renderClients,
+      'crm-cleaners': renderCleaners,
+      'crm-investors': renderInvestors,
+      'cms-announcements': renderAnnouncements,
+      'cms-legal': renderLegal,
+      'settings-users': renderUsers,
+    })[name]();
+
+    closeSidebar();
+  }
+
+  /* ================================================================
+     VIEW: DASHBOARD (KPIs + Chart.js line & doughnut + activity)
+     ================================================================ */
+  function renderDashboard() {
+    // KPI cards
+    const kpis = [
+      { label: 'Total Escrow Volume', value: '$284,510', delta: '+12.4%', icon: 'M12 8v4l3 3', color: 'bg-teal-100 text-teal-600' },
+      { label: 'Active Cleaning Jobs', value: '48', delta: '+4 this week', icon: 'M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z', color: 'bg-blue-100 text-blue-600' },
+      { label: 'Pending Cleaner Approvals', value: '7', delta: '3 new today', icon: 'M9 12l2 2 4-4', color: 'bg-amber-100 text-amber-600' },
+      { label: 'Waitlist Signups', value: '132', delta: '+18 this month', icon: 'M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2', color: 'bg-purple-100 text-purple-600' },
+    ];
+    const grid = el('div', { class: 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-6' });
+    for (const k of kpis) {
+      const card = el('div', { class: 'bg-white rounded-xl shadow-sm border border-stone-100 p-6' });
+      card.appendChild(el('div', { class: 'flex items-center justify-between mb-4' }, [
+        el('p', { class: 'text-sm font-medium text-stone-500' }, [k.label]),
+        el('div', { class: `h-9 w-9 rounded-lg ${k.color} grid place-items-center` }, [
+          el('svg', { class: 'h-5 w-5', fill: 'none', viewBox: '0 0 24 24', stroke: 'currentColor', 'stroke-width': '1.8' }, [el('path', { 'stroke-linecap': 'round', 'stroke-linejoin': 'round', d: k.icon })]),
+        ]),
+      ]));
+      card.appendChild(el('p', { class: 'text-3xl font-bold text-stone-800' }, [k.value]));
+      card.appendChild(el('p', { class: 'text-xs text-stone-400 mt-1' }, [k.delta]));
+      grid.appendChild(card);
+    }
+    view.appendChild(grid);
+
+    // Charts row
+    const charts = el('div', { class: 'grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6 mb-6' });
+
+    const lineCard = el('div', { class: 'lg:col-span-2 bg-white rounded-xl shadow-sm border border-stone-100 p-6' });
+    lineCard.appendChild(el('div', { class: 'flex items-center justify-between mb-4' }, [
+      el('div', {}, [el('h2', { class: 'text-base font-semibold text-stone-800' }, ['Revenue / Escrow Volume']), el('p', { class: 'text-xs text-stone-400' }, ['Last 30 days'])]),
+    ]));
+    lineCard.appendChild(el('div', { class: 'h-64' }, [el('canvas', { id: 'revenueChart' })]));
+    charts.appendChild(lineCard);
+
+    const doughnutCard = el('div', { class: 'bg-white rounded-xl shadow-sm border border-stone-100 p-6' });
+    doughnutCard.appendChild(el('h2', { class: 'text-base font-semibold text-stone-800 mb-4' }, ['Lead Sources']));
+    doughnutCard.appendChild(el('div', { class: 'h-64' }, [el('canvas', { id: 'leadChart' })]));
+    charts.appendChild(doughnutCard);
+
+    view.appendChild(charts);
+
+    // Activity feed
+    const feedCard = el('div', { class: 'bg-white rounded-xl shadow-sm border border-stone-100' });
+    feedCard.appendChild(el('div', { class: 'px-6 py-4 border-b border-stone-100' }, [el('h2', { class: 'text-base font-semibold text-stone-800' }, ['Recent Activity'])]));
+    const list = el('ul', { class: 'divide-y divide-stone-100' });
+    for (const a of activityFeed) {
+      list.appendChild(el('li', { class: 'flex items-start gap-4 px-6 py-4' }, [
+        el('div', { class: `h-9 w-9 shrink-0 rounded-lg ${a.color} grid place-items-center` }, [
+          el('svg', { class: 'h-5 w-5', fill: 'none', viewBox: '0 0 24 24', stroke: 'currentColor', 'stroke-width': '1.8' }, [el('path', { 'stroke-linecap': 'round', 'stroke-linejoin': 'round', d: a.icon })]),
+        ]),
+        el('div', { class: 'pt-0.5 flex-1' }, [el('p', { class: 'text-sm text-stone-700', html: a.text })]),
+        el('span', { class: 'text-xs text-stone-400 shrink-0' }, [a.time]),
+      ]));
+    }
+    feedCard.appendChild(list);
+    view.appendChild(feedCard);
+
+    // Initialize Chart.js after DOM is in place
+    initCharts();
+  }
+
+  /* ---------- Chart.js initialization ---------------------------- */
+  let chartsInitialized = false;
+  function initCharts() {
+    if (chartsInitialized || typeof Chart === 'undefined') return;
+    chartsInitialized = true;
+
+    // Shared font config
+    Chart.defaults.font.family = 'Inter';
+    Chart.defaults.color = '#78716c';
+
+    // Line chart — Escrow volume over 30 days
+    const ctx1 = document.getElementById('revenueChart').getContext('2d');
+    const grad = ctx1.createLinearGradient(0, 0, 0, 256);
+    grad.addColorStop(0, 'rgba(13,148,136,0.25)');
+    grad.addColorStop(1, 'rgba(13,148,136,0.0)');
+    new Chart(ctx1, {
+      type: 'line',
+      data: {
+        labels: ['D1', 'D5', 'D10', 'D15', 'D20', 'D25', 'D30'],
+        datasets: [{
+          label: 'Escrow Volume ($)',
+          data: [18000, 22000, 19500, 27000, 31000, 28500, 38000],
+          borderColor: '#0d9488',
+          backgroundColor: grad,
+          borderWidth: 2.5,
+          fill: true,
+          tension: 0.4,
+          pointBackgroundColor: '#0d9488',
+          pointRadius: 3,
+          pointHoverRadius: 5,
+        }],
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false }, tooltip: { callbacks: { label: (c) => ' $' + c.parsed.y.toLocaleString() } } },
+        scales: {
+          y: { beginAtZero: false, grid: { color: '#f5f5f4' }, ticks: { callback: (v) => '$' + (v / 1000) + 'k' } },
+          x: { grid: { display: false }, ticks: { color: '#a8a29e' } },
+        },
+      },
+    });
+
+    // Doughnut chart — Lead sources
+    new Chart(document.getElementById('leadChart'), {
+      type: 'doughnut',
+      data: {
+        labels: ['Website', 'Google Ads', 'Referral', 'Social', 'Direct'],
+        datasets: [{ data: [42, 26, 16, 11, 5], backgroundColor: ['#0d9488', '#0ea5e9', '#f59e0b', '#a855f7', '#78716c',], borderWidth: 0, hoverOffset: 6 }],
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false, cutout: '62%',
+        plugins: { legend: { position: 'bottom', labels: { padding: 16, usePointStyle: true, pointStyle: 'circle' } }, tooltip: { callbacks: { label: (c) => ' ' + c.label + ': ' + c.parsed + '%' } } },
+      },
+    });
+  }
+
+  /* ================================================================
+     GENERIC TABLE RENDERER
+     ================================================================ */
+  function renderTable({ columns, rows }) {
+    const card = el('div', { class: 'bg-white rounded-xl shadow-sm border border-stone-100 overflow-hidden' });
+    const table = el('table', { class: 'w-full text-sm' }, [
+      el('thead', {}, [el('tr', { class: 'text-xs uppercase tracking-wider text-stone-500' }, columns.map((c) => el('th', { class: 'px-6 py-3 text-left font-semibold' }, [c])))]),
+      el('tbody', { class: 'divide-y divide-stone-100' }, rows),
+    ]);
+    card.appendChild(table);
+    view.appendChild(card);
+  }
+
+  /* ================================================================
+     VIEW: CRM — CLIENTS
+     ================================================================ */
+  function renderClients() {
+    renderTable({
+      columns: ['Client', 'Email', 'Service Requested', 'City', 'Status'],
+      rows: clients.map((c) => [
+        el('td', { class: 'px-6 py-4 font-medium text-stone-800' }, [c.name]),
+        el('td', { class: 'px-6 py-4 text-stone-500' }, [c.email]),
+        el('td', { class: 'px-6 py-4 text-stone-700' }, [c.service]),
+        el('td', { class: 'px-6 py-4 text-stone-500' }, [c.city]),
+        el('td', { class: 'px-6 py-4' }, [pill(c.status, clientStatus[c.status])]),
+      ]),
+    });
+  }
+
+  /* ================================================================
+     VIEW: CRM — CLEANERS (with Approve/Reject actions)
+     ================================================================ */
+  function renderCleaners() {
+    renderTable({
+      columns: ['Cleaner / Company', 'Area', 'Background Check', 'Rating', 'Actions'],
+      rows: cleaners.map((c) => [
+        el('td', { class: 'px-6 py-4' }, [el('span', { class: 'font-medium text-stone-800' }, [c.name]), el('br'), el('span', { class: 'text-xs text-stone-400' }, [c.company])]),
+        el('td', { class: 'px-6 py-4 text-stone-500' }, [c.area]),
+        el('td', { class: 'px-6 py-4' }, [pill(c.check, checkStatus[c.check])]),
+        el('td', { class: 'px-6 py-4 text-stone-700' }, [String(c.rating) + ' ★']),
+        el('td', { class: 'px-6 py-4' }, [
+          el('button', { class: 'px-3 py-1 rounded-lg text-xs font-medium text-white bg-teal-600 hover:bg-teal-700 mr-2', 'data-approve': c.name }, ['Approve']),
+          el('button', { class: 'px-3 py-1 rounded-lg text-xs font-medium text-stone-600 border border-stone-200 hover:bg-stone-50', 'data-reject': c.name }, ['Reject']),
+        ]),
+      ]),
+    });
+  }
+
+  /* ================================================================
+     VIEW: CRM — INVESTORS / PARTNERS
+     ================================================================ */
+  function renderInvestors() {
+    renderTable({
+      columns: ['Company', 'Contact Person', 'Email', 'Interest', 'Notes'],
+      rows: investors.map((i) => [
+        el('td', { class: 'px-6 py-4 font-medium text-stone-800' }, [i.company]),
+        el('td', { class: 'px-6 py-4 text-stone-700' }, [i.contact]),
+        el('td', { class: 'px-6 py-4 text-stone-500' }, [i.email]),
+        el('td', { class: 'px-6 py-4' }, [pill(i.interest, interest[i.interest])]),
+        el('td', { class: 'px-6 py-4 text-stone-500 max-w-xs' }, [i.notes]),
+      ]),
+    });
+  }
+
+  /* ================================================================
+     VIEW: CMS — ANNOUNCEMENTS (with Preview + status toggle)
+     ================================================================ */
+  function renderAnnouncements() {
+    const card = el('div', { class: 'bg-white rounded-xl shadow-sm border border-stone-100' });
+    card.appendChild(el('div', { class: 'px-6 py-4 border-b border-stone-100 flex items-center justify-between' }, [
+      el('h2', { class: 'text-base font-semibold text-stone-800' }, ['Homepage Announcements']),
+      el('button', { class: 'inline-flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-white bg-teal-600 hover:bg-teal-700', 'data-create': 'announcement' }, [
+        el('svg', { class: 'h-4 w-4', fill: 'none', viewBox: '0 0 24 24', stroke: 'currentColor', 'stroke-width': '2' }, [el('path', { 'stroke-linecap': 'round', 'stroke-linejoin': 'round', d: 'M12 5v14M5 12h14' })]),
+        'New Announcement',
+      ]),
+    ]));
+
+    const list = el('div', { class: 'divide-y divide-stone-100' });
+    for (const a of announcements) {
+      list.appendChild(el('div', { class: 'flex items-center gap-4 px-6 py-4' }, [
+        el('div', { class: `h-10 w-10 shrink-0 rounded-lg ${a.type === 'Modal Popup' ? 'bg-blue-100 text-blue-600' : 'bg-teal-100 text-teal-600'} grid place-items-center` }, [
+          el('svg', { class: 'h-5 w-5', fill: 'none', viewBox: '0 0 24 24', stroke: 'currentColor', 'stroke-width': '1.8' }, [el('path', { 'stroke-linecap': 'round', 'stroke-linejoin': 'round', d: a.type === 'Modal Popup' ? 'M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z' : 'M11 5H6a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-5' })]),
+        ]),
+        el('div', { class: 'flex-1 min-w-0' }, [
+          el('div', { class: 'flex items-center gap-2' }, [el('p', { class: 'font-medium text-stone-800' }, [a.title]), pill(a.type, 'bg-stone-100 text-stone-600')]),
+          el('p', { class: 'text-sm text-stone-500 truncate' }, [a.message]),
+        ]),
+        pill(a.active ? 'Active' : 'Inactive', a.active ? 'bg-teal-100 text-teal-700' : 'bg-stone-200 text-stone-600'),
+        el('button', { class: 'px-3 py-1.5 rounded-lg text-xs font-medium border border-stone-200 text-stone-600 hover:bg-stone-50', 'data-preview': a.id }, ['Preview']),
+      ]));
+    }
+    card.appendChild(list);
+    view.appendChild(card);
+
+    // Wire up preview buttons
+    card.querySelectorAll('[data-preview]').forEach((b) => b.addEventListener('click', () => previewAnnouncement(+(b.dataset.preview))));
+  }
+
+  /* Preview an announcement inside the modal */
+  function previewAnnouncement(id) {
+    const a = announcements.find((x) => x.id === id);
+    if (!a) return;
+    const body = el('div', {}, [
+      el('p', { class: 'text-sm font-semibold text-stone-800 mb-1' }, [a.title]),
+      el('p', { class: 'text-sm text-stone-600' }, [a.message]),
+      el('p', { class: 'text-xs text-stone-400 mt-2' }, ['Type: ' + a.type + ' · Status: ' + (a.active ? 'Active' : 'Inactive')]),
+    ]);
+    openModal({ title: 'Preview: ' + a.title, fields: [], body });
+  }
+
+  /* ================================================================
+     VIEW: CMS — LEGAL PAGES (WYSIWYG mock + Publish)
+     ================================================================ */
+  function renderLegal() {
+    const card = el('div', { class: 'space-y-6' });
+
+    for (const [page, body] of Object.entries(legalContent)) {
+      const block = el('div', { class: 'bg-white rounded-xl shadow-sm border border-stone-100' });
+      block.appendChild(el('div', { class: 'px-6 py-4 border-b border-stone-100 flex items-center justify-between' }, [
+        el('h2', { class: 'text-base font-semibold text-stone-800' }, [page]),
+        el('button', { class: 'px-3 py-2 rounded-lg text-sm font-medium text-white bg-teal-600 hover:bg-teal-700', 'data-legal': page }, ['Publish Changes']),
+      ]));
+
+      // WYSIWYG mock: toolbar + editable area
+      const editor = el('div', { class: 'px-6 py-4' });
+      const toolbar = el('div', { class: 'flex flex-wrap gap-1 pb-3 mb-3 border-b border-stone-200' });
+      const fmts = [
+        { l: 'B', s: 'font-bold', c: 'bold' }, { l: 'I', s: 'font-italic', c: 'italic' }, { l: 'U', s: 'underline', c: 'underline' },
+        { l: '• List', s: '', c: 'insertUnorderedList' }, { l: '1. List', s: '', c: 'insertOrderedList' },
+        { l: '🔗 Link', s: '', c: 'createLink' }, { l: '📷 Image', s: '', c: 'insertImage' },
+      ];
+      for (const f of fmts) toolbar.appendChild(el('button', { type: 'button', class: `fmt-btn px-3 py-1.5 rounded text-sm text-stone-600 hover:bg-stone-100 ${f.s}`, 'data-cmd': f.c }, [f.l]));
+      editor.appendChild(toolbar);
+
+      const textarea = el('textarea', {
+        class: 'w-full h-48 px-4 py-3 text-sm rounded-lg border border-stone-200 bg-stone-50 focus:outline-none focus:ring-2 focus:ring-teal-600 focus:border-teal-600 resize-none',
+        'data-legal-body': page,
+      }, [body]);
+      editor.appendChild(textarea);
+      block.appendChild(editor);
+      card.appendChild(block);
+    }
+    view.appendChild(card);
+
+    // Wire up publish buttons
+    card.querySelectorAll('[data-legal]').forEach((b) => b.addEventListener('click', () => {
+      const page = b.dataset.legal;
+      const val = $(`[data-legal-body="${page}"]`).value;
+      legalContent[page] = val;
+      console.log(`[Legal published] ${page}:`, val);
+      toast(`${page} published successfully`);
+    }));
+
+    // Wire up WYSIWYG toolbar buttons (execCommand-based formatting)
+    card.querySelectorAll('.fmt-btn').forEach((btn) => btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const cmd = btn.dataset.cmd;
+      const editor = btn.closest('.px-6.py-4');
+      const textarea = editor.querySelector('[data-legal-body]');
+      textarea.focus();
+      document.execCommand(cmd, false, null);
+    }));
+  }
+
+  /* ================================================================
+     VIEW: SETTINGS — USERS & ROLES (RBAC)
+     ================================================================ */
+  function renderUsers() {
+    // Users table (build inline so it stays inside the card)
+    const card = el('div', { class: 'bg-white rounded-xl shadow-sm border border-stone-100 mb-6' });
+    card.appendChild(el('div', { class: 'px-6 py-4 border-b border-stone-100 flex items-center justify-between' }, [
+      el('h2', { class: 'text-base font-semibold text-stone-800' }, ['Admin Users']),
+      el('button', { class: 'inline-flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-white bg-teal-600 hover:bg-teal-700', 'data-create': 'user' }, [
+        el('svg', { class: 'h-4 w-4', fill: 'none', viewBox: '0 0 24 24', stroke: 'currentColor', 'stroke-width': '2' }, [el('path', { 'stroke-linecap': 'round', 'stroke-linejoin': 'round', d: 'M12 5v14M5 12h14' })]),
+        'Invite New Admin',
+      ]),
+    ]));
+    const table = el('table', { class: 'w-full text-sm' }, [
+      el('thead', {}, [el('tr', { class: 'text-xs uppercase tracking-wider text-stone-500' }, ['User', 'Email', 'Role', 'Last Login'].map((c) => el('th', { class: 'px-6 py-3 text-left font-semibold' }, [c])))]),
+      el('tbody', { class: 'divide-y divide-stone-100' }, users.map((u) => [
+        el('td', { class: 'px-6 py-4' }, [el('span', { class: 'inline-flex items-center justify-center h-8 w-8 rounded-full bg-teal-600 text-white text-xs font-semibold mr-3' }, [u.name[0]]), el('span', { class: 'font-medium text-stone-800' }, [u.name])]),
+        el('td', { class: 'px-6 py-4 text-stone-500' }, [u.email]),
+        el('td', { class: 'px-6 py-4' }, [pill(u.role, rolePill[u.role])]),
+        el('td', { class: 'px-6 py-4 text-stone-500' }, [u.lastLogin]),
+      ])),
+    ]);
+    card.appendChild(table);
+    view.appendChild(card);
+
+    // Roles summary
+    const rolesCard = el('div', { class: 'bg-white rounded-xl shadow-sm border border-stone-100 p-6' });
+    rolesCard.appendChild(el('h2', { class: 'text-base font-semibold text-stone-800 mb-4' }, ['Roles & Permissions']));
+    const roles = [
+      { name: 'Super Admin', desc: 'Full access to all settings, users, and billing.', color: 'bg-rose-100 text-rose-700' },
+      { name: 'Content Editor', desc: 'Manage announcements, CMS, and legal pages.', color: 'bg-blue-100 text-blue-700' },
+      { name: 'Support Agent', desc: 'View clients, cleaners, and handle tickets.', color: 'bg-teal-100 text-teal-700' },
+    ];
+    const grid = el('div', { class: 'grid grid-cols-1 md:grid-cols-3 gap-4' });
+    for (const r of roles) {
+      const rc = el('div', { class: 'border border-stone-200 rounded-xl p-5' });
+      rc.appendChild(el('div', { class: 'flex items-center gap-2 mb-2' }, [el('span', { class: `px-2.5 py-0.5 rounded-full text-xs font-medium ${r.color}` }, [r.name])]));
+      rc.appendChild(el('p', { class: 'text-sm text-stone-500' }, [r.desc]));
+      grid.appendChild(rc);
+    }
+    rolesCard.appendChild(grid);
+    view.appendChild(rolesCard);
+  }
+
+  /* ================================================================
+     MODAL — centralized open/close + form rendering
+     ================================================================ */
+  const modalOverlay = $('#modalOverlay');
+  const modalTitle = $('#modalTitle');
+  const modalForm = $('#modalForm');
+
+  const formSchemas = {
+    client: { title: 'New Client', fields: [
+      { name: 'name', label: 'Full Name', type: 'text', required: true },
+      { name: 'email', label: 'Email', type: 'email', required: true },
+      { name: 'service', label: 'Service Type', type: 'select', options: ['Deep Clean', 'Standard Cleaning', 'Post-Construction', 'Office Cleaning'] },
+      { name: 'city', label: 'City', type: 'text', required: true },
+    ] },
+    cleaner: { title: 'Add Cleaner', fields: [
+      { name: 'name', label: 'Name', type: 'text', required: true },
+      { name: 'company', label: 'Company', type: 'text' },
+      { name: 'area', label: 'Service Area', type: 'text', required: true },
+      { name: 'rating', label: 'Rating (1-5)', type: 'text' },
+    ] },
+    announcement: { title: 'New Announcement', fields: [
+      { name: 'title', label: 'Title', type: 'text', required: true },
+      { name: 'message', label: 'Message', type: 'textarea', required: true },
+      { name: 'type', label: 'Type', type: 'select', options: ['Banner', 'Modal Popup'] },
+    ] },
+    user: { title: 'Invite New Admin', fields: [
+      { name: 'name', label: 'Name', type: 'text', required: true },
+      { name: 'email', label: 'Email', type: 'email', required: true },
+      { name: 'role', label: 'Role', type: 'select', options: ['Super Admin', 'Content Editor', 'Support Agent'] },
+    ] },
+  };
+
+  function openModal({ title, fields = [], body = null }) {
+    modalTitle.textContent = title;
+    modalForm.innerHTML = '';
+    modalForm.dataset.panel = '';
+    if (body) modalForm.appendChild(body);
+    for (const f of fields) {
+      const wrap = el('div', {});
+      wrap.appendChild(el('label', { class: 'block text-sm font-medium text-stone-700 mb-1' }, [f.label]));
+      if (f.type === 'select') {
+        const sel = el('select', { name: f.name, class: 'w-full px-3 py-2.5 rounded-lg border border-stone-300 text-sm focus:outline-none focus:ring-2 focus:ring-teal-600 focus:border-teal-600' });
+        (f.options || []).forEach((o) => sel.appendChild(el('option', { value: o }, [o])));
+        wrap.appendChild(sel);
+      } else if (f.type === 'textarea') {
+        wrap.appendChild(el('textarea', { name: f.name, rows: 3, placeholder: f.placeholder || '', class: 'w-full px-3 py-2.5 rounded-lg border border-stone-300 text-sm focus:outline-none focus:ring-2 focus:ring-teal-600 focus:border-teal-600 resize-none' }));
+      } else {
+        const input = el('input', { name: f.name, type: f.type, placeholder: f.placeholder || '', class: 'w-full px-3 py-2.5 rounded-lg border border-stone-300 text-sm focus:outline-none focus:ring-2 focus:ring-teal-600 focus:border-teal-600' });
+        if (f.required) input.required = true;
+        wrap.appendChild(input);
+      }
+      modalForm.appendChild(wrap);
+    }
+    modalOverlay.classList.remove('hidden');
+    modalOverlay.classList.add('flex');
+    const first = modalForm.querySelector('input, select, textarea');
+    if (first) first.focus();
+  }
+  function closeModal() {
+    modalOverlay.classList.add('hidden');
+    modalOverlay.classList.remove('flex');
+    modalForm.reset();
+  }
+
+  /* ================================================================
+     TOAST — slide in, hold 3s, slide out
+     ================================================================ */
+  let toastTimer;
+  function toast(message) {
+    const toastEl = $('#toast');
+    $('#toastMsg').textContent = message || 'Action completed successfully';
+    toastEl.classList.remove('hidden', 'toast-exit');
+    toastEl.classList.add('flex', 'toast-enter');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => {
+      toastEl.classList.remove('toast-enter');
+      toastEl.classList.add('toast-exit');
+      setTimeout(() => { toastEl.classList.add('hidden'); toastEl.classList.remove('flex', 'toast-exit'); }, 400);
+    }, 3000);
+  }
+
+  /* ================================================================
+     EVENT WIRING
+     ================================================================ */
+  // Sidebar navigation
+  document.querySelectorAll('.nav-item').forEach((btn) => btn.addEventListener('click', () => renderView(btn.dataset.panel)));
+
+  // Delegated "create" buttons (Quick Action dropdown + in-view buttons)
+  document.addEventListener('click', (e) => {
+    const createBtn = e.target.closest('[data-create]');
+    if (createBtn) {
+      const key = createBtn.dataset.create;
+      if (formSchemas[key]) openModal(formSchemas[key]);
+    }
+  });
+
+  // Approve / Reject actions (delegated)
+  view.addEventListener('click', (e) => {
+    const approve = e.target.closest('[data-approve]');
+    const reject = e.target.closest('[data-reject]');
+    if (approve) { toast(`Cleaner "${approve.dataset.approve}" approved`); }
+    if (reject) { toast(`Cleaner "${reject.dataset.reject}" rejected`); }
+  });
+
+  // Quick Action dropdown toggle
+  const qaBtn = $('#quickActionBtn'), qaMenu = $('#quickActionMenu');
+  qaBtn.addEventListener('click', (e) => { e.stopPropagation(); qaMenu.classList.toggle('hidden'); });
+  document.addEventListener('click', (e) => { if (!qaBtn.contains(e.target) && !qaMenu.contains(e.target)) qaMenu.classList.add('hidden'); });
+
+  // Modal controls
+  $('#modalClose').addEventListener('click', closeModal);
+  $('#modalCancel').addEventListener('click', closeModal);
+  modalOverlay.addEventListener('click', (e) => { if (e.target === modalOverlay) closeModal(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+
+  // Modal form submit
+  modalForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const data = {};
+    modalForm.querySelectorAll('input, select, textarea').forEach((inp) => { if (inp.name) data[inp.name] = inp.value; });
+    console.log('[Modal submitted]', data);
+    const title = modalTitle.textContent;
+    closeModal();
+    toast(`${title.replace(/New|Add/g, 'Saved') || 'Action'} completed successfully`);
+  });
+
+  // Mobile sidebar
+  const sidebar = $('#sidebar'), backdrop = $('#sidebarBackdrop');
+  function openSidebar() { sidebar.classList.remove('-translate-x-full'); backdrop.classList.remove('hidden'); }
+  function closeSidebar() { sidebar.classList.add('-translate-x-full'); backdrop.classList.add('hidden'); }
+  $('#menuBtn').addEventListener('click', openSidebar);
+  backdrop.addEventListener('click', closeSidebar);
+  $('#logoutBtn').addEventListener('click', () => toast('Signed out (demo)'));
+
+  /* ================================================================
+     BOOT
+     ================================================================ */
+  renderView('dashboard');
+  </script>
+</body>
+</html>

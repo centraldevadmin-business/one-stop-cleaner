@@ -46,22 +46,7 @@
         <h1 class="hero__title" style="margin-bottom:24px;">Privacy Policy</h1>
         <p class="section__lead" style="margin-bottom:48px;">Last updated: September 2026</p>
         
-        <div class="legal-content" style="color:var(--slate); line-height:1.8; font-size:1.05rem;">
-          <h2 style="font-size:1.4rem; color:var(--ink); margin:32px 0 16px;">1. Information We Collect</h2>
-          <p style="margin-bottom:20px;">We collect information you provide directly to us, such as when you create or modify your account, request services, contact customer support, or otherwise communicate with us.</p>
-          
-          <h2 style="font-size:1.4rem; color:var(--ink); margin:32px 0 16px;">2. How We Use Information</h2>
-          <p style="margin-bottom:20px;">We use the information we collect to provide, maintain, and improve our services, to process transactions, and to send you related information, including confirmations and receipts.</p>
-          
-          <h2 style="font-size:1.4rem; color:var(--ink); margin:32px 0 16px;">3. Information Sharing</h2>
-          <p style="margin-bottom:20px;">We may share your information with independent cleaning professionals in order to fulfill your requested service bookings. We do not sell your personal information to third parties.</p>
-          
-          <h2 style="font-size:1.4rem; color:var(--ink); margin:32px 0 16px;">4. Data Security</h2>
-          <p style="margin-bottom:20px;">We take reasonable measures to help protect information about you from loss, theft, misuse and unauthorized access, disclosure, alteration and destruction.</p>
-          
-          <h2 style="font-size:1.4rem; color:var(--ink); margin:32px 0 16px;">5. Contact Us</h2>
-          <p style="margin-bottom:20px;">If you have any questions about this Privacy Policy, please contact us at support@onestopcleaner.com.</p>
-        </div>
+        <div id="legalContent" class="legal-content" style="color:var(--slate); line-height:1.8; font-size:1.05rem;"></div>
       </div>
     </section>
   </main>
@@ -98,5 +83,21 @@
     </div>
   </footer>
   <script src="js/shared.js"></script>
+  <script>
+    (function () {
+      var el = document.getElementById('legalContent');
+      fetch('/api/legal/privacy')
+        .then(function (r) { return r.json(); })
+        .then(function (page) {
+          if (page && page.body) {
+            el.innerHTML = page.body;
+            var title = document.getElementById('legalTitle');
+            if (title && page.title) title.textContent = page.title;
+            document.title = page.title + ' — One Stop Cleaner';
+          }
+        })
+        .catch(function () { el.innerHTML = '<p>Unable to load this page. Please try again later.</p>'; });
+    })();
+  </script>
 </body>
 </html>

@@ -1,7 +1,9 @@
 import { Router } from 'express';
 import db from '../../db/database.js';
+import { authRequired } from '../auth.js';
 
 const router = Router();
+router.use(authRequired);
 
 const byId = async (table, id) => await db.prepare(`SELECT * FROM ${table} WHERE id = ?`).get(id);
 
@@ -121,6 +123,76 @@ router.delete('/media/:id', async (req, res) => {
   if (!item) return res.status(404).json({ error: 'Media not found.' });
   await db.prepare('DELETE FROM media WHERE id = ?').run(req.params.id);
   res.json({ ok: true });
+});
+
+/* ---------------- Announcements ---------------- */
+router.get('/announcements', async (req, res) => {
+  const { active } = req.query;
+  let sql = 'SELECT * FROM announcements';
+  if (active !== undefined) sql += active === 'true' ? ' WHERE active = 1' : ' WHERE active = 0';
+  sql += ' ORDER BY position, rowid';
+  res.json(await db.prepare(sql).all());
+});
+
+router.post('/announcements', async (req, res) => {
+  const b = req.body || {};
+  if (!b.title || !b.body) return res.status(400).json({ error: 'title and body required.' });
+  const info = await db.prepare(`
+    INSERT INTO announcements (title, body, link, style, active, position)
+    VALUES (@title, @body, @link, @style, @active, @position)
+  `).run({
+    title: b.title, body: b.body || '', link: b.link || null,
+    style: b.style || 'info',
+    active: b.active !== undefined ? (b.active ? 1 : 0) : 1,
+    position: b.position || 0,
+  });
+  res.status(201).json({ id: info.lastInsertRowid });
+});
+
+router.put('/announcements/:id', async (req, res) => {
+  const ann = await byId('announcements', req.params.id);
+  if (!ann) return res.status(404).json({ error: 'Announcement not found.' });
+  const b = req.body || {};
+  const fields = [];
+  const params = [];
+  for (const key of ['title', 'body', 'link', 'style', 'active', 'position']) {
+    if (b[key] !== undefined) {
+      params.push(key === 'active' ? (b[key] ? 1 : 0) : b[key]);
+      fields.push(`${key} = ?`);
+    }
+  }
+  if (!fields.length) return res.status(400).json({ error: 'No updatable fields.' });
+  params.push(req.params.id);
+  await db.prepare(`UPDATE announcements SET ${fields.join(', ')} WHERE id = ?`).run(...params);
+  res.json(await byId('announcements', req.params.id));
+});
+
+router.delete('/announcements/:id', async (req, res) => {
+  const ann = await byId('announcements', req.params.id);
+  if (!ann) return res.status(404).json({ error: 'Announcement not found.' });
+  await db.prepare('DELETE FROM announcements WHERE id = ?').run(req.params.id);
+  res.json({ ok: true });
+});
+
+/* ---------------- Legal Pages ---------------- */
+router.get('/legal', async (req, res) => {
+  res.json(await db.prepare('SELECT * FROM legal_pages ORDER BY rowid').all());
+});
+
+router.put('/legal/:key', async (req, res) => {
+  const b = req.body || {};
+  if (!b.body) return res.status(400).json({ error: 'body required.' });
+  const existing = await db.prepare('SELECT id FROM legal_pages WHERE key = ?').get(req.params.key);
+  if (existing) {
+    await db.prepare('UPDATE legal_pages SET body = ?, updated_at = datetime(\'now\') WHERE key = ?')
+      .run(b.body, req.params.key);
+    res.json(await byId('legal_pages', existing.id));
+  } else {
+    const info = await db.prepare(
+      'INSERT INTO legal_pages (key, title, slug, body) VALUES (?, ?, ?, ?)'
+    ).run(req.params.key, req.params.key, req.params.key, b.body);
+    res.status(201).json(await byId('legal_pages', info.lastInsertRowid));
+  }
 });
 
 export default router;

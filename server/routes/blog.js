@@ -1,4 +1,8 @@
 import { Router } from 'express';
+import multer from 'multer';
+import path from 'path';
+import fs from 'fs';
+import crypto from 'crypto';
 import db from '../../db/database.js';
 import { authRequired } from '../auth.js';
 import { audit } from '../audit.js';
@@ -9,6 +13,36 @@ const publicRouter = Router();
 // Admin management — requires auth.
 const adminRouter = Router();
 adminRouter.use(authRequired);
+
+// ---------------------------------------------------------------------------
+// Image upload — saves files to public/media/uploads and returns a URL.
+// The JSON body parser skips multipart requests, so multer handles them here.
+// ---------------------------------------------------------------------------
+const uploadDir = path.resolve(process.env.UPLOAD_DIR || path.join(process.cwd(), 'public', 'media', 'uploads'));
+if (!isWorkersRuntime()) {
+  try { fs.mkdirSync(uploadDir, { recursive: true }); } catch { /* ignore */ }
+}
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, uploadDir),
+  filename: (req, file, cb) => {
+    const ext = path.extname(file.originalname || '') || '';
+    const base = crypto.randomBytes(12).toString('hex');
+    cb(null, `${base}${ext}`);
+  },
+});
+const upload = multer({ storage, limits: { fileSize: 10 * 1024 * 1024 } });
+
+// POST /api/blog/upload  ->  { url }
+adminRouter.post('/upload', (req, res, next) => next(), upload.single('image'), (req, res) => {
+  if (!req.file) return res.status(400).json({ error: 'No image provided.' });
+  const url = `/media/uploads/${req.file.filename}`;
+  audit(req, 'blog_upload', null, `Uploaded image "${req.file.originalname}"`);
+  res.json({ url });
+});
+
+function isWorkersRuntime() {
+  return typeof navigator !== 'undefined' && navigator.userAgent === 'Cloudflare-Workers';
+}
 
 const byId = async (id) => await db.prepare('SELECT * FROM blog_posts WHERE id = ?').get(id);
 
@@ -93,7 +127,7 @@ adminRouter.put('/:id', async (req, res) => {
   const b = req.body || {};
   const fields = [];
   const params = [];
-  for (const key of ['title', 'excerpt', 'body', 'cover_url', 'category', 'author', 'status', 'slug']) {
+  for (const key of ['title', 'excerpt', 'body', 'cover_url', 'category', 'author', 'status', 'slug', 'meta_title', 'meta_description']) {
     if (b[key] !== undefined) {
       if (key === 'slug' && b.slug !== post.slug) {
         const dup = await db.prepare('SELECT id FROM blog_posts WHERE slug = ?').get(b.slug);

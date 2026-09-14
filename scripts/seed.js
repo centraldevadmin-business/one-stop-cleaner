@@ -63,10 +63,10 @@ async function main() {
   db.prepare('DELETE FROM role_assignments').run();
   db.prepare('DELETE FROM roles').run();
   const roles = [
-    ['superadmin', 'Super Admin', ['dashboard','leads','contacts','tickets','blog','cms','products','campaigns','users','roles','audit']],
-    ['agent', 'Sales Agent', ['dashboard','leads','contacts','tickets','blog','cms','products','campaigns']],
+    ['superadmin', 'Super Admin', ['dashboard','leads','contacts','tickets','blog','cms','products','campaigns','users','roles','audit','legal','announcements']],
+    ['agent', 'Sales Agent', ['dashboard','leads','contacts','tickets']],
     ['support', 'Support Agent', ['dashboard','contacts','tickets']],
-    ['content', 'Content Editor', ['dashboard','blog','cms','media']],
+    ['content', 'Content Editor', ['dashboard','blog','cms','media','legal','announcements']],
     ['analyst', 'Analyst', ['dashboard','analytics','audit']],
   ];
   const insertRole = db.prepare('INSERT INTO roles (name, label, permissions) VALUES (?, ?, ?)');
@@ -76,7 +76,7 @@ async function main() {
   db.prepare('DELETE FROM blog_posts').run();
   const posts = [
     ['how-to-choose-a-verified-cleaner', 'How to Choose a Verified Cleaner You Can Trust',
-      'Not sure what "verified" really means? Here's what we check before a cleaner joins One Stop Cleaner.',
+      'Not sure what "verified" really means? Here\u2019s what we check before a cleaner joins One Stop Cleaner.',
       '<p>Trust is the foundation of every booking. When you open your door to a stranger, you deserve to know who is on the other side of it.</p><h2>What "verified" actually means</h2><p>Every cleaner and cleaning company on One Stop Cleaner goes through an identity check, a background check where available, and a skills verification. We do not skip these steps, even when demand is high.</p><h2>Signs of a trustworthy cleaner</h2><ul><li>A complete, verified profile with real reviews</li><li>Clear pricing and no hidden fees</li><li>Professional equipment and products</li><li>Responsive to questions before you book</li></ul><p>Book verified cleaners through One Stop Cleaner and every payment is held in escrow until the job is done right.</p>',
       'media/new_hero-house.jpg', 'guide', 'One Stop Cleaner', 'published', 0],
     ['5-tips-keep-your-home-fresh-between-cleans', '5 Tips to Keep Your Home Fresh Between Cleans',
@@ -94,6 +94,17 @@ async function main() {
   ];
   const insertPost = db.prepare('INSERT INTO blog_posts (slug,title,excerpt,body,cover_url,category,author,status,position) VALUES (?,?,?,?,?,?,?, ?,?)');
   posts.forEach((p) => insertPost.run(...p));
+
+  // Legal pages
+  db.prepare('DELETE FROM legal_pages').run();
+  const insertLegal = db.prepare('INSERT INTO legal_pages (key, title, slug, body) VALUES (?, ?, ?, ?)');
+  insertLegal.run('privacy', 'Privacy Policy', 'privacy', '<h2>1. Information We Collect</h2><p>We collect information you provide directly to us, such as when you join the waitlist, request services, contact customer support, or otherwise communicate with us.</p><h2>2. How We Use Information</h2><p>We use the information we collect to provide, maintain, and improve our services, to process transactions, and to send you related information, including confirmations and receipts.</p><h2>3. Information Sharing</h2><p>We may share your information with independent cleaning professionals in order to fulfill your requested service bookings. We do not sell your personal information to third parties.</p><h2>4. Data Security</h2><p>We take reasonable measures to help protect information about you from loss, theft, misuse and unauthorized access, disclosure, alteration and destruction.</p><h2>5. Contact Us</h2><p>If you have any questions about this Privacy Policy, please contact us at support@onestopcleaner.com.</p>');
+  insertLegal.run('terms', 'Terms of Service', 'terms', '<h2>1. Acceptance of Terms</h2><p>By accessing and using One Stop Cleaner, you accept and agree to be bound by these Terms of Service.</p><h2>2. Services</h2><p>One Stop Cleaner connects clients with verified cleaning professionals. We facilitate bookings but are not a party to the service agreement between client and cleaner.</p><h2>3. Payments</h2><p>Payments are held securely in escrow and released to the cleaner only once the client is satisfied with the completed work.</p><h2>4. Cancellations</h2><p>Cancellation and refund policies vary by booking. Please review the terms at the time of booking and contact support for any disputes.</p><h2>5. Contact</h2><p>For questions about these Terms, contact us at support@onestopcleaner.com.</p>');
+
+  // Announcements
+  db.prepare('DELETE FROM announcements').run();
+  const insertAnn = db.prepare('INSERT INTO announcements (title, body, link, style, active, position) VALUES (?, ?, ?, ?, ?, ?)');
+  insertAnn.run('We are launching soon in Australia!', 'Join the waitlist to be the first to book trusted, verified cleaners in your city.', '/contact', 'info', 1, 0);
 
   // Analytics events
   db.prepare('DELETE FROM analytics_events').run();

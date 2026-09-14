@@ -425,16 +425,6 @@ input, textarea, button, select { color: inherit; }
     linear-gradient(160deg, #f4fafb 0%, #e8f4f8 45%, #e2f6f0 100%);
 }
 
-.hero__bg--client {
-  background: linear-gradient(rgba(10, 37, 64, 0.6), rgba(10, 37, 64, 0.8)), url('images/hero-client.jpg') center/cover no-repeat;
-}
-.hero__bg--cleaner {
-  background: linear-gradient(rgba(10, 37, 64, 0.6), rgba(10, 37, 64, 0.8)), url('images/hero-cleaners.jpg') center/cover no-repeat;
-}
-.hero__bg--investor {
-  background: linear-gradient(rgba(10, 37, 64, 0.6), rgba(10, 37, 64, 0.8)), url('images/hero-investors.jpg') center/cover no-repeat;
-}
-
 .hero__glow { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
 .hero__inner { position: relative; z-index: 1; display: grid; grid-template-columns: 1.05fr 1fr; gap: 60px; align-items: center; }
 .hero__grid { display: grid; grid-template-columns: 1.05fr 1fr; gap: 60px; align-items: center; }

@@ -42,7 +42,7 @@
         <a href="contact.html" class="nav-link">Contact</a>
       </nav>
       <div class="nav__cta">
-        <button type="button" class="btn btn--ghost btn--lg" data-cta="notify-me">Join the waitlist</button>
+        <a href="#waitlist" class="btn btn--ghost btn--lg">Join the waitlist</a>
         <button class="navToggle" id="navToggle" aria-expanded="false" aria-controls="navLinks" aria-label="Toggle menu"><span></span></button>
       </div>
     </div>
@@ -50,8 +50,8 @@
 
   <main>
     <!-- HERO -->
-    <section class="hero hero--warm">
-      <div class="hero__bg hero__bg--fresh" aria-hidden="true"></div>
+    <section class="hero hero--dark">
+      <div class="hero__bg hero__bg--client" aria-hidden="true"></div>
       <div class="hero__glow" aria-hidden="true"></div>
       <div class="container hero__inner">
         <div class="hero__grid hero__grid--centered">
@@ -60,17 +60,17 @@
               <span class="eyebrow__dot" aria-hidden="true"></span>
               Coming soon to your city
             </p>
-            <h1 class="hero__title reveal" data-delay="1">
-              Reclaim your time. <br /><span class="grad-text">We'll handle the rest.</span>
+            <h1 class="hero__title reveal" data-delay="1" style="color:#fff;">
+              Reclaim your time. <br /><span class="grad-text" style="color:var(--brand-line);-webkit-text-fill-color:unset;">We'll handle the rest.</span>
             </h1>
             <p class="hero__sub reveal" data-delay="2">
               Experience the peace of mind that comes with a meticulously clean home. Connect with <strong>verified, top-tier professionals</strong> in your neighborhood and enjoy a space that truly breathes.
             </p>
             <div class="hero__actions reveal hero__lead" data-delay="3">
-              <button type="button" class="btn btn--primary btn--lg" data-cta="notify-me">
+              <a href="#waitlist" class="btn btn--primary btn--lg">
                 Notify me — coming soon
                 <span class="btn__arrow" aria-hidden="true">→</span>
-              </button>
+              </a>
               <p class="field-msg" role="status" style="margin-top:14px;"></p>
             </div>
             <ul class="hero__trust reveal" data-delay="3">
@@ -196,7 +196,7 @@
               <li>Transparent pricing &amp; real reviews</li>
               <li>Lifetime support if anything goes wrong</li>
             </ul>
-            <div style="margin-top:32px;"><button type="button" class="btn btn--primary" data-cta="notify-me">Explore services <span class="btn__arrow" aria-hidden="true">→</span></button></div>
+            <div style="margin-top:32px;"><a href="#waitlist" class="btn btn--primary">Explore services <span class="btn__arrow" aria-hidden="true">→</span></a></div>
           </div>
           <div class="grid-2__visual reveal" data-delay="1" aria-hidden="true">
             <div class="float-card float-card--a">
@@ -227,7 +227,7 @@
               <li>Guaranteed, timely payouts via escrow</li>
               <li>Build a verified profile &amp; grow your reputation</li>
             </ul>
-            <div style="margin-top:32px;"><button type="button" class="btn btn--primary" data-cta="grow-business">Get started <span class="btn__arrow" aria-hidden="true">→</span></button></div>
+            <div style="margin-top:32px;"><a href="cleaners.html" class="btn btn--primary">Get started <span class="btn__arrow" aria-hidden="true">→</span></a></div>
           </div>
           <div class="grid-2__visual grid-2__visual--b reveal" data-delay="1" aria-hidden="true">
             <div class="float-card float-card--c">
@@ -260,7 +260,7 @@
           </p>
         </div>
         <div class="reveal" data-delay="1" style="margin-top:44px;">
-          <button type="button" class="btn btn--light btn--lg" data-cta="partner">Partner with us <span class="btn__arrow" aria-hidden="true">→</span></button>
+          <a href="investors.html" class="btn btn--light btn--lg">Partner with us <span class="btn__arrow" aria-hidden="true">→</span></a>
         </div>
       </div>
     </section>
@@ -329,8 +329,8 @@
       </div>
     </section>
 
-    <!-- CTA -->
-    <section class="section" style="background:var(--bg-soft);">
+    <!-- CTA / WAITLIST FORM -->
+    <section class="section" id="waitlist" style="background:var(--bg-soft);">
       <div class="container">
         <div class="cta-box reveal" style="background:var(--ink); border-radius:var(--radius-lg); padding:clamp(48px,7vw,88px); text-align:center; position:relative; overflow:hidden;">
           <div class="cta-box__bg" aria-hidden="true" style="position:absolute; inset:0; background:radial-gradient(500px 300px at 50% 0%, rgba(0,119,179,0.30), transparent 70%);"></div>
@@ -339,7 +339,13 @@
             <p style="color:#a9b7bf; max-width:480px; margin:0 auto 32px; font-size:1.05rem;">
               Be the first to book trusted cleaners and shop quality products — before we launch in your city.
             </p>
-            <button type="button" class="btn btn--primary btn--lg" data-cta="notify-me" style="margin:auto;">Notify me <span class="btn__arrow" aria-hidden="true">→</span></button>
+            <form class="waitlist-form" style="max-width:400px; margin:auto; display:flex; flex-direction:column; gap:12px;">
+              <div class="field">
+                <input type="email" name="email" placeholder="Your email address" required aria-label="Email address" />
+              </div>
+              <button type="submit" class="btn btn--primary btn--lg">Notify me <span class="btn__arrow" aria-hidden="true">→</span></button>
+              <p class="field-msg" role="status"></p>
+            </form>
           </div>
         </div>
       </div>

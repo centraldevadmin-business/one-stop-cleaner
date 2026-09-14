@@ -289,6 +289,40 @@ test('analytics: dashboard returns stats', async () => {
   assert.ok(Array.isArray(res.data.bySource));
 });
 
+test('analytics: dashboard returns new analytics fields', async () => {
+  const res = await api('/api/analytics/dashboard');
+  assert.equal(res.status, 200);
+  assert.ok(Array.isArray(res.data.funnel), 'funnel should be an array');
+  assert.ok(res.data.funnel.length >= 4, 'funnel should include funnel stages');
+  assert.ok(Array.isArray(res.data.series), 'series should be an array');
+  assert.ok(res.data.series.length === 7, 'series should have 7 daily points');
+  assert.ok(Array.isArray(res.data.topPages));
+  assert.ok(Array.isArray(res.data.contactsByStatus));
+  assert.ok(typeof res.data.conversionRate === 'number');
+  assert.ok(typeof res.data.resolvedTickets === 'number');
+  assert.ok(typeof res.data.ticketResponseHours === 'number');
+  assert.ok(typeof res.data.highPriorityContacts === 'number');
+});
+
+test('analytics: insights endpoint', async () => {
+  const res = await api('/api/analytics/insights');
+  assert.equal(res.status, 200);
+  assert.ok('topEvent' in res.data);
+  assert.ok('peakHour' in res.data);
+  assert.ok(typeof res.data.weekEvents === 'number');
+  assert.ok(typeof res.data.growth === 'number');
+});
+
+test('analytics: daily-activity endpoint', async () => {
+  const res = await api('/api/analytics/daily-activity');
+  assert.equal(res.status, 200);
+  assert.ok(Array.isArray(res.data));
+  if (res.data.length) {
+    assert.ok('date' in res.data[0]);
+    assert.ok(typeof res.data[0].users === 'number');
+  }
+});
+
 // ---- Health ----
 test('health check', async () => {
   const res = await api('/api/health');

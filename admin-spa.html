@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>One Stop Cleaner — Admin</title>
+  <meta name="description" content="One Stop Cleaner admin dashboard." />
+
+  <!-- Tailwind CSS (CDN) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Inter font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    body { font-family: 'Inter', system-ui, sans-serif; }
+    /* Toast slide-in/out */
+    .toast-enter { animation: toastIn .35s cubic-bezier(.16,1,.3,1); }
+    .toast-exit { animation: toastOut .35s cubic-bezier(.6,.02,.7,1) forwards; }
+    @keyframes toastIn { from { transform: translateX(120%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+    @keyframes toastOut { from { transform: translateX(0); opacity: 1; } to { transform: translateX(120%); opacity: 0; } }
+    /* Modal fade */
+    .modal-overlay { transition: opacity .25s ease; }
+    .modal-panel { transition: transform .25s cubic-bezier(.16,1,.3,1), opacity .25s ease; }
+    /* Sidebar slide on mobile */
+    .sidebar { transition: transform .3s cubic-bezier(.16,1,.3,1); }
+  </style>
+</head>
+
+<body class="bg-slate-50 text-slate-800 antialiased">
+
+  <div class="flex min-h-screen">
+
+    <!-- ===================== SIDEBAR ===================== -->
+    <aside id="sidebar" class="sidebar fixed inset-y-0 left-0 z-40 w-64 -translate-x-full bg-slate-900 md:translate-x-0 md:static md:shrink-0 flex flex-col">
+      <!-- Logo -->
+      <div class="flex items-center gap-3 px-6 h-16 border-b border-slate-800">
+        <div class="h-9 w-9 rounded-lg bg-blue-600 grid place-items-center">
+          <svg class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+          </svg>
+        </div>
+        <div class="text-white">
+          <p class="font-semibold leading-tight">One Stop Cleaner</p>
+          <p class="text-xs text-slate-400">Admin Panel</p>
+        </div>
+      </div>
+
+      <!-- Nav -->
+      <nav class="flex-1 overflow-y-auto px-3 py-5 space-y-6 text-sm">
+        <!-- CRM -->
+        <div>
+          <p class="px-3 mb-2 text-xs font-semibold tracking-wider text-slate-500 uppercase">CRM</p>
+          <ul class="space-y-1">
+            <li><button data-panel="dashboard" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-300 hover:text-white hover:bg-slate-800"><svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>Dashboard</button></li>
+            <li><button data-panel="clients" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-300 hover:text-white hover:bg-slate-800"><svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Clients</button></li>
+            <li><button data-panel="cleaners" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-300 hover:text-white hover:bg-slate-800"><svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>Cleaners</button></li>
+          </ul>
+        </div>
+
+        <!-- Marketing -->
+        <div>
+          <p class="px-3 mb-2 text-xs font-semibold tracking-wider text-slate-500 uppercase">Marketing</p>
+          <ul class="space-y-1">
+            <li><button data-panel="tickets" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-300 hover:text-white hover:bg-slate-800"><svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/></svg>Tickets</button></li>
+            <li><button data-panel="campaigns" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-300 hover:text-white hover:bg-slate-800"><svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>Campaigns</button></li>
+          </ul>
+        </div>
+
+        <!-- Admin -->
+        <div>
+          <p class="px-3 mb-2 text-xs font-semibold tracking-wider text-slate-500 uppercase">Admin</p>
+          <ul class="space-y-1">
+            <li><button data-panel="users" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-300 hover:text-white hover:bg-slate-800"><svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Users</button></li>
+          </ul>
+        </div>
+      </nav>
+
+      <!-- User footer -->
+      <div class="p-4 border-t border-slate-800">
+        <div class="flex items-center gap-3">
+          <div class="h-9 w-9 rounded-full bg-blue-600 grid place-items-center text-white font-semibold">A</div>
+          <div class="min-w-0 flex-1">
+            <p class="text-sm font-medium text-white truncate">Admin User</p>
+            <p class="text-xs text-slate-400 truncate">admin@onestopcleaner.com</p>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Backdrop (mobile) -->
+    <div id="sidebarBackdrop" class="fixed inset-0 z-30 bg-black/50 hidden md:hidden"></div>
+
+    <!-- ===================== MAIN ===================== -->
+    <div class="flex-1 min-w-0 flex flex-col">
+      <!-- Top bar -->
+      <header class="sticky top-0 z-20 h-16 bg-white border-b border-slate-200 flex items-center gap-4 px-4 sm:px-6">
+        <button id="menuBtn" class="md:hidden p-2 rounded-lg text-slate-500 hover:bg-slate-100" aria-label="Open menu">
+          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+        <div class="min-w-0">
+          <h1 id="viewTitle" class="text-lg font-semibold text-slate-800 truncate">Dashboard</h1>
+          <p id="viewSubtitle" class="text-xs text-slate-500 truncate">Welcome back — here's what's happening.</p>
+        </div>
+      </header>
+
+      <!-- Dynamic view container -->
+      <main id="view" class="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8"></main>
+    </div>
+  </div>
+
+  <!-- ===================== MODAL ===================== -->
+  <div id="modalOverlay" class="modal-overlay fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="modal-panel bg-white rounded-2xl shadow-xl w-full max-w-lg max-h-[90vh] overflow-y flex flex-col">
+      <div class="flex items-center justify-between px-6 py-4 border-b border-slate-200">
+        <h2 id="modalTitle" class="text-lg font-semibold text-slate-800">Create</h2>
+        <button id="modalClose" class="p-2 rounded-lg text-slate-400 hover:bg-slate-100 hover:text-slate-600" aria-label="Close">
+          <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <form id="modalForm" class="px-6 py-5 space-y-4" novalidate>
+        <!-- fields injected -->
+      </form>
+      <div class="flex justify-end gap-3 px-6 py-4 border-t border-slate-200">
+        <button type="button" id="modalCancel" class="px-4 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-100">Cancel</button>
+        <button type="submit" form="modalForm" class="px-4 py-2 rounded-lg text-sm font-medium text-white bg-blue-600 hover:bg-blue-700">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== TOAST ===================== -->
+  <div id="toast" class="fixed bottom-6 right-6 z-[60] hidden items-center gap-3 bg-slate-900 text-white px-5 py-3.5 rounded-xl shadow-lg max-w-sm">
+    <svg class="h-5 w-5 shrink-0 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
+    <span id="toastMsg" class="text-sm font-medium">Action completed successfully</span>
+  </div>
+
+  <script>
+  /* ============================================================
+     One Stop Cleaner — Admin SPA (vanilla JS + Tailwind CDN)
+     ============================================================ */
+
+  /* ---------- Mock Data ---------- */
+  const clients = [
+    { id: 1, name: 'Sarah Johnson', email: 'sarah.j@example.com', service: 'Deep Clean', status: 'Qualified', stage: 'Contacted', city: 'Austin, TX', date: '2026-09-10' },
+    { id: 2, name: 'Marcus Lee', email: 'marcus.lee@example.com', service: 'Regular Maintenance', status: 'New', stage: 'New', city: 'Austin, TX', date: '2026-09-11' },
+    { id: 3, name: 'Priya Nair', email: 'priya.nair@example.com', service: 'Post-Construction', status: 'Contacted', stage: 'Contacted', city: 'Round Rock, TX', date: '2026-09-11' },
+    { id: 4, name: 'David Okafor', email: 'david.ok@example.com', service: 'Office Cleaning', status: 'Lost', stage: 'Negotiation', city: 'Pflugerville, TX', date: '2026-09-09' },
+  ];
+
+  const cleaners = [
+    { id: 1, name: 'James Wilson', email: 'james.w@example.com', phone: '(512) 555-0142', status: 'Active', stage: 'Hired', city: 'Austin, TX', experience: '4 yrs' },
+    { id: 2, name: 'Elena Rodriguez', email: 'elena.r@example.com', phone: '(512) 555-0198', status: 'Pending', stage: 'Interview', city: 'Cedar Park, TX', experience: '2 yrs' },
+    { id: 3, name: 'Tom Nguyen', email: 'tom.n@example.com', phone: '(512) 555-0167', status: 'Active', stage: 'Hired', city: 'Austin, TX', experience: '6 yrs' },
+    { id: 4, name: 'Aisha Khan', email: 'aisha.k@example.com', phone: '(512) 555-0133', status: 'Pending', stage: 'Screening', city: 'Leander, TX', experience: '1 yr' },
+  ];
+
+  const tickets = [
+    { id: 'TK-1042', subject: 'Rescheduling appointment', customer: 'sarah.j@example.com', status: 'Open', priority: 'High', created: '2026-09-12' },
+    { id: 'TK-1041', subject: 'Invoice discrepancy', customer: 'marcus.lee@example.com', status: 'In Progress', priority: 'Normal', created: '2026-09-11' },
+    { id: 'TK-1040', subject: 'Request for quote', customer: 'priya.nair@example.com', status: 'Open', priority: 'Low', created: '2026-09-11' },
+    { id: 'TK-1039', subject: 'Service complaint', customer: 'david.ok@example.com', status: 'Urgent', priority: 'Urgent', created: '2026-09-10' },
+  ];
+
+  const campaigns = [
+    { id: 1, name: 'Fall Refresh Promo', channel: 'Email', audience: 'Service leads', status: 'Running', sent: 1280, opened: 612, clicked: 143, created: '2026-09-01' },
+    { id: 2, name: 'Refer a Friend', channel: 'SMS', audience: 'Everyone', status: 'Running', sent: 540, opened: 0, clicked: 0, created: '2026-09-05' },
+    { id: 3, name: 'Summer Recap', channel: 'Push', audience: 'Waitlist', status: 'Draft', sent: 0, opened: 0, clicked: 0, created: '2026-09-08' },
+    { id: 4, name: 'Loyalty Reward', channel: 'Email', audience: 'Service leads', status: 'Ended', sent: 2100, opened: 1340, clicked: 402, created: '2026-08-20' },
+  ];
+
+  const users = [
+    { id: 1, name: 'Admin User', email: 'admin@onestopcleaner.com', role: 'Super Admin', active: true },
+    { id: 2, name: 'Jane Agent', email: 'jane@onestopcleaner.com', role: 'Agent', active: true },
+    { id: 3, name: 'Mark Supervisor', email: 'mark@onestopcleaner.com', role: 'Agent', active: false },
+  ];
+
+  /* ---------- Badge styling ---------- */
+  const badgeStyles = {
+    'New': 'bg-blue-100 text-blue-700',
+    'Contacted': 'bg-sky-100 text-sky-700',
+    'Qualified': 'bg-emerald-100 text-emerald-700',
+    'Active': 'bg-emerald-100 text-emerald-700',
+    'Running': 'bg-emerald-100 text-emerald-700',
+    'Open': 'bg-amber-100 text-amber-700',
+    'In Progress': 'bg-amber-100 text-amber-700',
+    'Pending': 'bg-amber-100 text-amber-700',
+    'Draft': 'bg-slate-200 text-slate-600',
+    'Ended': 'bg-slate-200 text-slate-600',
+    'Lost': 'bg-rose-100 text-rose-700',
+    'Urgent': 'bg-rose-100 text-rose-700',
+  };
+  const badge = (label) => {
+    const cls = badgeStyles[label] || 'bg-slate-100 text-slate-600';
+    return el('span', { class: `inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${cls}` }, [label]);
+  };
+  const priorityBadge = (p) => badge(p);
+
+  /* ---------- View metadata ---------- */
+  const views = {
+    dashboard: { title: 'Dashboard', subtitle: "Welcome back — here's what's happening." },
+    clients: { title: 'Clients', subtitle: 'Manage incoming client leads and service requests.' },
+    cleaners: { title: 'Cleaners', subtitle: 'Manage applications from cleaners.' },
+    tickets: { title: 'Tickets', subtitle: 'Manage support and service tickets.' },
+    campaigns: { title: 'Campaigns', subtitle: 'Create and track email campaigns.' },
+    users: { title: 'Users', subtitle: 'Manage admin accounts and roles.' },
+  };
+
+  /* ---------- Form schemas for the modal ---------- */
+  const formSchemas = {
+    clients: {
+      title: 'New Client',
+      fields: [
+        { name: 'name', label: 'Full Name', type: 'text', required: true },
+        { name: 'email', label: 'Email', type: 'email', required: true },
+        { name: 'service', label: 'Service Type', type: 'select', options: ['Deep Clean', 'Regular Maintenance', 'Post-Construction', 'Office Cleaning'], required: true },
+        { name: 'city', label: 'City', type: 'text', required: true },
+        { name: 'status', label: 'Status', type: 'select', options: ['New', 'Contacted', 'Qualified', 'Lost'] },
+      ],
+    },
+    cleaners: {
+      title: 'New Cleaner',
+      fields: [
+        { name: 'name', label: 'Full Name', type: 'text', required: true },
+        { name: 'email', label: 'Email', type: 'email', required: true },
+        { name: 'phone', label: 'Phone', type: 'tel', required: true },
+        { name: 'city', label: 'City', type: 'text', required: true },
+        { name: 'experience', label: 'Experience', type: 'text', placeholder: 'e.g. 3 yrs' },
+      ],
+    },
+    tickets: {
+      title: 'New Ticket',
+      fields: [
+        { name: 'subject', label: 'Subject', type: 'text', required: true },
+        { name: 'customer', label: 'Customer Email', type: 'email', required: true },
+        { name: 'priority', label: 'Priority', type: 'select', options: ['Low', 'Normal', 'High', 'Urgent'] },
+      ],
+    },
+    campaigns: {
+      title: 'New Campaign',
+      fields: [
+        { name: 'name', label: 'Name', type: 'text', required: true },
+        { name: 'channel', label: 'Channel', type: 'select', options: ['Email', 'SMS', 'Push'] },
+        { name: 'audience', label: 'Audience', type: 'select', options: ['Everyone', 'Waitlist', 'Service leads', 'Partners'] },
+        { name: 'subject', label: 'Subject', type: 'text' },
+      ],
+    },
+    users: {
+      title: 'New User',
+      fields: [
+        { name: 'name', label: 'Name', type: 'text', required: true },
+        { name: 'email', label: 'Email', type: 'email', required: true },
+        { name: 'role', label: 'Role', type: 'select', options: ['Super Admin', 'Agent'] },
+      ],
+    },
+  };
+
+  /* ---------- DOM helpers ---------- */
+  const $ = (sel, root = document) => root.querySelector(sel);
+  const el = (tag, attrs = {}, children = []) => {
+    const node = document.createElement(tag);
+    for (const [k, v] of Object.entries(attrs)) {
+      if (k === 'class') node.className = v;
+      else if (k === 'html') node.innerHTML = v;
+      else if (v !== null && v !== undefined) node.setAttribute(k, v);
+    }
+    for (const c of [].concat(children)) {
+      if (c == null) continue;
+      node.appendChild(typeof c === 'string' ? document.createTextNode(c) : c);
+    }
+    return node;
+  };
+
+  /* ---------- Router ---------- */
+  const view = $('#view');
+  const viewTitle = $('#viewTitle');
+  const viewSubtitle = $('#viewSubtitle');
+
+  function renderView(name) {
+    const meta = views[name] || views.dashboard;
+    viewTitle.textContent = meta.title;
+    viewSubtitle.textContent = meta.subtitle;
+
+    // active nav state
+    document.querySelectorAll('.nav-item').forEach((n) => {
+      const active = n.dataset.panel === name;
+      n.classList.toggle('bg-blue-600', active);
+      n.classList.toggle('text-white', active);
+      n.classList.toggle('hover:bg-blue-600', !active);
+      n.classList.toggle('text-slate-300', !active);
+    });
+
+    view.innerHTML = '';
+    ({
+      dashboard: renderDashboard,
+      clients: renderClients,
+      cleaners: renderCleaners,
+      tickets: renderTickets,
+      campaigns: renderCampaigns,
+      users: renderUsers,
+    })[name]();
+
+    closeSidebar();
+  }
+
+  /* ---------- Dashboard view ---------- */
+  function renderDashboard() {
+    const stats = [
+      { label: 'Total Clients', value: clients.length, icon: 'M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2 M22 21v-2a4 4 0 0 0-3-3.87 M16 3.13a4 4 0 0 1 0 7.75', sub: 'Active leads' },
+      { label: 'Cleaners', value: cleaners.length, icon: 'M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z', sub: 'On payroll' },
+      { label: 'Open Tickets', value: tickets.filter((t) => t.status === 'Open').length, icon: 'M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z', sub: 'Need attention' },
+      { label: 'Running Campaigns', value: campaigns.filter((c) => c.status === 'Running').length, icon: 'M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9', sub: 'Live now' },
+    ];
+
+    const grid = el('div', { class: 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-6' });
+    for (const s of stats) {
+      const card = el('div', { class: 'bg-white rounded-xl shadow-sm border border-slate-100 p-6' });
+      card.appendChild(el('div', { class: 'flex items-center justify-between mb-4' }, [
+        el('p', { class: 'text-sm font-medium text-slate-500' }, [s.label]),
+        el('div', { class: 'h-9 w-9 rounded-lg bg-blue-50 grid place-items-center' }, [
+          el('svg', { class: 'h-5 w-5 text-blue-600', fill: 'none', viewBox: '0 0 24 24', stroke: 'currentColor', 'stroke-width': '1.8' }, [
+            el('path', { 'stroke-linecap': 'round', 'stroke-linejoin': 'round', d: s.icon }),
+          ]),
+        ]),
+      ]));
+      card.appendChild(el('p', { class: 'text-3xl font-bold text-slate-800' }, [String(s.value)]));
+      card.appendChild(el('p', { class: 'text-xs text-slate-400 mt-1' }, [s.sub]));
+      grid.appendChild(card);
+    }
+    view.appendChild(grid);
+
+    // Two-column: table + mini bar chart
+    const cols = el('div', { class: 'grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6' });
+
+    const tableCard = el('div', { class: 'lg:col-span-2 bg-white rounded-xl shadow-sm border border-slate-100' });
+    tableCard.appendChild(el('div', { class: 'px-6 py-4 border-b border-slate-100' }, [
+      el('h2', { class: 'text-base font-semibold text-slate-800' }, ['Recent Clients']),
+    ]));
+    const table = el('div', { class: 'overflow-x-auto' }, [
+      el('table', { class: 'w-full text-sm' }, [
+        el('thead', {}, [el('tr', { class: 'text-left text-xs uppercase tracking-wider text-slate-500' }, [
+          el('th', {}, ['Client']), el('th', {}, ['Service']), el('th', {}, ['Status']), el('th', {}, ['City']),
+        ])]),
+        el('tbody', { class: 'divide-y divide-slate-100' }, clients.map((c) =>
+          el('tr', { class: 'hover:bg-slate-50' }, [
+            el('td', { class: 'py-3' }, [el('span', { class: 'font-medium text-slate-800' }, [c.name]), el('br'), el('span', { class: 'text-xs text-slate-400' }, [c.email])]),
+            el('td', { class: 'py-3 text-slate-600' }, [c.service]),
+            el('td', { class: 'py-3' }, [badge(c.status)]),
+            el('td', { class: 'py-3 text-slate-600' }, [c.city]),
+          ])
+        )),
+      ]),
+    ]);
+    tableCard.appendChild(table);
+    cols.appendChild(tableCard);
+
+    // Leads by stage mini bar chart
+    const chartCard = el('div', { class: 'bg-white rounded-xl shadow-sm border border-slate-100 p-6' });
+    chartCard.appendChild(el('h2', { class: 'text-base font-semibold text-slate-800 mb-5' }, ['Leads by Stage']));
+    const stageCounts = {};
+    clients.forEach((c) => { stageCounts[c.stage] = (stageCounts[c.stage] || 0) + 1; });
+    const max = Math.max(1, ...Object.values(stageCounts));
+    const bars = el('div', { class: 'space-y-4' });
+    for (const [stage, count] of Object.entries(stageCounts)) {
+      bars.appendChild(el('div', {}, [
+        el('div', { class: 'flex items-center justify-between text-xs mb-1' }, [
+          el('span', { class: 'font-medium text-slate-600' }, [stage]),
+          el('span', { class: 'text-slate-400' }, [String(count)]),
+        ]),
+        el('div', { class: 'h-2 w-full bg-slate-100 rounded-full overflow-hidden' }, [
+          el('div', { class: 'h-full bg-blue-600 rounded-full', style: `width:${(count / max) * 100}%` }),
+        ]),
+      ]));
+    }
+    chartCard.appendChild(bars);
+    cols.appendChild(chartCard);
+
+    view.appendChild(cols);
+  }
+
+  /* ---------- Generic table renderer ---------- */
+  function renderTable({ title, columns, rows }) {
+    const card = el('div', { class: 'bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden' });
+    const table = el('table', { class: 'w-full text-sm' }, [
+      el('thead', {}, [el('tr', { class: 'text-xs uppercase tracking-wider text-slate-500' }, columns.map((c) => el('th', { class: 'px-6 py-3 font-semibold' }, [c])))]),
+      el('tbody', { class: 'divide-y divide-slate-100' }, rows),
+    ]);
+    card.appendChild(table);
+    view.appendChild(card);
+  }
+
+  function renderClients() {
+    renderTable({
+      columns: ['Client', 'Service', 'Status', 'Stage', 'City', 'Date'],
+      rows: clients.map((c) => [
+        el('td', { class: 'px-6 py-4' }, [el('span', { class: 'font-medium text-slate-800' }, [c.name]), el('br'), el('span', { class: 'text-xs text-slate-400' }, [c.email])]),
+        el('td', { class: 'px-6 py-4 text-slate-600' }, [c.service]),
+        el('td', { class: 'px-6 py-4' }, [badge(c.status)]),
+        el('td', { class: 'px-6 py-4' }, [badge(c.stage)]),
+        el('td', { class: 'px-6 py-4 text-slate-600' }, [c.city]),
+        el('td', { class: 'px-6 py-4 text-slate-500' }, [c.date]),
+      ]),
+    });
+  }
+
+  function renderCleaners() {
+    renderTable({
+      columns: ['Cleaner', 'Phone', 'Status', 'Stage', 'City', 'Experience'],
+      rows: cleaners.map((c) => [
+        el('td', { class: 'px-6 py-4' }, [el('span', { class: 'font-medium text-slate-800' }, [c.name]), el('br'), el('span', { class: 'text-xs text-slate-400' }, [c.email])]),
+        el('td', { class: 'px-6 py-4 text-slate-600' }, [c.phone]),
+        el('td', { class: 'px-6 py-4' }, [badge(c.status)]),
+        el('td', { class: 'px-6 py-4' }, [badge(c.stage)]),
+        el('td', { class: 'px-6 py-4 text-slate-600' }, [c.city]),
+        el('td', { class: 'px-6 py-4 text-slate-500' }, [c.experience]),
+      ]),
+    });
+  }
+
+  function renderTickets() {
+    renderTable({
+      columns: ['ID', 'Subject', 'Customer', 'Status', 'Priority', 'Created'],
+      rows: tickets.map((t) => [
+        el('td', { class: 'px-6 py-4 font-medium text-slate-800' }, [t.id]),
+        el('td', { class: 'px-6 py-4 text-slate-600' }, [t.subject]),
+        el('td', { class: 'px-6 py-4 text-slate-500' }, [t.customer]),
+        el('td', { class: 'px-6 py-4' }, [badge(t.status)]),
+        el('td', { class: 'px-6 py-4' }, [priorityBadge(t.priority)]),
+        el('td', { class: 'px-6 py-4 text-slate-500' }, [t.created]),
+      ]),
+    });
+  }
+
+  function renderCampaigns() {
+    renderTable({
+      columns: ['Campaign', 'Channel', 'Audience', 'Status', 'Sent', 'Opened', 'Clicked'],
+      rows: campaigns.map((c) => [
+        el('td', { class: 'px-6 py-4 font-medium text-slate-800' }, [c.name]),
+        el('td', { class: 'px-6 py-4 text-slate-600' }, [c.channel]),
+        el('td', { class: 'px-6 py-4 text-slate-500' }, [c.audience]),
+        el('td', { class: 'px-6 py-4' }, [badge(c.status)]),
+        el('td', { class: 'px-6 py-4 text-slate-600' }, [c.sent.toLocaleString()]),
+        el('td', { class: 'px-6 py-4 text-slate-600' }, [c.opened.toLocaleString()]),
+        el('td', { class: 'px-6 py-4 text-slate-600' }, [c.clicked.toLocaleString()]),
+      ]),
+    });
+  }
+
+  function renderUsers() {
+    renderTable({
+      columns: ['User', 'Email', 'Role', 'Status'],
+      rows: users.map((u) => [
+        el('td', { class: 'px-6 py-4' }, [
+          el('span', { class: 'inline-flex items-center justify-center h-8 w-8 rounded-full bg-blue-600 text-white text-xs font-semibold mr-3' }, [u.name[0]]),
+          el('span', { class: 'font-medium text-slate-800' }, [u.name]),
+        ]),
+        el('td', { class: 'px-6 py-4 text-slate-500' }, [u.email]),
+        el('td', { class: 'px-6 py-4 text-slate-600' }, [u.role]),
+        el('td', { class: 'px-6 py-4' }, [badge(u.active ? 'Active' : 'Ended')]),
+      ]),
+    });
+  }
+
+  /* ---------- Modal ---------- */
+  const modalOverlay = $('#modalOverlay');
+  const modalTitle = $('#modalTitle');
+  const modalForm = $('#modalForm');
+
+  function openModal(panel) {
+    const schema = formSchemas[panel];
+    if (!schema) return;
+    modalTitle.textContent = schema.title;
+    modalForm.innerHTML = '';
+    schema.fields.forEach((f) => {
+      const wrap = el('div', {});
+      wrap.appendChild(el('label', { class: 'block text-sm font-medium text-slate-700 mb-1' }, [f.label]));
+      if (f.type === 'select') {
+        const sel = el('select', { name: f.name, class: 'w-full px-3 py-2.5 rounded-lg border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600' });
+        (f.options || []).forEach((o) => sel.appendChild(el('option', { value: o }, [o])));
+        wrap.appendChild(sel);
+      } else {
+        const input = el('input', { name: f.name, type: f.type, placeholder: f.placeholder || '', class: 'w-full px-3 py-2.5 rounded-lg border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600' });
+        if (f.required) input.required = true;
+        wrap.appendChild(input);
+      }
+      modalForm.appendChild(wrap);
+    });
+    modalForm.dataset.panel = panel;
+    modalOverlay.classList.remove('hidden');
+    modalOverlay.classList.add('flex');
+    const first = modalForm.querySelector('input, select');
+    if (first) first.focus();
+  }
+
+  function closeModal() {
+    modalOverlay.classList.add('hidden');
+    modalOverlay.classList.remove('flex');
+    modalForm.reset();
+  }
+
+  /* ---------- Toast ---------- */
+  let toastTimer;
+  function toast(message) {
+    const toastEl = $('#toast');
+    $('#toastMsg').textContent = message || 'Action completed successfully';
+    toastEl.classList.remove('hidden');
+    toastEl.classList.add('flex');
+    toastEl.classList.remove('toast-exit');
+    toastEl.classList.add('toast-enter');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => {
+      toastEl.classList.remove('toast-enter');
+      toastEl.classList.add('toast-exit');
+      setTimeout(() => {
+        toastEl.classList.add('hidden');
+        toastEl.classList.remove('flex', 'toast-exit');
+      }, 350);
+    }, 3000);
+  }
+
+  /* ---------- Events ---------- */
+  // Sidebar navigation
+  document.querySelectorAll('.nav-item').forEach((btn) => {
+    btn.addEventListener('click', () => renderView(btn.dataset.panel));
+  });
+
+  // Create buttons (delegated)
+  view.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-create]');
+    if (btn) openModal(btn.dataset.create);
+  });
+
+  // Modal controls
+  $('#modalClose').addEventListener('click', closeModal);
+  $('#modalCancel').addEventListener('click', closeModal);
+  modalOverlay.addEventListener('click', (e) => { if (e.target === modalOverlay) closeModal(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+
+  // Modal submit
+  modalForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const panel = modalForm.dataset.panel;
+    const data = {};
+    modalForm.querySelectorAll('input, select').forEach((inp) => { data[inp.name] = inp.value; });
+    console.log(`[${panel} created]`, data);
+    closeModal();
+    toast(`${formSchemas[panel].title} created successfully`);
+  });
+
+  // Mobile sidebar
+  const sidebar = $('#sidebar');
+  const backdrop = $('#sidebarBackdrop');
+  function openSidebar() { sidebar.classList.remove('-translate-x-full'); backdrop.classList.remove('hidden'); }
+  function closeSidebar() { sidebar.classList.add('-translate-x-full'); backdrop.classList.add('hidden'); }
+  $('#menuBtn').addEventListener('click', openSidebar);
+  backdrop.addEventListener('click', closeSidebar);
+
+  /* ---------- Boot ---------- */
+  renderView('dashboard');
+  </script>
+</body>
+</html>

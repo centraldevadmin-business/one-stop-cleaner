@@ -6,7 +6,9 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
+    "admin": "node admin-server.js",
     "dev": "node --watch server.js",
+    "dev:admin": "node --watch admin-server.js",
     "seed": "node scripts/seed.js",
     "test": "node --test test/*.test.js"
   },

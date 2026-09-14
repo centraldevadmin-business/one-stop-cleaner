@@ -16,8 +16,11 @@ import cmsRoutes from './server/routes/cms.js';
 import analyticsRoutes from './server/routes/analytics.js';
 import contactsRoutes from './server/routes/contacts.js';
 import ticketsRoutes from './server/routes/tickets.js';
+import { adminRouter as settingsAdminRoutes } from './server/routes/settings.js';
 import { publicRouter as blogPublicRoutes, adminRouter as blogAdminRoutes } from './server/routes/blog.js';
 import rolesRoutes from './server/routes/roles.js';
+import { publicRouter as legalPublicRoutes, adminRouter as legalAdminRoutes } from './server/routes/legal.js';
+import { publicRouter as announcementsPublicRoutes, adminRouter as announcementsAdminRoutes } from './server/routes/announcements.js';
 import { requireRole, checkPermission } from './server/auth.js';
 
 // `import.meta.url` is undefined on Cloudflare Workers, so guard it. On
@@ -32,6 +35,44 @@ const PORT = process.env.PORT || 4000;
 
 app.use(cors());
 app.use(jsonBodyParser());
+
+// Maintenance Mode Middleware
+app.use(async (req, res, next) => {
+  try {
+    // We only check for the public site server. Admin runs on admin-server.js.
+    const row = await db.prepare("SELECT value FROM settings WHERE key = 'maintenance_mode'").get();
+    if (row && row.value === 'true') {
+      return res.status(503).send(`
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Site in Maintenance</title>
+  <style>
+    body { margin: 0; height: 100vh; display: flex; justify-content: center; align-items: center; background: #0f172a; color: #fff; font-family: system-ui, -apple-system, sans-serif; text-align: center; overflow: hidden; }
+    .container { padding: 40px; animation: fadeIn 1.5s ease-out; }
+    h1 { font-size: 2.5rem; margin-bottom: 20px; font-weight: 800; background: linear-gradient(135deg, #4ade80, #0d9488); -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: pulse 2s infinite ease-in-out; }
+    p { font-size: 1.2rem; color: #94a3b8; }
+    .spinner { margin: 40px auto; width: 50px; height: 50px; border: 4px solid rgba(255, 255, 255, 0.1); border-radius: 50%; border-top-color: #4ade80; animation: spin 1s ease-in-out infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes pulse { 0% { opacity: 0.8; } 50% { opacity: 1; } 100% { opacity: 0.8; } }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="spinner"></div>
+    <h1>Maintenance Mode</h1>
+    <p>site is in maintaince thank you for your patients</p>
+  </div>
+</body>
+</html>`);
+    }
+  } catch (e) {}
+  next();
+});
+
 // express.static() calls fs.statSync on every request, which is NOT
 // implemented on Cloudflare Workers. On Workers, static files are served
 // from the assets binding (env.ASSETS.fetch) in worker.js. So only register
@@ -52,26 +93,39 @@ app.use('/api/leads', leadPublicRoutes);
 // at module-load time, which Workers forbids in global scope.
 app.use('/api/leads', leadRateLimiter);
 
-// Admin lead management (GET/PUT/DELETE) — requires auth
-app.use('/api/leads', authRequired, leadAdminRoutes);
-app.use('/api/campaigns', authRequired, campaignRoutes);
-app.use('/api/cms', authRequired, cmsRoutes);
+// Admin lead management (GET/PUT/DELETE) — requires auth + 'leads' permission
+app.use('/api/leads', authRequired, checkPermission('leads'), leadAdminRoutes);
+app.use('/api/campaigns', authRequired, checkPermission('campaigns'), campaignRoutes);
+app.use('/api/cms', authRequired, checkPermission('cms'), cmsRoutes);
+
+// Public legal pages (privacy / terms) — no auth
+app.use('/api/legal', legalPublicRoutes);
+
+// Public announcements (shown on the website) — no auth
+app.use('/api/announcements', announcementsPublicRoutes);
 
 // Public blog feed (published posts) — no auth
 app.use('/api/blog', blogPublicRoutes);
-// Admin blog management — requires auth
-app.use('/api/blog', blogAdminRoutes);
+// Admin blog management — requires auth + 'blog' permission
+app.use('/api/blog', authRequired, checkPermission('blog'), blogAdminRoutes);
 
 // CRM: contacts (public capture + admin management)
 app.use('/api/contacts', contactsRoutes);
-app.use('/api/contacts', authRequired, contactsRoutes);
+app.use('/api/contacts', authRequired, checkPermission('contacts'), contactsRoutes);
 
 // Support tickets (public create + admin management)
 app.use('/api/tickets', ticketsRoutes);
-app.use('/api/tickets', authRequired, ticketsRoutes);
+app.use('/api/tickets', authRequired, checkPermission('tickets'), ticketsRoutes);
 
 // RBAC: roles + assignments (superadmin only)
-app.use('/api/roles', authRequired, requireRole('superadmin'), rolesRoutes);
+app.use('/api/roles', authRequired, requireRole('superadmin'), checkPermission('roles'), rolesRoutes);
+
+// Legal pages + announcements (content editors) — requires auth
+app.use('/api/legal', authRequired, checkPermission('legal'), legalAdminRoutes);
+app.use('/api/announcements', authRequired, checkPermission('announcements'), announcementsAdminRoutes);
+
+// Settings
+app.use('/api/settings', authRequired, requireRole('superadmin'), settingsAdminRoutes);
 
 // Audit logs (superadmin only)
 app.get('/api/audit', authRequired, requireRole('superadmin'), async (req, res) => {

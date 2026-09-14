@@ -25,12 +25,14 @@
   if (nav && toggle && links) {
     toggle.addEventListener("click", function () {
       var open = nav.classList.toggle("nav--open");
+      links.classList.toggle("hidden");
       toggle.setAttribute("aria-expanded", String(open));
     });
     // Close menu when a link is tapped
     links.querySelectorAll("a").forEach(function (a) {
       a.addEventListener("click", function () {
         nav.classList.remove("nav--open");
+        links.classList.add("hidden");
         toggle.setAttribute("aria-expanded", "false");
         document.querySelectorAll(".nav-dropdown").forEach(function (d) {
           d.classList.remove("nav-dropdown--open");
@@ -88,34 +90,7 @@
   /* ---------- Form handling ----------
      Wire to your backend / email service. For now it validates and gives
      friendly feedback so every page feels alive and professional. */
-  function handleForm(form, msgEl, onSuccess) {
-    if (!form) return;
-    form.addEventListener("submit", async function (e) {
-      e.preventDefault();
-      var input = form.querySelector("input[name='email']");
-      var email = input ? input.value.trim() : "";
-
-      if (!email) { showMsg(msgEl, "Please enter your email.", "err"); return; }
-      if (!isValidEmail(email)) { showMsg(msgEl, "That email doesn't look right. Try again?", "err"); return; }
-
-      var segment = form.getAttribute("data-segment") || "general";
-      showMsg(msgEl, "Sending…", "");
-      try {
-        await fetch("/api/leads", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ source: "waitlist", status: "new", stage: "discovery", priority: "normal", segment: segment, email: email }),
-        });
-        showMsg(msgEl, "You're on the list — we'll be in touch soon!", "ok");
-        if (input) input.value = "";
-        if (typeof onSuccess === "function") onSuccess(email);
-      } catch (err) {
-        showMsg(msgEl, "You're on the list — we'll be in touch soon!", "ok");
-        if (input) input.value = "";
-        if (typeof onSuccess === "function") onSuccess(email);
-      }
-    });
-  }
+// handleForm logic removed, integrated into generic binder
 
   function showMsg(el, text, kind) {
     if (!el) return;
@@ -123,114 +98,49 @@
     el.className = "field-msg " + (kind || "");
   }
 
-  document.querySelectorAll("form.waitlist-form").forEach(function (form) {
+  document.querySelectorAll("form[data-source]").forEach(function (form) {
+    var source = form.getAttribute("data-source");
+    if (source === "contact") return;
     var msg = form.querySelector(".field-msg");
-    handleForm(form, msg);
-  });
+    if (!msg) return;
+    
+    form.addEventListener("submit", async function (e) {
+      e.preventDefault();
+      
+      var input = form.querySelector("input[name='email']");
+      var email = input ? input.value.trim() : "";
+      if (!email) { showMsg(msg, "Please enter your email.", "err"); return; }
+      if (!isValidEmail(email)) { showMsg(msg, "That email doesn't look right. Try again?", "err"); return; }
+      
+      // Grab extra fields if present
+      var name = (form.querySelector("input[name='name']") || {}).value || null;
+      var company = (form.querySelector("input[name='company']") || {}).value || null;
+      var message = (form.querySelector("textarea[name='message']") || {}).value || null;
+      var notes = form.getAttribute("data-notes") || null;
+      var city = (form.querySelector("input[name='city']") || {}).value || null;
 
-  /* ---------- Contact form (multi-intent) ---------- */
-  var contactForms = document.querySelectorAll("form[data-source='contact']");
-  contactForms.forEach(function (form) {
-    var msg = form.querySelector(".field-msg");
-
-    /* Dynamic field switching based on intent */
-    var radios = form.querySelectorAll("input[name='intent']");
-    var dynamicFields = form.querySelectorAll(".dynamic-field");
-    radios.forEach(function (radio) {
-      radio.addEventListener("change", function () {
-        var chosen = radio.value;
-        dynamicFields.forEach(function (block) {
-          if (block.getAttribute("data-intent") === chosen) {
-            block.classList.add("is-active");
-          } else {
-            block.classList.remove("is-active");
-          }
+      showMsg(msg, "Sending…", "");
+      try {
+        await fetch("/api/leads", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ 
+            source: source, 
+            status: "new", 
+            stage: "discovery", 
+            email: email,
+            name: name,
+            company: company,
+            message: message,
+            city: city,
+            notes: notes
+          }),
         });
-      });
-    });
-
-    form.addEventListener("submit", function (e) {
-      e.preventDefault();
-      var name = (form.querySelector("input[name='name']") || {}).value.trim() || "";
-      var email = (form.querySelector("input[name='email']") || {}).value.trim() || "";
-      var message = (form.querySelector("textarea[name='message']") || {}).value.trim() || "";
-      var intent = (form.querySelector("input[name='intent']:checked") || {}).value || "client";
-      var city = (form.querySelector("input[name='city']") || {}).value.trim() || "";
-      var company = (form.querySelector("input[name='company']") || {}).value.trim() || "";
-      var serviceType = (form.querySelector("select[name='service_type']") || {}).value || "";
-
-      if (!name) { showMsg(msg, "Please add your name.", "err"); return; }
-      if (!isValidEmail(email)) { showMsg(msg, "Please add a valid email.", "err"); return; }
-      if (message.length < 5) { showMsg(msg, "Tell us a little more.", "err"); return; }
-
-      var lead = {
-        source: "contact",
-        status: "new",
-        stage: "discovery",
-        priority: intent === "partner" ? "high" : "normal",
-        name: name,
-        email: email,
-        message: message,
-        city: city,
-        company: company,
-        service_type: serviceType,
-        notes: "Intent: " + intent
-      };
-
-      showMsg(msg, "Sending…", "");
-      (async function () {
-        try {
-          await fetch("/api/leads", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(lead),
-          });
-          showMsg(msg, "Thanks — we'll route your inquiry to the right team shortly!", "ok");
-          form.reset();
-          var clientField = form.querySelector(".dynamic-field[data-intent='client']");
-          if (clientField) clientField.classList.add("is-active");
-        } catch (err) {
-          showMsg(msg, "Thanks — we'll route your inquiry to the right team shortly!", "ok");
-          form.reset();
-          var clientField2 = form.querySelector(".dynamic-field[data-intent='client']");
-          if (clientField2) clientField2.classList.add("is-active");
-        }
-      })();
-    });
-  });
-
-  /* ---------- Partner form ---------- */
-  var partnerForms = document.querySelectorAll("form.partner-form");
-  partnerForms.forEach(function (form) {
-    var msg = form.querySelector(".field-msg");
-    form.addEventListener("submit", function (e) {
-      e.preventDefault();
-      var name = (form.querySelector("input[name='name']") || {}).value.trim() || "";
-      var email = (form.querySelector("input[name='email']") || {}).value.trim() || "";
-      var company = (form.querySelector("input[name='company']") || {}).value.trim() || "";
-      var type = (form.querySelector("select[name='type']") || {}).value || "";
-      var message = (form.querySelector("textarea[name='message']") || {}).value.trim() || "";
-
-      if (!name) { showMsg(msg, "Please add your name.", "err"); return; }
-      if (!isValidEmail(email)) { showMsg(msg, "Please add a valid email.", "err"); return; }
-      if (!type) { showMsg(msg, "Pick a partnership type.", "err"); return; }
-      if (message.length < 5) { showMsg(msg, "Tell us a little more about your interest.", "err"); return; }
-
-      showMsg(msg, "Sending…", "");
-      (async function () {
-        try {
-          await fetch("/api/leads", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ source: "partner", status: "new", stage: "discovery", priority: "high", name: name, email: email, company: company, partner_type: type, message: message }),
-          });
-          showMsg(msg, "Thanks — we'll route your inquiry to the right team shortly!", "ok");
-          form.reset();
-        } catch (err) {
-          showMsg(msg, "Thanks — we'll route your inquiry to the right team shortly!", "ok");
-          form.reset();
-        }
-      })();
+        showMsg(msg, "Thanks! We've received your details.", "ok");
+        form.reset();
+      } catch (err) {
+        showMsg(msg, "Something went wrong. Please try again.", "err");
+      }
     });
   });
 
@@ -335,8 +245,8 @@
   document.querySelectorAll('[data-cta="notify-me"]').forEach(function (btn) {
     btn.addEventListener('click', function (e) {
       e.preventDefault();
-      // Check if there is a waitlist form on the current page
-      var form = document.querySelector('form.waitlist-form') || document.querySelector('form[data-source="waitlist"]');
+      // Check if there is a lead capture form on the current page
+      var form = document.querySelector('form.hero__lead') || document.querySelector('form[data-source="client"]') || document.querySelector('form[data-source="cleaner"]') || document.querySelector('form[data-source="investor"]');
       if (form) {
         // Smooth scroll to the form and focus the email input
         form.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -345,8 +255,8 @@
           if (input) input.focus();
         }, 500);
       } else {
-        // Redirect to index.html#waitlist
-        window.location.href = 'index.html#waitlist';
+        // Redirect to index.html
+        window.location.href = 'index.html';
       }
     });
   });

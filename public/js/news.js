@@ -131,28 +131,25 @@
         </div>`
       : '';
     wrap.innerHTML =
-      `<article class="py-16 sm:py-24 mt-20">
-        <a href="news.html" class="inline-flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-mint-600 transition-colors mb-12">
-          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg> Back to news
-        </a>
-        <header class="max-w-3xl mx-auto">
-          <div class="flex flex-wrap items-center gap-3 mb-6">${categoryPill(post.category)}${date ? `<span class="text-sm font-semibold text-slate-500">${date}</span>` : ''}</div>
-          <h1 class="font-display font-extrabold tracking-tight text-4xl sm:text-5xl lg:text-6xl text-navy-950 mb-8 leading-[1.1]">${escapeHtml(post.title)}</h1>
-          <p class="text-slate-600 text-xl sm:text-2xl leading-relaxed mb-10">${escapeHtml(post.excerpt || '')}</p>
-          <div class="flex items-center gap-4 pb-10 border-b border-slate-200">
-            <span class="inline-grid place-items-center w-12 h-12 rounded-full bg-gradient-to-br from-mint-400 to-mint-600 text-white font-semibold text-lg">${escapeHtml((post.author || 'One Stop Cleaner').charAt(0).toUpperCase())}</span>
-            <div>
-              <p class="font-bold text-navy-950">${escapeHtml(post.author || 'One Stop Cleaner')}</p>
-              <p class="text-sm font-medium text-slate-500">One Stop Cleaner</p>
+      `<article class="py-16 sm:py-24 mt-20 px-5 sm:px-8">
+        <div class="max-w-4xl mx-auto">
+          <a href="news.html" class="inline-flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-mint-600 transition-colors mb-12">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg> Back to news
+          </a>
+          <header>
+            <div class="flex flex-wrap items-center gap-3 mb-6">${categoryPill(post.category)}${date ? `<span class="text-sm font-semibold text-slate-500">${date}</span>` : ''}</div>
+            <h1 class="font-display font-extrabold tracking-tight text-4xl sm:text-5xl lg:text-6xl text-navy-950 mb-8 leading-[1.1]">${escapeHtml(post.title)}</h1>
+            <p class="text-slate-600 text-xl sm:text-2xl leading-relaxed mb-10">${escapeHtml(post.excerpt || '')}</p>
+            <div class="flex items-center gap-4 pb-10 border-b border-slate-200">
+              <span class="inline-grid place-items-center w-12 h-12 rounded-full bg-gradient-to-br from-mint-400 to-mint-600 text-white font-semibold text-lg">${escapeHtml((post.author || 'One Stop Cleaner').charAt(0).toUpperCase())}</span>
+              <div>
+                <p class="font-bold text-navy-950">${escapeHtml(post.author || 'One Stop Cleaner')}</p>
+                <p class="text-sm font-medium text-slate-500">One Stop Cleaner</p>
+              </div>
             </div>
-          </div>
-        </header>
-        ${cover}
-        <div class="max-w-3xl mx-auto">
+          </header>
+          ${cover}
           <div class="pt-6">${markdownToHtml(post.body)}</div>
-        </div>
-        <div class="max-w-3xl mx-auto mt-16 pt-10 border-t border-slate-200">
-          <button type="button" class="btn btn--primary btn--lg" data-cta="notify-me">Join Waitlist <span class="btn__arrow" aria-hidden="true">→</span></button>
         </div>
         ${relatedHtml}
       </article>`;
@@ -173,7 +170,7 @@
         .catch(() => renderPost(null));
     } else {
       api('/api/blog/public')
-        .then(renderList)
+        .then(posts => renderList((posts || []).filter(p => p.category?.toLowerCase() === 'news' || p.category?.toLowerCase() === 'launch')))
         .catch(() => renderList([]));
     }
   }

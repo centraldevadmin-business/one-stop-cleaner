@@ -22,6 +22,16 @@ router.post('/login', async (req, res) => {
   });
 });
 
+// Current user — verifies the token and returns the authenticated user.
+router.get('/me', authRequired, (req, res) => {
+  res.json({
+    id: req.user.id,
+    name: req.user.name,
+    email: req.user.email,
+    role: req.user.role,
+  });
+});
+
 // Create admin (used by seed script)
 router.post('/admins', async (req, res) => {
   const { name, email, password, role = 'superadmin' } = req.body || {};
